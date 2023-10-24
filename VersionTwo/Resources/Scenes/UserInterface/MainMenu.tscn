@@ -1,0 +1,114 @@
+[gd_scene load_steps=6 format=3 uid="uid://g7gc87d1nati"]
+
+[ext_resource type="Script" path="res://Resources/Scripts/MainMenu.gd" id="1_nbbuy"]
+[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://Resources/Themes/MainMenu.tres" id="1_o1xq7"]
+[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://Resources/Themes/PauseMenu.theme" id="2_8xb1o"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Overlay.gdshader" id="4_wpnt2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0viog"]
+shader = ExtResource("4_wpnt2")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(426, 320)
+shader_parameter/pixelate = true
+shader_parameter/brightness = 1.4
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_nbbuy")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_8xb1o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_o1xq7")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Title"]
+layout_mode = 2
+theme = ExtResource("1_o1xq7")
+bbcode_enabled = true
+text = "[center][color=#C81D25]The House On Bluerock Avenue"
+fit_content = true
+autowrap_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_o1xq7")
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="StartGame" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_o1xq7")
+text = "Start Game"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Options" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("1_o1xq7")
+text = "Options"
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme = ExtResource("1_o1xq7")
+text = "Quit To Desktop"
+
+[node name="Overlay" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_0viog")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/StartGame" to="." method="_on_start_game_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/Quit" to="." method="_on_quit_button_up"]

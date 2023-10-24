@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://s3iffg2mb20n"]
+
+[ext_resource type="Script" path="res://Resources/Scripts/MovementInterface.gd" id="1_kucgq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f0wuu"]
+
+[node name="MovementInterface" type="CanvasLayer"]
+script = ExtResource("1_kucgq")
+
+[node name="Bottom" type="Panel" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f0wuu")
+
+[node name="Left" type="Panel" parent="."]
+top_level = true
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 200.0
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f0wuu")
+
+[node name="Right" type="Panel" parent="."]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f0wuu")
+
+[connection signal="mouse_entered" from="Bottom" to="." method="_on_bottom_mouse_entered"]
+[connection signal="mouse_exited" from="Bottom" to="." method="_on_bottom_mouse_exited"]
+[connection signal="mouse_entered" from="Left" to="." method="_on_left_mouse_entered"]
+[connection signal="mouse_exited" from="Left" to="." method="_on_left_mouse_exited"]
+[connection signal="mouse_entered" from="Right" to="." method="_on_right_mouse_entered"]
+[connection signal="mouse_exited" from="Right" to="." method="_on_right_mouse_exited"]

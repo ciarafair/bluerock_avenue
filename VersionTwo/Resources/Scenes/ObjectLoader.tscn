@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://co4wslkq7irah"]
+
+[ext_resource type="Script" path="res://Resources/Scripts/ObjectLoader.gd" id="1_sj4os"]
+
+[node name="ObjectLoader" type="Node"]
+process_mode = 3
+script = ExtResource("1_sj4os")
+Skip_Main_Menu = null
