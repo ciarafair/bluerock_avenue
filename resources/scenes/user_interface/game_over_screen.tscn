@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqvx3jp8xn376"]
+
+[ext_resource type="Script" path="res://resources/scripts/user_interface/game_over_screen.gd" id="1_55fx1"]
+[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="2_r475x"]
+[ext_resource type="Shader" path="res://resources/shaders/Overlay.gdshader" id="3_qpks3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tf81l"]
+shader = ExtResource("3_qpks3")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(720, 576)
+shader_parameter/pixelate = true
+shader_parameter/brightness = 1.4
+
+[node name="GameOver" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_55fx1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 0.0941176)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_r475x")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Title"]
+layout_mode = 2
+theme = ExtResource("2_r475x")
+bbcode_enabled = true
+text = "[center][color=#C81D25]Game Over."
+fit_content = true
+autowrap_mode = 0
+
+[node name="Overlay" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_tf81l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

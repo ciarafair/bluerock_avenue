@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://e4b4cj68vue8"]
+
+[ext_resource type="Texture2D" uid="uid://d1iyobleqeren" path="res://resources/textures/Carpet/Color.jpg" id="1_bmbpw"]
+[ext_resource type="Texture2D" uid="uid://o8t51q6i5pk5" path="res://resources/textures/Carpet/AmbientOcclusion.jpg" id="2_bgm7y"]
+[ext_resource type="Texture2D" uid="uid://dv5qh7pdnamxr" path="res://resources/textures/Carpet/Height.png" id="3_bgqma"]
+[ext_resource type="Texture2D" uid="uid://bjg6ovnb4bisx" path="res://resources/textures/Carpet/Roughness.jpg" id="4_2pdqq"]
+
+[resource]
+albedo_texture = ExtResource("1_bmbpw")
+roughness_texture = ExtResource("4_2pdqq")
+ao_enabled = true
+ao_texture = ExtResource("2_bgm7y")
+ao_on_uv2 = true
+heightmap_texture = ExtResource("3_bgqma")
+uv1_scale = Vector3(0.25, 0.25, 0.25)
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv2_triplanar = true
+uv2_world_triplanar = true

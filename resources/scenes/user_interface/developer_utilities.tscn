@@ -1,0 +1,162 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctnpasjv1c5o"]
+
+[ext_resource type="Script" path="res://resources/scripts/user_interface/developer_utilities.gd" id="1_sumk5"]
+[ext_resource type="Theme" uid="uid://tr6qly8uqjeh" path="res://resources/themes/dev_display.theme" id="2_yrnnv"]
+
+[node name="DevUtilities" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_sumk5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FramesPerSecond" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_yrnnv")
+text = "FPS: Null"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="HoveringBlock" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Hovering: Null"
+
+[node name="CurrentRoom" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_yrnnv")
+text = "Current Room: Null"
+
+[node name="CurrentActiveBlock" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_yrnnv")
+text = "Current Block: Null"
+
+[node name="CurrentActiveEvent" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("2_yrnnv")
+text = "Current event: Null"
+
+[node name="CurrentTime" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Current Time: 0:00am"
+
+[node name="PlayerPosition" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PlayerPosition"]
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Player Position:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PlayerPosition"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="XPosition" type="Label" parent="MarginContainer/VBoxContainer/PlayerPosition/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "X: Null"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/PlayerPosition/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="YPosition" type="Label" parent="MarginContainer/VBoxContainer/PlayerPosition/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Y: Null"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/PlayerPosition/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="ZPosition" type="Label" parent="MarginContainer/VBoxContainer/PlayerPosition/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Z: Null"
+
+[node name="PlayerRotation" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PlayerRotation"]
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Player Rotation:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PlayerRotation"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="XRotation" type="Label" parent="MarginContainer/VBoxContainer/PlayerRotation/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "X: Null"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/PlayerRotation/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="YRotation" type="Label" parent="MarginContainer/VBoxContainer/PlayerRotation/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Y: Null"
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/PlayerRotation/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_yrnnv")
+
+[node name="ZRotation" type="Label" parent="MarginContainer/VBoxContainer/PlayerRotation/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_yrnnv")
+text = "Z: Null"
