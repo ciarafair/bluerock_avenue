@@ -28,7 +28,6 @@ func _unhandled_input(_event: InputEvent):
 				if Global.Is_Clickable == true:
 					if Global.Hovering_Block != null && Global.Is_Hovering_Over_Left_Movement_Panel == false && Global.Is_Hovering_Over_Bottom_Movement_Panel == false && Global.Is_Hovering_Over_Right_Movement_Panel == false:
 						if Input.is_action_just_released("mouse_button_1"):
-							print_debug("Clicking")
 							SignalManager.activate_block.emit(Global.Hovering_Block) # EventManager.gd
 							return
 
@@ -68,32 +67,32 @@ func _unhandled_input(_event: InputEvent):
 
 			if Global.Is_Door_Opened == true:
 				if Input.is_action_just_released("mouse_button_1"):
-						if Global.Current_Room.RoomNumber == Global.Current_Active_Block.ConnectedRoomOne:
-							print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
-							Global.Current_Room.set_visible(false)
-							SignalManager.stop_event.emit()
-							Global.Current_Event = ""
-							SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomTwo)
-							return
-						elif Global.Current_Room.RoomNumber == Global.Current_Active_Block.ConnectedRoomTwo:
-							print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
-							Global.Current_Room.set_visible(false)
-							SignalManager.stop_event.emit()
-							Global.Current_Event = ""
-							SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomOne)
-							return
-
-						else:
-							print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
+					#print_debug("Left mouse button pressed.")
+					SignalManager.stop_event.emit()
+					IS_HOLDING_SPACE = false
+					if Global.Current_Room.RoomNumber == Global.Current_Active_Block.ConnectedRoomOne:
+						#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+						Global.Current_Room.set_visible(false)
+						Global.Current_Event = ""
+						SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomTwo)
+						return
+					elif Global.Current_Room.RoomNumber == Global.Current_Active_Block.ConnectedRoomTwo:
+						#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+						Global.Current_Room.set_visible(false)
+						Global.Current_Event = ""
+						SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomOne)
+						return
+					else:
+						print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
 
 		if Global.Current_Event == "window":
 			if Input.is_action_just_released("dev_open_window"):
 				if Global.Is_Window_Being_Opened == false && Global.Is_Window_Open == false:
-					SignalManager.open_window.emit()
+					SignalManager.open_window.emit(Global.Current_Active_Block)
 
 			if Input.is_action_just_released("space_bar"):
-				if Global.Is_Window_Being_Opened == true or Global.Is_Window_Open == true:
-					SignalManager.close_window.emit()
+				if Global.Is_Window_Being_Opened == true && Global.Is_Window_Being_Closed == false or Global.Is_Window_Open == true && Global.Is_Window_Being_Closed == false:
+					SignalManager.close_window.emit(Global.Current_Active_Block)
 
 			if Input.is_action_just_released("mouse_button_2"):
 				SignalManager.deactivate_block.emit(Global.Current_Active_Block) # EventManager.gd

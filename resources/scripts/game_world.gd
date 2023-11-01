@@ -11,12 +11,29 @@ var SPACE_STATE: PhysicsDirectSpaceState3D
 
 var Has_Not_Looped_Yet: bool = true
 
+func mouse_position(SPACE, COLLISION_MASK, CAMERA, AREA_BOOL, BODY_BOOL):
+	if SPACE == null:
+		return
+
+	var LENGTH = 50
+	var RAY_FROM = CAMERA.project_ray_origin(MOUSE_POSITION_2D)
+	var RAY_TO = RAY_FROM + CAMERA.project_ray_normal(MOUSE_POSITION_2D) * LENGTH
+	var QUERY = PhysicsRayQueryParameters3D.create(RAY_FROM, RAY_TO)
+	QUERY.set_collision_mask(COLLISION_MASK)
+	QUERY.exclude = [CAMERA]
+	QUERY.collide_with_areas = AREA_BOOL
+	QUERY.collide_with_bodies = BODY_BOOL
+	var RESULT = SPACE.intersect_ray(QUERY)
+
+	if RESULT.size() > 0:
+		return RESULT
+
 func block_raycast():
 	if Global.Is_Hovering_Over_Right_Movement_Panel == false and Global.Is_Hovering_Over_Bottom_Movement_Panel == false and Global.Is_Hovering_Over_Left_Movement_Panel == false:
 		var COLLISION_MASK: int = 2
 		var AREA_BOOL: bool = false
 		var BODY_BOOL: bool = true
-		var RESULT = Global.mouse_position(MOUSE_POSITION_2D, SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
+		var RESULT = mouse_position(SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
 
 		if RESULT == null:
 			Global.Hovering_Block = null
@@ -33,7 +50,7 @@ func flashlight_raycast():
 	var COLLISION_MASK: int = 3
 	var AREA_BOOL: bool = false
 	var BODY_BOOL: bool = true
-	var RESULT = Global.mouse_position(MOUSE_POSITION_2D, SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
+	var RESULT = mouse_position(SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
 
 	if RESULT == null:
 		Global.FLASHLIGHT_RAY_ARRAY = []
@@ -59,21 +76,35 @@ func search_for_starting_room(_node):
 		if child is RoomBlock && child.RoomNumber == 1:
 			SignalManager.activate_block.emit(child)
 			Has_Not_Looped_Yet = false
-		if child is RoomBlock && child.RoomNumber != 1:
-			print_debug("Setting " + str(child.name) + " as not visible")
+		elif child is RoomBlock && child.RoomNumber != 1:
+			#print_debug("Setting " + str(child.name) + " as not visible")
 			child.set_visible(false)
+		else:
+			search_for_starting_room(child)
 
 func enable_door_view(_int):
-	print_debug("Enabling door view of room #" + str(_int))
+	#print_debug("Enabling door view of room #" + str(_int))
 	for child in self.get_children(true):
 		if child is RoomBlock && child.RoomNumber == _int:
 			child.set_visible(true)
+		elif child is RoomBlock && child.RoomNumber != _int:
+			#print_debug(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not enabling.")
+			pass
+		elif not child is RoomBlock:
+			#print_debug(str(child.name) + " is not a room.")
+			pass
 
 func disable_door_view(_int):
-	print_debug("Disabling door view of room #" + str(_int))
+	#print_debug("Disabling door view of room #" + str(_int))
 	for child in self.get_children(true):
 		if child is RoomBlock && child.RoomNumber == _int:
 			child.set_visible(false)
+		elif child is RoomBlock && child.RoomNumber != _int:
+			#print_debug(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not disabling.")
+			pass
+		elif not child is RoomBlock:
+			#print_debug(str(child.name) + " is not a room.")
+			pass
 
 func tween_to_room(_node):
 	var TweenInstance: Tween = get_tree().create_tween()
@@ -91,6 +122,20 @@ func on_move_to_room(_int):
 			SignalManager.activate_block.emit(child)
 			tween_to_room(child)
 			child.set_visible(true)
+			return
+		else:
+			#print_debug("Room number does not match " + str(_int))
+			pass
+
+func on_find_monster_room(_int):
+	for child in self.get_children(true):
+		if child is RoomBlock && child.RoomNumber == _int:
+			Global.Monster_Current_Room = child
+			print_debug("Monster is in the " + str(child.name))
+			return
+		elif child is RoomBlock && child.RoomNumber != _int:
+			#print_debug(str(child) + " is a room but not with the number " + str(_int))
+			pass
 
 func _ready():
 	SignalManager.game_world_loaded.emit()
@@ -98,8 +143,8 @@ func _ready():
 	SignalManager.enable_other_side_of_door.connect(enable_door_view)
 	SignalManager.disable_other_side_of_door.connect(disable_door_view)
 	SignalManager.move_to_room.connect(on_move_to_room)
+	SignalManager.find_monster_room.connect(on_find_monster_room)
 
-	Global.GameState = "game_active"
 	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
 	Global.Loaded_Game_World = self
@@ -110,8 +155,8 @@ func _on_tree_entered():
 
 func _on_tree_exited():
 	#print_debug(str(self.name) + " has exited the tree.")
-	Global.GameState = ""
 	Global.Is_Game_Active = false
+	pass
 
 func _process(_delta):
 	# Flashlight Raycasting
@@ -128,3 +173,4 @@ func _process(_delta):
 func _on_child_order_changed():
 	if Has_Not_Looped_Yet == true:
 		search_for_starting_room(self)
+		return

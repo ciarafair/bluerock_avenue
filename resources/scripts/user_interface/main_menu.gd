@@ -10,9 +10,5 @@ func _on_quit_button_up():
 	get_tree().quit()
 
 func _on_tree_entered():
-	Global.GameState = "main_menu"
 	SignalManager.main_menu_loaded.emit()
 	SignalManager.play_track.emit()
-
-func _on_tree_exiting():
-	Global.GameState = ""

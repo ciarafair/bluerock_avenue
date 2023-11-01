@@ -34,9 +34,13 @@ func _on_current_event_toggled(_button_pressed):
 func _on_current_time_toggled(_button_pressed):
 	Global.Is_Current_Time_Info_Visible = !Global.Is_Current_Time_Info_Visible
 
-@onready var CurrentRoomButton: Button = %CurrentRoom
+@onready var PlayerCurrentRoomButton: Button = %CurrentRoom
 func _on_current_room_toggled(_button_pressed):
-	Global.Is_Current_Room_Info_Visible = !Global.Is_Current_Room_Info_Visible
+	Global.Is_Player_Current_Room_Info_Visible = !Global.Is_Player_Current_Room_Info_Visible
+
+@onready var MonsterInfoButton: Button = %MonsterInfo
+func _on_monster_info_toggled(_button_pressed):
+	Global.Is_Monster_Info_Visible = !Global.Is_Monster_Info_Visible
 
 # Normal Options
 ## Volume sliders
@@ -156,11 +160,17 @@ func visibility_check():
 	if Global.Is_Current_Time_Info_Visible == false:
 		CurrentTimeButton.set_pressed_no_signal(false)
 
-	if Global.Is_Current_Room_Info_Visible == true:
-		CurrentRoomButton.set_pressed_no_signal(true)
+	if Global.Is_Player_Current_Room_Info_Visible == true:
+		PlayerCurrentRoomButton.set_pressed_no_signal(true)
 
-	if Global.Is_Current_Room_Info_Visible == false:
-		CurrentRoomButton.set_pressed_no_signal(false)
+	if Global.Is_Player_Current_Room_Info_Visible == false:
+		PlayerCurrentRoomButton.set_pressed_no_signal(false)
+
+	if Global.Is_Monster_Info_Visible == true:
+		MonsterInfoButton.set_pressed_no_signal(true)
+
+	if Global.Is_Monster_Info_Visible == false:
+		MonsterInfoButton.set_pressed_no_signal(false)
 
 func _process(_delta):
 	manage_music_volume_sliders()

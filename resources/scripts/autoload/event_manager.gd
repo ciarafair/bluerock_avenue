@@ -1,5 +1,8 @@
 extends Node
 
+const random_tick_interval: float = 1
+const clock_tick_interval: float = 15
+
 var IS_FLASHLIGHT_TOGGLEABLE = true
 var ClockTimer: Timer = Timer.new()
 var RandomTimer: Timer = Timer.new()
@@ -28,20 +31,17 @@ func manage_time():
 		meridiem = "am"
 
 	if minute_int != 0:
-		Global.time_string = str(hour_int) + ":" + str(minute_int) + meridiem
+		Global.Time_String = str(hour_int) + ":" + str(minute_int) + meridiem
+		Global.Time_Hour = hour_int
+		Global.Time_Minute = minute_int
 	else:
-		Global.time_string = str(hour_int) + ":00" + meridiem
+		Global.Time_String = str(hour_int) + ":00" + meridiem
+		Global.Time_Hour = hour_int
+		Global.Time_Minute = minute_int
 
 func on_clock_timeout():
 	minute_int = minute_int + 10
-	manage_time()
 	#print_debug("Clock timer timed out.")
-
-func manage_random_events():
-	if hour_int >= 12 && hour_int != 11:
-		if Is_Random_Timer_Running == false:
-			RandomTimer.start(2.5)
-			Is_Random_Timer_Running = true
 
 func get_random_number_from_pool():
 	if number_pool.size() == 0:
@@ -65,20 +65,35 @@ func on_random_timeout():
 			return
 	print("No more numbers in the pool.")
 
+func start_random_timer():
+	if Is_Random_Timer_Running == false:
+		RandomTimer.timeout.connect(on_random_timeout)
+		RandomTimer.one_shot = false
+		RandomTimer.start(random_tick_interval)
+		Is_Random_Timer_Running = true
+
+func start_clock_timer():
+	if Is_Clock_Timer_Running == false:
+		ClockTimer.timeout.connect(on_clock_timeout)
+		ClockTimer.one_shot = false
+		ClockTimer.start(clock_tick_interval)
+		Is_Clock_Timer_Running = true
+
 func _process(_delta):
-	manage_random_events()
 	if Global.Is_Game_Active == true && get_tree().paused == false:
-		if Is_Clock_Timer_Running == false:
-			manage_time()
-			ClockTimer.start(15)
-			Is_Clock_Timer_Running = true
+		manage_time()
+		start_clock_timer()
+		start_random_timer()
+
+	if Global.Is_Game_Active == false:
+		ClockTimer.stop()
+		RandomTimer.stop()
+
+	if get_tree().paused == true:
+		ClockTimer.stop()
+		RandomTimer.stop()
 
 func _ready():
 	target_number = randi_range(1, 10)
 	self.add_child(ClockTimer)
 	self.add_child(RandomTimer)
-	ClockTimer.timeout.connect(on_clock_timeout)
-	RandomTimer.timeout.connect(on_random_timeout)
-	ClockTimer.one_shot = false
-	RandomTimer.one_shot = false
-

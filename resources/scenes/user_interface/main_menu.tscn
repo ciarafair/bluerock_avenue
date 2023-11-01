@@ -109,7 +109,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
-[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/StartGame" to="." method="_on_start_game_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/Quit" to="." method="_on_quit_button_up"]

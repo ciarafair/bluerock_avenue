@@ -6,8 +6,9 @@ signal random_tick
 signal game_over
 
 ## Monster
-signal find_monster_position
+signal set_monster_position
 signal reset_monster
+signal find_monster_room
 
 # Game World
 signal move_to_room
