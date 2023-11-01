@@ -48,6 +48,9 @@ func on_open_door():
 		if Is_Door_Open == false:
 			if self.DoorHandle != null:
 				DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
+				SignalManager.door_open_sound.emit(self)
+				pass
+
 			elif self.DoorHandle == null:
 				push_warning("Door handle returned null. Could not animate.")
 				pass
@@ -55,20 +58,26 @@ func on_open_door():
 			if self.PivotPoint != null:
 				DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current()
 				return
+
 			elif self.PivotPoint == null:
 				push_warning("Pivot point returned null. Could not animate.")
 				return
+
+func play_close_sound_effect():
+	SignalManager.door_close_sound.emit(self)
 
 func on_close_door():
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
 			DoorTweenInstance.kill()
 
-		DoorTweenInstance = get_tree().create_tween().chain()
+		DoorTweenInstance = get_tree().create_tween()
 		DoorTweenInstance.bind_node(self)
 
 		if self.PivotPoint != null:
-			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current()
+			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(play_close_sound_effect)
+			pass
+
 		elif self.PivotPoint == null:
 			push_warning("Pivot point returned null. Could not animate.")
 			pass
@@ -76,6 +85,7 @@ func on_close_door():
 		if self.DoorHandle != null:
 			DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, 0.5).from_current()
 			return
+
 		elif self.DoorHandle == null:
 			push_warning("Door handle returned null. Could not animate.")
 			return

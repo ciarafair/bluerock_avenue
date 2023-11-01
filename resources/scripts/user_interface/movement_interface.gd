@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-@onready var DOWN_ARROW_SPRITE = load("res://Resources/sprites/down_arrow.png")
-@onready var LEFT_ARROW_SPRITE = load("res://Resources/sprites/left_arrow.png")
-@onready var RIGHT_ARROW_SPRITE = load("res://Resources/sprites/right_arrow.png")
+@onready var DOWN_ARROW_SPRITE = preload("res://Resources/sprites/down_arrow.png")
+@onready var LEFT_ARROW_SPRITE = preload("res://Resources/sprites/left_arrow.png")
+@onready var RIGHT_ARROW_SPRITE = preload("res://Resources/sprites/right_arrow.png")
 
 
 func _on_left_mouse_entered():

@@ -43,6 +43,7 @@ func _on_monster_info_toggled(_button_pressed):
 ## Volume sliders
 @onready var MasterVolumeSlider: HSlider = %MasterVolumeSlider
 @onready var MusicVolumeSlider: HSlider = %MusicVolumeSlider
+@onready var SFXVolumeSlider: HSlider = %SFXVolumeSlider
 
 func _on_master_volume_slider_drag_started():
 	pass
@@ -66,12 +67,26 @@ func _on_music_volume_slider_drag_ended(value_changed):
 		#print_debug("Music volume changed to " + str(Global.Music_Volume_Setting))
 		pass
 
-func manage_music_volume_sliders():
+func _on_sfx_volume_slider_drag_started():
+	pass
+
+func _on_sfx_volume_slider_value_changed(value):
+	Global.Settings_Data.SFX_Volume_Setting = value
+
+func _on_sfx_volume_slider_drag_ended(value_changed):
+	if value_changed == true:
+		#print_debug("Music volume changed to " + str(Global.Music_Volume_Setting))
+		pass
+
+func manage_volume_sliders():
 	if Global.Settings_Data.Master_Volume_Setting != MasterVolumeSlider.value:
 		MasterVolumeSlider.set_value_no_signal(Global.Settings_Data.Master_Volume_Setting)
 
 	if Global.Settings_Data.Music_Volume_Setting != MusicVolumeSlider.value:
 		MusicVolumeSlider.set_value_no_signal(Global.Settings_Data.Music_Volume_Setting)
+
+	if Global.Settings_Data.SFX_Volume_Setting != SFXVolumeSlider.value:
+		SFXVolumeSlider.set_value_no_signal(Global.Settings_Data.SFX_Volume_Setting)
 
 ## Resolution
 @onready var ResolutionButton: OptionButton = %ResolutionButton
@@ -176,7 +191,7 @@ func _on_save_changes_button_up():
 	SignalManager.save_settings.emit()
 
 func _process(_delta):
-	manage_music_volume_sliders()
+	manage_volume_sliders()
 	manage_resolution_list()
 	visibility_check()
 

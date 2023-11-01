@@ -1,8 +1,11 @@
 extends Node
 
-var Screen_Centre: Vector2
 var Settings_Data: SettingsData = SettingsData.new()
 
+@onready var EyeSprite = preload("res://resources/sprites/eye.png")
+@onready var DownArrowSprite = preload("res://Resources/sprites/down_arrow.png")
+@onready var LeftArrowSprite = preload("res://Resources/sprites/left_arrow.png")
+@onready var RightArrowSprite = preload("res://Resources/sprites/right_arrow.png")
 
 # Sound
 var Current_Track: String = ""
@@ -51,7 +54,8 @@ var Loaded_Player: Node3D = null
 var Loaded_Game_World: Node3D = null
 
 # Raycasting
-var MousePosition2D: Vector2 = Vector2(0,0)
+var MousePosition2D: Vector2
+var CentreOfScreen: Vector2
 var SpaceState: PhysicsDirectSpaceState3D
 var RAYCAST_COLLISION_OBJECT
 var Hovering_Block: Block
@@ -86,7 +90,7 @@ func verify_save_directory(path: String):
 			"sound_settings": {
 				"Master_Volume_Setting": 0,
 				"Music_Volume_Setting": -30,
-				"SFX_Volume_Setting": 0
+				"SFX_Volume_Setting": -30
 			}
 		}
 
@@ -176,6 +180,19 @@ func load_data(path: String):
 	else:
 		push_error("Cannot open non-existent file at %s!" % [path])
 		return
+
+func manage_mouse_cursor():
+	if MousePosition2D.x > -get_viewport().get_visible_rect().size.x: MousePosition2D.x = get_viewport().get_visible_rect().size.x
+	if MousePosition2D.y > -get_viewport().get_visible_rect().size.y: MousePosition2D.y = get_viewport().get_visible_rect().size.y
+
+	if Is_Hovering_Over_Bottom_Movement_Panel == false && Is_Hovering_Over_Left_Movement_Panel == false && Is_Hovering_Over_Right_Movement_Panel == false:
+		if Hovering_Block != null:
+			Input.set_custom_mouse_cursor(EyeSprite)
+		else:
+			Input.set_custom_mouse_cursor(null)
+
+func _process(_delta):
+	manage_mouse_cursor()
 
 func _ready():
 	verify_save_directory(Settings_File_Path)

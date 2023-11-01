@@ -1,5 +1,7 @@
 extends Node
 
+
+# Global
 signal load_settings
 signal save_settings
 
@@ -26,9 +28,11 @@ signal close_door
 signal open_window
 signal close_window
 
-# MainMenu & AudioManager
+# AudioManager
 signal play_track
 signal stop_track
+signal door_open_sound
+signal door_close_sound
 
 # Block
 signal activate_hovering

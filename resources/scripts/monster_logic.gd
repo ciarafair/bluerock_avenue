@@ -67,7 +67,6 @@ func manage_monster_position():
 		#print_debug("Finding monster position #" + str(MonsterPositionNumber))
 		self.set_visible(true)
 		set_monster_position(Global.Monster_Current_Room, 3)
-		MonsterPositionNumber += 1
 		manage_window_timer()
 		WindowTimer.one_shot = true
 		WindowTimer.start(2)

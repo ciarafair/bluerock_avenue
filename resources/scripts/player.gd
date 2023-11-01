@@ -8,13 +8,15 @@ var TweenInstance: Tween
 
 var camera_target_rotation = Vector2()
 var camera_current_rotation = Vector2()
-var minPitch = -360 * 5
-var maxPitch = 360 * 5
+var minPitch = -360 * 2
+var maxPitch = 360 * 2
 
 func on_mouse_movement(_position):
 	var sensitivity = Vector2(MouseSensitivity, MouseSensitivity)
-	camera_target_rotation.y += -_position.x * sensitivity.x
-	camera_target_rotation.x += -_position.y * sensitivity.y
+	var mouse_delta = Global.MousePosition2D - Global.CentreOfScreen
+
+	camera_target_rotation.y += (-mouse_delta.x + -_position.x) * sensitivity.y
+	camera_target_rotation.x += (-mouse_delta.y + -_position.y) * sensitivity.x
 
 	camera_target_rotation.x = clamp(camera_target_rotation.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
 	camera_target_rotation.y = clamp(camera_target_rotation.y, deg_to_rad(minPitch), deg_to_rad(maxPitch))

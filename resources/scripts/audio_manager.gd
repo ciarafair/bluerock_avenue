@@ -1,6 +1,5 @@
 extends Node
 
-const MainMenuTrackOnePath: String = "res://resources/audio/opening_screen.mp3"
 const Audio_Bus_Layout: String = "res://default_bus_layout.tres"
 
 func load_mp3(path):
@@ -11,7 +10,15 @@ func load_mp3(path):
 
 var AudioPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
 var AudioBusLayoutOne: AudioBusLayout = preload(Audio_Bus_Layout)
-var Opening_Track_One_Instance: AudioStreamMP3 = load_mp3(MainMenuTrackOnePath)
+
+const Opening_Track_One_Path: String = "res://resources/audio/opening_screen.mp3"
+var Opening_Track_One_Instance: AudioStreamMP3 = load_mp3(Opening_Track_One_Path)
+
+const Door_Opening_SFX_Path: String = "res://resources/audio/open_door.mp3"
+var Door_Opening_SFX_Instance: AudioStreamMP3 = load_mp3(Door_Opening_SFX_Path)
+const Door_Closing_SFX_Path: String = "res://resources/audio/close_door.mp3"
+var Door_Closing_SFX_Instance: AudioStreamMP3 = load_mp3(Door_Closing_SFX_Path)
+
 
 @onready var MUSIC_BUS_ID = AudioServer.get_bus_index("Music")
 
@@ -60,6 +67,20 @@ func on_start_track():
 		on_start_track()
 		pass
 
+func on_door_open(_node):
+	var AudioPlayer3D: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
+	AudioPlayer3D.set_stream(Door_Opening_SFX_Instance)
+	_node.add_child(AudioPlayer3D)
+	AudioPlayer3D.set_bus("SFX")
+	AudioPlayer3D.play()
+
+func on_door_close(_node):
+	var AudioPlayer3D: AudioStreamPlayer3D = AudioStreamPlayer3D.new()
+	AudioPlayer3D.set_stream(Door_Closing_SFX_Instance)
+	AudioPlayer3D.set_bus("SFX")
+	_node.add_child(AudioPlayer3D)
+	AudioPlayer3D.play(0.88)
+
 func setup_audio_server():
 	AudioServer.set_bus_layout(AudioBusLayoutOne)
 	SignalManager.play_track.connect(on_start_track)
@@ -78,5 +99,7 @@ func _process(_delta):
 		setup_audio_server()
 
 func _ready():
+	SignalManager.door_open_sound.connect(on_door_open)
+	SignalManager.door_close_sound.connect(on_door_close)
 	self.add_child(AudioPlayer)
 	setup_audio_server()

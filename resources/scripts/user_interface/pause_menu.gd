@@ -16,10 +16,13 @@ func _on_quit_button_up():
 func check_pause_menu():
 	if Global.Is_Pause_Menu_Open == true:
 		get_tree().paused = true
+		Input.set_custom_mouse_cursor(null)
+		Input.set_mouse_mode(0)
 		self.set_visible(true)
 
 	if Global.Is_Pause_Menu_Open == false:
 		get_tree().paused = false
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		self.set_visible(false)
 
 func _process(_delta):

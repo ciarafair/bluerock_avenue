@@ -23,7 +23,7 @@ func on_tween_finished():
 	if Global.Is_Window_Being_Opened == true:
 		Global.Is_Window_Being_Opened = false
 		Global.Is_Window_Open = true
-		push_warning("Window opened. Game over.")
+		#push_warning("Window opened. Game over.")
 		SignalManager.game_over.emit()
 		get_tree().paused = true
 		return
@@ -31,7 +31,7 @@ func on_tween_finished():
 	elif Global.Is_Window_Being_Closed == true:
 		Global.Is_Window_Being_Closed = false
 		Global.Is_Window_Open = false
-		print_debug("Window was closed in time. Continuing game.")
+		#print_debug("Window was closed in time. Continuing game.")
 		SignalManager.reset_monster.emit()
 		return
 

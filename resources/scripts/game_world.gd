@@ -137,6 +137,7 @@ func on_find_monster_room(_int):
 			pass
 
 func _ready():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	SignalManager.game_world_loaded.emit()
 	SignalManager.stop_track.emit()
 	SignalManager.enable_other_side_of_door.connect(enable_door_view)
@@ -147,8 +148,6 @@ func _ready():
 	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
 	Global.Loaded_Game_World = self
-
-	Input.warp_mouse(Global.Screen_Centre)
 
 func _on_tree_entered():
 	#print_debug(str(self.name) + " has entered the tree.")
@@ -161,6 +160,8 @@ func _on_tree_exited():
 
 func _process(_delta):
 	Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
+	Global.CentreOfScreen = get_viewport().get_visible_rect().size / 2
+	Global.MousePosition2D = get_viewport().get_mouse_position()
 
 	# Flashlight Raycasting
 	if Global.Loaded_Game_World == null:
