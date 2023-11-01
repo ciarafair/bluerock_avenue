@@ -1,6 +1,7 @@
 extends Node
 
 const MainMenuTrackOnePath: String = "res://resources/audio/opening_screen.mp3"
+const Audio_Bus_Layout: String = "res://default_bus_layout.tres"
 
 func load_mp3(path):
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -9,7 +10,7 @@ func load_mp3(path):
 	return sound
 
 var AudioPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
-var AudioBusLayoutOne: AudioBusLayout = preload(Global.Audio_Bus_Layout)
+var AudioBusLayoutOne: AudioBusLayout = preload(Audio_Bus_Layout)
 var Opening_Track_One_Instance: AudioStreamMP3 = load_mp3(MainMenuTrackOnePath)
 
 @onready var MUSIC_BUS_ID = AudioServer.get_bus_index("Music")
@@ -17,12 +18,14 @@ var Opening_Track_One_Instance: AudioStreamMP3 = load_mp3(MainMenuTrackOnePath)
 func on_music_player_finished():
 	if Global.Is_Music_Playing == true:
 		Global.Is_Music_Playing = false
-		AudioPlayer.queue_free()
+		AudioPlayer.stop()
+		return
 
 func get_current_track():
 	if Global.Is_Game_Active == false:
 		Global.Current_Track = "Opening Track One"
 		AudioPlayer.set_stream(Opening_Track_One_Instance)
+		return
 
 func on_stop_track():
 	if AudioPlayer != null and Global.Is_Music_Playing == true:
@@ -30,7 +33,6 @@ func on_stop_track():
 		Global.Is_Music_Playing = false
 		Global.Current_Track = ""
 		AudioPlayer.stop()
-		AudioPlayer.queue_free()
 		return
 
 	if AudioPlayer == null:
@@ -55,21 +57,28 @@ func on_start_track():
 
 	if AudioPlayer == null:
 		#print_debug("Could not find music player to use. Trying again.")
-		AudioPlayer = AudioStreamPlayer.new()
-		self.add_child(AudioPlayer)
 		on_start_track()
+		pass
+
+func setup_audio_server():
+	AudioServer.set_bus_layout(AudioBusLayoutOne)
+
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -30)
+	Global.Music_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
+	Global.SFX_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX"))
+
+	SignalManager.play_track.connect(on_start_track)
+	SignalManager.stop_track.connect(on_stop_track)
+	return
 
 func _process(_delta):
 	if AudioPlayer != null:
 		Global.Master_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
 		Global.Music_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
+		Global.SFX_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX"))
+	if AudioPlayer == null:
+		setup_audio_server()
 
 func _ready():
-	AudioServer.set_bus_layout(AudioBusLayoutOne)
-
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -30)
-	Global.Music_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
-
 	self.add_child(AudioPlayer)
-	SignalManager.play_track.connect(on_start_track)
-	SignalManager.stop_track.connect(on_stop_track)
+	setup_audio_server()

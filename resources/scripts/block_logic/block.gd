@@ -190,6 +190,11 @@ func on_activate_block(_node):
 	move_to_camera_position(_node, true, true)
 	Global.Current_Active_Block = _node
 
+	if self.PlayerRotation == true:
+		Global.Is_Able_To_Turn = true
+	else:
+		Global.Is_Able_To_Turn = false
+
 	if !SignalManager.deactivate_block.is_connected(on_deactivate_block):
 		SignalManager.deactivate_block.connect(on_deactivate_block)
 

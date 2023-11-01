@@ -12,7 +12,10 @@ func on_wait_timer_timeout():
 	Global.Is_Timed_Out = false
 	pass
 
-func _unhandled_input(_event: InputEvent):
+func _unhandled_input(event: InputEvent):
+	if event is InputEventMouseMotion and Global.Is_Window_Focused == true:
+		SignalManager.mouse_movement.emit(event.relative)
+
 	if Global.Is_Game_Active == true:
 		if Input.is_action_just_released("flashlight"):
 			if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:

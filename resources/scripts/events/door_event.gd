@@ -1,4 +1,5 @@
 extends LocationBlock
+class_name DoorEvent
 
 @export var Is_Door_Open: bool
 @export var ConnectedRoomOne: int

@@ -4,6 +4,7 @@ func _on_start_game_button_up():
 	SignalManager.load_game_world.emit()
 
 func _on_options_button_up():
+	SignalManager.load_settings.emit()
 	SignalManager.load_options_menu.emit()
 
 func _on_quit_button_up():

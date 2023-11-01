@@ -11,9 +11,6 @@ var Is_Dragging: bool = false
 func _on_fps_counter_toggled(_button_pressed):
 	Global.Is_Fps_Counter_Visible = !Global.Is_Fps_Counter_Visible
 
-func _on_main_menu_button_up():
-	SignalManager.exit_options_menu.emit()
-
 @onready var PlayerInfoButton: Button = %PlayerInfo
 func _on_player_info_toggled(_button_pressed):
 	Global.Is_Player_Info_Visible = !Global.Is_Player_Info_Visible
@@ -171,6 +168,12 @@ func visibility_check():
 
 	if Global.Is_Monster_Info_Visible == false:
 		MonsterInfoButton.set_pressed_no_signal(false)
+
+func _on_main_menu_button_up():
+	SignalManager.exit_options_menu.emit()
+
+func _on_save_changes_button_up():
+	SignalManager.save_settings.emit()
 
 func _process(_delta):
 	manage_music_volume_sliders()

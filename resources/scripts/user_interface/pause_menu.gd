@@ -6,6 +6,7 @@ func _on_resume_game_button_up():
 
 func _on_options_button_up():
 	print_debug("Options button was pressed.")
+	SignalManager.load_settings.emit()
 	SignalManager.load_options_menu.emit()
 
 func _on_quit_button_up():

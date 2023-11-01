@@ -47,6 +47,10 @@ func add_game_over_screen():
 		Game_Over_Screen_Instance = preload(GameOverScreenPath).instantiate()
 		add_game_over_screen()
 	else:
+		for child in User_Interface_Instance.get_children(true):
+			if child == Game_Over_Screen_Instance:
+				return
+
 		User_Interface_Instance.add_child(Game_Over_Screen_Instance)
 
 func add_options_menu():
@@ -63,6 +67,10 @@ func add_movement_interface():
 		Movement_Interface_Instance = preload(MovementInterfacePath).instantiate()
 		add_movement_interface()
 	else:
+		for child in User_Interface_Instance.get_children(true):
+			if child == Movement_Interface_Instance:
+				return
+
 		User_Interface_Instance.add_child(Movement_Interface_Instance)
 
 func add_player():
@@ -98,7 +106,8 @@ func on_load_game_world():
 	if Game_World_Instance != null:
 		self.add_child(Game_World_Instance)
 		add_player()
-		add_monster()
+		if Global.Is_Monster_Active == true:
+			add_monster()
 		add_pause_menu()
 		add_movement_interface()
 		add_game_over_screen()
@@ -187,6 +196,9 @@ func on_set_monster_position(_node):
 	#print_debug("Monster's rotation: " + str(Monster_Instance.rotation) + " should equal the set rotation of " + str(_node.rotation))
 
 func _process(_delta):
+	Global.Screen_Centre = get_viewport().get_visible_rect().size/2
+	Global.MousePosition2D = get_viewport().get_mouse_position()
+
 	if User_Interface_Instance == null:
 		User_Interface_Instance.add_child(Movement_Interface_Instance)
 		return

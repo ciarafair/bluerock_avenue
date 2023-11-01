@@ -60,7 +60,7 @@
 		"source.fixAll": true,
 		"source.organizeImports": true
 	},
-	"explorer.excludeGitIgnore": true,
+	"explorer.excludeGitIgnore": false,
 	"[rust]": {
 		"editor.semanticHighlighting.enabled": false
 	}

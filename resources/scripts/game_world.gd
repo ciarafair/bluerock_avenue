@@ -3,72 +3,71 @@ extends Node3D
 const TweenDuration: float = 0.5
 
 # Flashlight Raycasting
-var MOUSE_POSITION_2D: Vector2 = Vector2(0,0)
 var BLOCK_RAY_ARRAY: Array = []
 var FLASHLIGHT_RAY_ARRAY: Array = []
 var BLOCK_RESULT_VALUE
-var SPACE_STATE: PhysicsDirectSpaceState3D
+var SpaceState: PhysicsDirectSpaceState3D
 
 var Has_Not_Looped_Yet: bool = true
 
-func mouse_position(SPACE, COLLISION_MASK, CAMERA, AREA_BOOL, BODY_BOOL):
-	if SPACE == null:
+func mouse_position(_mask, _camera, _area_bool, _body_bool):
+	if Global.SpaceState == null:
 		return
 
 	var LENGTH = 50
-	var RAY_FROM = CAMERA.project_ray_origin(MOUSE_POSITION_2D)
-	var RAY_TO = RAY_FROM + CAMERA.project_ray_normal(MOUSE_POSITION_2D) * LENGTH
+	var RAY_FROM = _camera.project_ray_origin(Global.MousePosition2D)
+	var RAY_TO = RAY_FROM + _camera.project_ray_normal(Global.MousePosition2D) * LENGTH
 	var QUERY = PhysicsRayQueryParameters3D.create(RAY_FROM, RAY_TO)
-	QUERY.set_collision_mask(COLLISION_MASK)
-	QUERY.exclude = [CAMERA]
-	QUERY.collide_with_areas = AREA_BOOL
-	QUERY.collide_with_bodies = BODY_BOOL
-	var RESULT = SPACE.intersect_ray(QUERY)
+	QUERY.set_collision_mask(_mask)
+	QUERY.exclude = [_camera]
+	QUERY.collide_with_areas = _area_bool
+	QUERY.collide_with_bodies = _body_bool
+	var RESULT = Global.SpaceState.intersect_ray(QUERY)
 
 	if RESULT.size() > 0:
 		return RESULT
 
 func block_raycast():
 	if Global.Is_Hovering_Over_Right_Movement_Panel == false and Global.Is_Hovering_Over_Bottom_Movement_Panel == false and Global.Is_Hovering_Over_Left_Movement_Panel == false:
-		var COLLISION_MASK: int = 2
-		var AREA_BOOL: bool = false
-		var BODY_BOOL: bool = true
-		var RESULT = mouse_position(SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
+		var CollisionMask: int = 2
+		var AreaBool: bool = false
+		var BodyBool: bool = true
+		var BlockResult = mouse_position(CollisionMask, Global.Loaded_Player.Camera, AreaBool, BodyBool)
 
-		if RESULT == null:
+		if BlockResult == null:
 			Global.Hovering_Block = null
 			return
 
-		if RESULT.size() > 0:
+		if BlockResult.size() > 0:
 			Global.Is_Clickable = true
-			Global.Hovering_Block = RESULT.values()[3]
+			Global.Hovering_Block = BlockResult.values()[3]
 
-		if RESULT.size() <= 0:
+		if BlockResult.size() <= 0:
 			Global.Hovering_Block = null
 
 func flashlight_raycast():
-	var COLLISION_MASK: int = 3
-	var AREA_BOOL: bool = false
-	var BODY_BOOL: bool = true
-	var RESULT = mouse_position(SPACE_STATE, COLLISION_MASK, Global.Loaded_Player.CAMERA, AREA_BOOL, BODY_BOOL)
+	var CollisionMask: int = 3
+	var AreaBool: bool = false
+	var BodyBool: bool = true
+	var FlashlightResult = mouse_position(CollisionMask, Global.Loaded_Player.Camera, AreaBool, BodyBool)
 
-	if RESULT == null:
+	if FlashlightResult == null:
 		Global.FLASHLIGHT_RAY_ARRAY = []
 		return
 
-	if RESULT.size() > 0:
+	if FlashlightResult.size() > 0:
 		#print_debug(RESULT.values())
-		Global.FLASHLIGHT_RAY_ARRAY = RESULT.values()
+		Global.FLASHLIGHT_RAY_ARRAY = FlashlightResult.values()
 
 func manage_flashlight_raycast():
 	if Global.Is_Flashlight_On == true:
-		Global.Loaded_Player.FLASHLIGHT.visible = true
+		Global.Loaded_Player.Flashlight.visible = true
 		flashlight_raycast()
 		if Global.FLASHLIGHT_RAY_ARRAY != []:
-			Global.Loaded_Player.FLASHLIGHT.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
+			Global.Loaded_Player.Flashlight.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
 		return
 	else:
-		Global.Loaded_Player.FLASHLIGHT.visible = false
+		Global.Loaded_Player.Flashlight.visible = false
 		return
 
 func search_for_starting_room(_node):
@@ -149,6 +148,8 @@ func _ready():
 	Global.Is_Game_Active = true
 	Global.Loaded_Game_World = self
 
+	Input.warp_mouse(Global.Screen_Centre)
+
 func _on_tree_entered():
 	#print_debug(str(self.name) + " has entered the tree.")
 	pass
@@ -159,10 +160,9 @@ func _on_tree_exited():
 	pass
 
 func _process(_delta):
-	# Flashlight Raycasting
-	SPACE_STATE = Global.Loaded_Player.get_world_3d().direct_space_state
-	MOUSE_POSITION_2D = get_viewport().get_mouse_position()
+	Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
 
+	# Flashlight Raycasting
 	if Global.Loaded_Game_World == null:
 		Global.Loaded_Game_World = self
 

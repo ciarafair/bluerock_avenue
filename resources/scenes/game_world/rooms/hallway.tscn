@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_p1ddt"]
 [ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_4hetm"]
 [ext_resource type="Script" path="res://resources/scripts/events/door_event.gd" id="3_a8nxe"]
-[ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="4_lxvk3"]
-[ext_resource type="Material" uid="uid://so47yjkt0171" path="res://resources/materials/hallway_wall.tres" id="8_ymxer"]
+[ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://Resources/materials/carpet.tres" id="4_lxvk3"]
+[ext_resource type="Material" uid="uid://so47yjkt0171" path="res://Resources/materials/hallway_wall.tres" id="8_ymxer"]
 [ext_resource type="Texture2D" uid="uid://cnwklgpygmgig" path="res://addons/kenney_prototype_textures/dark/texture_11.png" id="9_hnkd3"]
 [ext_resource type="Texture2D" uid="uid://byq2lymb56544" path="res://addons/kenney_prototype_textures/light/texture_09.png" id="10_pm482"]
 

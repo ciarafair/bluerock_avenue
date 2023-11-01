@@ -1,5 +1,8 @@
 extends Node
 
+signal load_settings
+signal save_settings
+
 # Event manager
 signal stop_event
 signal random_tick
@@ -51,6 +54,7 @@ signal options_menu_loaded
 signal exit_options_menu
 
 # Player
+signal mouse_movement
 signal turn_180_degrees
 signal turn_negative_90_degrees
 signal turn_positive_90_degrees

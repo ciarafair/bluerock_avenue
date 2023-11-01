@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2up65n2yxpfh"]
+[gd_scene load_steps=7 format=3 uid="uid://bc8i83tnnfque"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/options_menu.gd" id="1_s5q6o"]
 [ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_wpub4"]
@@ -71,18 +71,38 @@ theme_override_constants/separation = 15
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Back" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Row1" type="HBoxContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer"]
+clip_contents = true
 layout_mode = 2
+alignment = 1
+
+[node name="Back" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("3_376yw")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="MainMenu" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Back"]
+[node name="MainMenu" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1/Back"]
 layout_mode = 2
 theme = ExtResource("3_376yw")
 text = "Back To Menu"
+
+[node name="Save" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_376yw")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="SaveChanges" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1/Save"]
+layout_mode = 2
+theme = ExtResource("3_376yw")
+text = "Save Changes"
 
 [node name="Options" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -608,7 +628,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Back/MainMenu" to="." method="_on_main_menu_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1/Back/MainMenu" to="." method="_on_main_menu_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Row1/Save/SaveChanges" to="." method="_on_save_changes_button_up"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/VBoxContainer/Options/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/DevOptions/Row1/FPSCounterCollection/HBoxContainer/FpsCounter" to="." method="_on_fps_counter_toggled"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/DevOptions/Row1/PlayerInfoCollection/HBoxContainer2/PlayerInfo" to="." method="_on_player_info_toggled"]

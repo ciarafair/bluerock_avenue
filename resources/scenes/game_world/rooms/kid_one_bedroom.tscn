@@ -1,16 +1,16 @@
 [gd_scene load_steps=70 format=3 uid="uid://c7j6c2cpcs5cx"]
 
-[ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_2gra0"]
-[ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_uv17h"]
-[ext_resource type="Script" path="res://resources/scripts/events/window_event.gd" id="3_00cgb"]
-[ext_resource type="Script" path="res://resources/scripts/events/door_event.gd" id="4_5cljs"]
-[ext_resource type="Script" path="res://resources/scripts/monster_position.gd" id="4_hwgwo"]
-[ext_resource type="Script" path="res://resources/scripts/block_logic/location_block.gd" id="7_gufp8"]
-[ext_resource type="Script" path="res://resources/scripts/block_logic/prop_block.gd" id="8_l4a8t"]
-[ext_resource type="Texture2D" uid="uid://d1g8jsjfpp6hu" path="res://addons/kenney_prototype_textures/purple/texture_09.png" id="9_sgpwf"]
-[ext_resource type="Texture2D" uid="uid://cemowqvps2yye" path="res://addons/kenney_prototype_textures/light/texture_01.png" id="10_06kvv"]
-[ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="11_h4n5d"]
-[ext_resource type="Material" uid="uid://6vw8ddvy7c88" path="res://resources/materials/child_one_bedroom_wall.tres" id="12_oior4"]
+[ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_eau4i"]
+[ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_nyq4s"]
+[ext_resource type="Script" path="res://resources/scripts/events/window_event.gd" id="3_2re5g"]
+[ext_resource type="Script" path="res://resources/scripts/events/door_event.gd" id="4_ubmk2"]
+[ext_resource type="Script" path="res://resources/scripts/block_logic/location_block.gd" id="5_1kxgb"]
+[ext_resource type="Script" path="res://resources/scripts/block_logic/prop_block.gd" id="6_ta8p5"]
+[ext_resource type="Texture2D" uid="uid://d1g8jsjfpp6hu" path="res://addons/kenney_prototype_textures/purple/texture_09.png" id="7_k5ru0"]
+[ext_resource type="Texture2D" uid="uid://cemowqvps2yye" path="res://addons/kenney_prototype_textures/light/texture_01.png" id="8_t1ua6"]
+[ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="9_joam4"]
+[ext_resource type="Material" uid="uid://6vw8ddvy7c88" path="res://resources/materials/child_one_bedroom_wall.tres" id="10_44224"]
+[ext_resource type="Script" path="res://resources/scripts/monster_position.gd" id="11_to6wh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7uu7b"]
 size = Vector3(2.5, 2.5, 0.5)
@@ -351,7 +351,7 @@ radius = 0.325701
 transparency = 2
 alpha_scissor_threshold = 1.0
 alpha_antialiasing_mode = 0
-albedo_texture = ExtResource("9_sgpwf")
+albedo_texture = ExtResource("7_k5ru0")
 metallic = 0.3
 metallic_specular = 1.0
 roughness = 0.37
@@ -365,7 +365,7 @@ bottom_radius = 0.25
 height = 0.75
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqto1"]
-albedo_texture = ExtResource("10_06kvv")
+albedo_texture = ExtResource("8_t1ua6")
 albedo_texture_force_srgb = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_dha8h"]
@@ -547,24 +547,26 @@ orientation = 0
 size = Vector3(0.025, 0.125, 10)
 
 [node name="KidBedroomOne" type="Node3D"]
-script = ExtResource("1_2gra0")
+script = ExtResource("1_eau4i")
 RoomNumber = 1
 PlayerRotation = true
 
 [node name="CameraPosition" type="Marker3D" parent="."]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 1.75, 2.08165e-12)
-script = ExtResource("2_uv17h")
+script = ExtResource("2_nyq4s")
 
 [node name="Locations" type="Node3D" parent="."]
 
 [node name="Window" type="StaticBody3D" parent="Locations"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.75, 5)
 collision_layer = 3
-script = ExtResource("3_00cgb")
+script = ExtResource("3_2re5g")
+Is_Window_Open = null
+PlayerRotation = null
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Window"]
 transform = Transform3D(-0.963626, -0.00445142, 0.267217, 0, 0.999862, 0.0166561, -0.267254, 0.0160503, -0.963493, 0.803194, -0.234522, -1.8722)
-script = ExtResource("2_uv17h")
+script = ExtResource("2_nyq4s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Window"]
 shape = SubResource("BoxShape3D_7uu7b")
@@ -622,13 +624,13 @@ libraries = {
 [node name="HallwayDoor" type="StaticBody3D" parent="Locations"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.666, -5)
 collision_layer = 3
-script = ExtResource("4_5cljs")
+script = ExtResource("4_ubmk2")
 ConnectedRoomOne = 1
 ConnectedRoomTwo = 2
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/HallwayDoor"]
 transform = Transform3D(0.947006, -0.00078809, -0.321213, 0, 0.999997, -0.00245347, 0.321214, 0.00232345, 0.947003, -0.50654, 0.422541, 1.17401)
-script = ExtResource("2_uv17h")
+script = ExtResource("2_nyq4s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/HallwayDoor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.375, -0.05)
@@ -659,11 +661,11 @@ skeleton = NodePath("")
 [node name="Table" type="StaticBody3D" parent="Locations"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.08165e-12, -4.5)
 collision_layer = 3
-script = ExtResource("7_gufp8")
+script = ExtResource("5_1kxgb")
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Table"]
 transform = Transform3D(0.999909, 0.00596475, -0.0120824, 0, 0.896685, 0.44267, 0.0134745, -0.442629, 0.896603, -0.0770972, 2.37775, 1.31947)
-script = ExtResource("2_uv17h")
+script = ExtResource("2_nyq4s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.275, 0)
@@ -674,11 +676,11 @@ shape = SubResource("BoxShape3D_bnnvs")
 [node name="BlueVase" type="StaticBody3D" parent="Locations/Table/Props"]
 transform = Transform3D(-0.437524, 0, 0.899207, 0, 1, 0, -0.899207, 0, -0.437524, 0.671567, 1.89545, -0.117671)
 collision_layer = 3
-script = ExtResource("8_l4a8t")
+script = ExtResource("6_ta8p5")
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Table/Props/BlueVase"]
 transform = Transform3D(0.918087, 0.125474, -0.375996, 0, 0.948576, 0.31655, 0.396379, -0.29062, 0.870875, -0.661588, 0.65916, 1.10503)
-script = ExtResource("2_uv17h")
+script = ExtResource("2_nyq4s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Table/Props/BlueVase"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.25, 2.08165e-12)
@@ -714,7 +716,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_0f80u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="KidBedroomOneMesh/Floor"]
-material_override = ExtResource("11_h4n5d")
+material_override = ExtResource("9_joam4")
 cast_shadow = 2
 mesh = SubResource("PlaneMesh_0ofur")
 
@@ -727,7 +729,7 @@ shape = SubResource("BoxShape3D_p5ugq")
 
 [node name="DoorWall" type="MeshInstance3D" parent="KidBedroomOneMesh/PositiveZ"]
 transform = Transform3D(1, -6.10377e-17, 3.48787e-16, 3.48787e-16, 0.175, -3.48787e-16, -3.48787e-16, 6.10377e-17, 1, 2.08165e-12, 2, 2.08165e-12)
-material_override = ExtResource("12_oior4")
+material_override = ExtResource("10_44224")
 cast_shadow = 2
 mesh = SubResource("ArrayMesh_htlu3")
 skeleton = NodePath("")
@@ -761,7 +763,7 @@ skeleton = NodePath("")
 
 [node name="Wall" type="MeshInstance3D" parent="KidBedroomOneMesh/NegativeZ"]
 transform = Transform3D(3.90475e-15, -4.37114e-08, 5, -2.5, -4.37114e-08, -1.74393e-15, 1.09278e-07, -1, -2.18557e-07, 0, 0, 0)
-material_override = ExtResource("12_oior4")
+material_override = ExtResource("10_44224")
 cast_shadow = 2
 mesh = SubResource("ArrayMesh_riqqy")
 skeleton = NodePath("")
@@ -779,7 +781,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_uya3b")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="KidBedroomOneMesh/PositiveX"]
-material_override = ExtResource("12_oior4")
+material_override = ExtResource("10_44224")
 cast_shadow = 2
 mesh = SubResource("QuadMesh_84t37")
 
@@ -796,7 +798,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_2d1n2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="KidBedroomOneMesh/NegativeX"]
-material_override = ExtResource("12_oior4")
+material_override = ExtResource("10_44224")
 cast_shadow = 2
 mesh = SubResource("QuadMesh_uf2yl")
 
@@ -809,19 +811,19 @@ skeleton = NodePath("../..")
 
 [node name="KidBedroomOneWindow1" type="Marker3D" parent="MonsterPositions"]
 transform = Transform3D(-0.999393, -0.0132009, 0.0322417, -0.012456, 0.999653, 0.0231963, -0.0325367, 0.0227806, -0.999211, -2.40725, 0, 21.3198)
-script = ExtResource("4_hwgwo")
+script = ExtResource("11_to6wh")
 PositionNumber = 1
 Type = "Window"
 
 [node name="KidBedroomOneWindow2" type="Marker3D" parent="MonsterPositions"]
 transform = Transform3D(-0.957915, -0.0185828, 0.28645, -0.012456, 0.999653, 0.0231963, -0.286781, 0.0186521, -0.957814, -2.23171, 0, 12.3306)
-script = ExtResource("4_hwgwo")
+script = ExtResource("11_to6wh")
 PositionNumber = 2
 Type = "Window"
 
 [node name="KidBedroomOneWindow3" type="Marker3D" parent="MonsterPositions"]
 transform = Transform3D(-0.920878, -0.0205081, 0.389311, -0.012456, 0.999653, 0.0231963, -0.389651, 0.0165117, -0.920814, -0.472383, 0, 5.50069)
-script = ExtResource("4_hwgwo")
+script = ExtResource("11_to6wh")
 PositionNumber = 3
 Type = "Window"
 
