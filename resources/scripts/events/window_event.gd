@@ -23,7 +23,7 @@ func on_tween_finished():
 	if Global.Is_Window_Being_Opened == true:
 		Global.Is_Window_Being_Opened = false
 		Global.Is_Window_Open = true
-		print_debug("Window opened. Game over.")
+		push_warning("Window opened. Game over.")
 		SignalManager.game_over.emit()
 		get_tree().paused = true
 		return
@@ -52,7 +52,7 @@ func on_open_window(_node):
 			WindowTweenInstance.tween_property(self.MoveablePaneInstance, "position:x", self.MoveablePaneInstance.position.x + Window_Open_Amount, 2.5).from_current()
 			return
 		else:
-			print_debug("Moveable pane returned null. Could not animate.")
+			push_error("Moveable pane returned null. Could not animate.")
 			pass
 
 func on_close_window(_node):
@@ -71,7 +71,7 @@ func on_close_window(_node):
 			return
 
 		elif self.MoveablePaneIntance == null:
-			print_debug("Moveable pane returned null. Could not animate.")
+			push_error("Moveable pane returned null. Could not animate.")
 			return
 	else:
 		pass
@@ -127,7 +127,7 @@ func _ready():
 		self.BlockCollider.set_disabled(true)
 
 	if self.BlockCollider == null:
-		print_debug(str(self.name) + " does not have a collider.")
+		printerr(str(self.name) + " does not have a collider.")
 
 func _process(_delta):
 	#print_debug(str(self.BlockParent))

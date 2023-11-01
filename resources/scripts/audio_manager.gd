@@ -36,7 +36,7 @@ func on_stop_track():
 		return
 
 	if AudioPlayer == null:
-		#print_debug("Could not find music player to kill.")
+		printerr("Could not find music player to kill.")
 		return
 
 func on_start_track():
@@ -47,35 +47,33 @@ func on_start_track():
 		get_current_track()
 
 		if AudioPlayer.stream != null:
-			#print_debug("Playing track: " +  str(Global.Current_Track))
+			print_verbose("Playing track: " +  str(Global.Current_Track))
 			AudioPlayer.play()
 			return
 
 		if AudioPlayer.stream == null:
-			#print_debug("Could not get current track.")
+			push_warning("Could not get current track.")
 			return
 
 	if AudioPlayer == null:
-		#print_debug("Could not find music player to use. Trying again.")
+		push_warning("Could not find music player to use. Trying again.")
 		on_start_track()
 		pass
 
 func setup_audio_server():
 	AudioServer.set_bus_layout(AudioBusLayoutOne)
-
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), -30)
-	Global.Music_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
-	Global.SFX_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX"))
-
 	SignalManager.play_track.connect(on_start_track)
 	SignalManager.stop_track.connect(on_stop_track)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Global.Settings_Data.Master_Volume_Setting)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Global.Settings_Data.Music_Volume_Setting)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), Global.Settings_Data.SFX_Volume_Setting)
 	return
 
 func _process(_delta):
 	if AudioPlayer != null:
-		Global.Master_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Master"))
-		Global.Music_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music"))
-		Global.SFX_Volume_Setting = AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX"))
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Global.Settings_Data.Master_Volume_Setting)
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Global.Settings_Data.Music_Volume_Setting)
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), Global.Settings_Data.SFX_Volume_Setting)
 	if AudioPlayer == null:
 		setup_audio_server()
 

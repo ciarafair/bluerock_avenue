@@ -82,4 +82,4 @@ func _ready():
 	Flashlight.set_visible(false)
 
 	if Global.Loaded_Player == null:
-		print(str(self.name) + " was not loaded to Global.")
+		push_error(str(self.name) + " was not loaded to Global.")

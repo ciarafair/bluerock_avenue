@@ -35,39 +35,39 @@ func fps_counter_info():
 	var fps = Engine.get_frames_per_second()
 	fps_counter_label.text = "FPS: " + str(fps)
 
-	if Global.Is_Fps_Counter_Visible == true:
+	if Global.Settings_Data.Is_Fps_Counter_Visible == true:
 		fps_counter_label.set_visible(true)
 		return
 
-	if Global.Is_Fps_Counter_Visible == false:
+	if Global.Settings_Data.Is_Fps_Counter_Visible == false:
 		fps_counter_label.set_visible(false)
 		return
 
 func current_time_info():
 	current_time_label.text = Global.Time_String
-	if Global.Is_Current_Time_Info_Visible == true:
+	if Global.Settings_Data.Is_Current_Time_Info_Visible == true:
 		current_time_label.set_visible(true)
 
-	if Global.Is_Current_Time_Info_Visible == false:
+	if Global.Settings_Data.Is_Current_Time_Info_Visible == false:
 		current_time_label.set_visible(false)
 
 func player_current_room_info():
 	if Global.Current_Room != null:
 		player_current_room_label.text = "Current room: " + str(Global.Current_Room.name)
 
-	if Global.Is_Player_Current_Room_Info_Visible == true:
+	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == true:
 		player_current_room_label.set_visible(true)
 
-	if Global.Is_Player_Current_Room_Info_Visible == false:
+	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == false:
 		player_current_room_label.set_visible(false)
 
 func monster_current_stage_info():
 	monster_current_stage_label.text = "Monster's current stage: " + str(Global.Monster_Current_Stage)
 
-	if Global.Is_Monster_Info_Visible == true:
+	if Global.Settings_Data.Is_Monster_Info_Visible == true:
 		monster_current_stage_label.set_visible(true)
 
-	if Global.Is_Monster_Info_Visible == false:
+	if Global.Settings_Data.Is_Monster_Info_Visible == false:
 		monster_current_stage_label.set_visible(false)
 
 func monster_current_room_info():
@@ -76,10 +76,10 @@ func monster_current_room_info():
 	else:
 		monster_current_room_label.text = "Monster's current room: null"
 
-	if Global.Is_Monster_Info_Visible == true:
+	if Global.Settings_Data.Is_Monster_Info_Visible == true:
 		monster_current_room_label.set_visible(true)
 
-	if Global.Is_Monster_Info_Visible == false:
+	if Global.Settings_Data.Is_Monster_Info_Visible == false:
 		monster_current_room_label.set_visible(false)
 
 func player_info():
@@ -99,7 +99,7 @@ func player_info():
 	var truncatedRotationY = truncateString(originalRotationY)
 	var truncatedRotationZ = truncateString(originalRotationZ)
 
-	if Global.Is_Player_Info_Visible == true:
+	if Global.Settings_Data.Is_Player_Info_Visible == true:
 		position_collection.set_visible(true)
 		rotation_collection.set_visible(true)
 
@@ -112,7 +112,7 @@ func player_info():
 			y_rotation_label.text = truncatedRotationY
 			z_rotation_label.text = truncatedRotationZ
 
-	if Global.Is_Player_Info_Visible == false:
+	if Global.Settings_Data.Is_Player_Info_Visible == false:
 		rotation_collection.set_visible(false)
 		position_collection.set_visible(false)
 	else:
@@ -120,7 +120,7 @@ func player_info():
 		position_collection.set_visible(true)
 
 func hovering_block_info():
-	if Global.Is_Hovering_Block_Visible == true:
+	if Global.Settings_Data.Is_Hovering_Block_Visible == true:
 		hovering_block_label.set_visible(true)
 
 		if Global.Hovering_Block != null:
@@ -129,7 +129,7 @@ func hovering_block_info():
 		if Global.Hovering_Block == null:
 			hovering_block_label.text = "Hovering: Null"
 
-	if Global.Is_Hovering_Block_Visible == false:
+	if Global.Settings_Data.Is_Hovering_Block_Visible == false:
 		hovering_block_label.set_visible(false)
 	else:
 		hovering_block_label.set_visible(true)
@@ -150,7 +150,7 @@ func v_seperator_manager():
 		vseperator_one.set_visible(false)
 
 func current_active_block_info():
-	if Global.Is_Current_Active_Block_Visible == true:
+	if Global.Settings_Data.Is_Current_Active_Block_Visible == true:
 		current_active_block_label.set_visible(true)
 
 		if Global.Current_Active_Block != null:
@@ -159,13 +159,13 @@ func current_active_block_info():
 		if Global.Current_Active_Block == null:
 			current_active_block_label.text = "Current block: Null"
 
-	if Global.Is_Current_Active_Block_Visible == false:
+	if Global.Settings_Data.Is_Current_Active_Block_Visible == false:
 		current_active_block_label.set_visible(false)
 	else:
 		current_active_block_label.set_visible(true)
 
 func current_active_event_info():
-	if Global.Is_Current_Active_Event_Visible == true:
+	if Global.Settings_Data.Is_Current_Active_Event_Visible == true:
 		current_active_event_label.set_visible(true)
 
 		if Global.Current_Event != "":
@@ -174,7 +174,7 @@ func current_active_event_info():
 		if Global.Current_Event == "":
 			current_active_event_label.text = "Current event: Null"
 
-	if Global.Is_Current_Active_Event_Visible == false:
+	if Global.Settings_Data.Is_Current_Active_Event_Visible == false:
 		current_active_event_label.set_visible(false)
 	else:
 		current_active_event_label.set_visible(true)

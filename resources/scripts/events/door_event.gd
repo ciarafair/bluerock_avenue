@@ -49,14 +49,14 @@ func on_open_door():
 			if self.DoorHandle != null:
 				DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
 			elif self.DoorHandle == null:
-				print_debug("Door handle returned null. Could not animate.")
+				push_warning("Door handle returned null. Could not animate.")
 				pass
 
 			if self.PivotPoint != null:
 				DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current()
 				return
 			elif self.PivotPoint == null:
-				print_debug("Pivot point returned null. Could not animate.")
+				push_warning("Pivot point returned null. Could not animate.")
 				return
 
 func on_close_door():
@@ -70,14 +70,14 @@ func on_close_door():
 		if self.PivotPoint != null:
 			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current()
 		elif self.PivotPoint == null:
-			print_debug("Pivot point returned null. Could not animate.")
+			push_warning("Pivot point returned null. Could not animate.")
 			pass
 
 		if self.DoorHandle != null:
 			DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, 0.5).from_current()
 			return
 		elif self.DoorHandle == null:
-			print_debug("Door handle returned null. Could not animate.")
+			push_warning("Door handle returned null. Could not animate.")
 			return
 
 func find_current_room():
@@ -89,7 +89,7 @@ func find_current_room():
 		#print_debug("Opposite room is #" + str(ConnectedRoomOne))
 		return ConnectedRoomOne
 	else:
-		print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
+		push_error("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
 
 func start_event():
 	if Global.Is_In_Animation == false:
@@ -176,7 +176,7 @@ func _ready():
 	if BlockCollider != null:
 		BlockCollider.set_disabled(true)
 	elif BlockCollider == null:
-		print_debug(str(self.name) + " does not have a collider.")
+		push_error(str(self.name) + " does not have a collider.")
 
 func _process(_delta):
 	set_rotation_ability()

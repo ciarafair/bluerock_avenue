@@ -87,10 +87,10 @@ func enable_door_view(_int):
 		if child is RoomBlock && child.RoomNumber == _int:
 			child.set_visible(true)
 		elif child is RoomBlock && child.RoomNumber != _int:
-			#print_debug(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not enabling.")
+			#push_warning(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not enabling.")
 			pass
 		elif not child is RoomBlock:
-			#print_debug(str(child.name) + " is not a room.")
+			#push_warning(str(child.name) + " is not a room.")
 			pass
 
 func disable_door_view(_int):
@@ -99,10 +99,10 @@ func disable_door_view(_int):
 		if child is RoomBlock && child.RoomNumber == _int:
 			child.set_visible(false)
 		elif child is RoomBlock && child.RoomNumber != _int:
-			#print_debug(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not disabling.")
+			#push_warning(str(child.name) + " is a room, but does not have the ID of " + str(_int) + ". Not disabling.")
 			pass
 		elif not child is RoomBlock:
-			#print_debug(str(child.name) + " is not a room.")
+			#push_warning(str(child.name) + " is not a room.")
 			pass
 
 func tween_to_room(_node):
@@ -123,17 +123,17 @@ func on_move_to_room(_int):
 			child.set_visible(true)
 			return
 		else:
-			#print_debug("Room number does not match " + str(_int))
+			#push_error("Room number does not match " + str(_int))
 			pass
 
 func on_find_monster_room(_int):
 	for child in self.get_children(true):
 		if child is RoomBlock && child.RoomNumber == _int:
 			Global.Monster_Current_Room = child
-			print_debug("Monster is in the " + str(child.name))
+			#print_debug("Monster is in the " + str(child.name))
 			return
 		elif child is RoomBlock && child.RoomNumber != _int:
-			#print_debug(str(child) + " is a room but not with the number " + str(_int))
+			#push_warning(str(child) + " is a room but not with the number " + str(_int))
 			pass
 
 func _ready():

@@ -21,7 +21,7 @@ func find_room_with_window():
 		#print_debug("New pool of possible rooms: " + str(room_pool))
 		return random_room_number
 	else:
-		#print("No more numbers in the pool.")
+		#push_error("No more numbers in the pool.")
 		RoomPool = [1, 3, 4]
 		#print_debug("New pool of possible rooms: " + str(room_pool))
 		var random_room_number = get_random_number_from_window_pool()
@@ -40,7 +40,8 @@ func manage_window_timer():
 
 func manage_monster_position():
 	if not MonsterPositionNumber > 3:
-		print_debug("Monster position is " + str(MonsterPositionNumber))
+		#print_debug("Monster position is " + str(MonsterPositionNumber))
+		pass
 
 	if MonsterPositionNumber == 0:
 		self.set_visible(false)
@@ -72,7 +73,7 @@ func manage_monster_position():
 		WindowTimer.start(2)
 		return
 	else:
-		#print_debug("Monster position is unkown")
+		push_error("Monster position is unkown")
 		return
 
 func manage_monster_room():
@@ -96,10 +97,10 @@ func set_monster_position(_node, _int):
 					SignalManager.set_monster_position.emit(child)
 					return
 				else:
-					#print_debug("Monster position was not in the right room.")
+					#push_warning("Monster position was not in the right room.")
 					pass
 			else:
-				#print_debug("Monster position was not the right number.")
+				#push_warning("Monster position was not the right number.")
 				pass
 		if not child is MonsterPosition:
 			set_monster_position(child, _int)
@@ -130,7 +131,7 @@ func move_monster_to_room():
 func find_window_node(_node):
 	for child in _node.get_children():
 		if child is WindowEvent:
-			print_debug("Using " + str(child.name) +" from " + str(child.BlockParent.name) + " as the window the monster is currently at.")
+			#print_debug("Using " + str(child.name) +" from " + str(child.BlockParent.name) + " as the window the monster is currently at.")
 			SignalManager.open_window.emit(child)
 			return
 

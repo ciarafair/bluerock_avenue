@@ -55,7 +55,7 @@ func add_game_over_screen():
 
 func add_options_menu():
 	if Options_Menu_Instance == null:
-	#	print_debug("Could not find pause menu instance. Trying again.")
+		push_error("Could not find pause menu instance. Trying again.")
 		Options_Menu_Instance = preload(OptionsMenuPath).instantiate()
 		add_options_menu()
 	else:
@@ -63,7 +63,7 @@ func add_options_menu():
 
 func add_movement_interface():
 	if Movement_Interface_Instance == null:
-	#	print_debug("Could not find player instance. Trying again.")
+		push_error("Could not find player instance. Trying again.")
 		Movement_Interface_Instance = preload(MovementInterfacePath).instantiate()
 		add_movement_interface()
 	else:
@@ -75,7 +75,7 @@ func add_movement_interface():
 
 func add_player():
 	if Player_Instance == null:
-		#print_debug("Could not find player instance. Trying again.")
+		push_error("Could not find player instance. Trying again.")
 		Player_Instance = preload(PlayerPath).instantiate()
 		add_player()
 	else:
@@ -83,7 +83,7 @@ func add_player():
 
 func add_monster():
 	if Monster_Instance == null:
-		#print_debug("Could not find player instance. Trying again.")
+		push_error("Could not find player instance. Trying again.")
 		Monster_Instance = preload(MonsterPath).instantiate()
 		add_monster()
 	else:
@@ -129,7 +129,7 @@ func on_load_main_menu():
 	if Main_Menu_Instance != null:
 		User_Interface_Instance.add_child(Main_Menu_Instance)
 	if Main_Menu_Instance == null:
-		#print_debug("Could not find main menu. Trying again.")
+		push_error("Could not find main menu. Trying again.")
 		Main_Menu_Instance = preload(MainMenuPath).instantiate()
 		on_load_main_menu()
 
@@ -151,7 +151,7 @@ func on_load_pause_menu():
 		return
 
 	if Pause_Menu_Instance == null:
-		#print_debug("Could not find pause menu. Trying again.")
+		push_error("Could not find pause menu. Trying again.")
 		Pause_Menu_Instance = preload(PauseMenuPath).instantiate()
 		on_load_pause_menu()
 
@@ -165,7 +165,7 @@ func on_load_options_menu():
 		return
 
 	if Options_Menu_Instance == null:
-		#print_debug("Could not find options menu. Trying again.")
+		push_error("Could not find options menu. Trying again.")
 		Options_Menu_Instance = preload(OptionsMenuPath).instantiate()
 		on_load_options_menu()
 

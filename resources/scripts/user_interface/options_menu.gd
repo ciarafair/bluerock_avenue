@@ -9,35 +9,35 @@ var Is_Dragging: bool = false
 # Dev utilities
 @onready var FpsCounterButton: Button = %FpsCounter
 func _on_fps_counter_toggled(_button_pressed):
-	Global.Is_Fps_Counter_Visible = !Global.Is_Fps_Counter_Visible
+	Global.Settings_Data.Is_Fps_Counter_Visible = !Global.Settings_Data.Is_Fps_Counter_Visible
 
 @onready var PlayerInfoButton: Button = %PlayerInfo
 func _on_player_info_toggled(_button_pressed):
-	Global.Is_Player_Info_Visible = !Global.Is_Player_Info_Visible
+	Global.Settings_Data.Is_Player_Info_Visible = !Global.Settings_Data.Is_Player_Info_Visible
 
 @onready var HoveringBlockButton: Button = %HoveringBlock
 func _on_hovering_block_toggled(_button_pressed):
-	Global.Is_Hovering_Block_Visible = !Global.Is_Hovering_Block_Visible
+	Global.Settings_Data.Is_Hovering_Block_Visible = !Global.Settings_Data.Is_Hovering_Block_Visible
 
 @onready var CurrentBlockButton: Button = %CurrentBlock
 func _on_current_block_toggled(_button_pressed):
-	Global.Is_Current_Active_Block_Visible = !Global.Is_Current_Active_Block_Visible
+	Global.Settings_Data.Is_Current_Active_Block_Visible = !Global.Settings_Data.Is_Current_Active_Block_Visible
 
 @onready var CurrentEventButton: Button = %CurrentEvent
 func _on_current_event_toggled(_button_pressed):
-	Global.Is_Current_Active_Event_Visible = !Global.Is_Current_Active_Event_Visible
+	Global.Settings_Data.Is_Current_Active_Event_Visible = !Global.Settings_Data.Is_Current_Active_Event_Visible
 
 @onready var CurrentTimeButton: Button = %CurrentTime
 func _on_current_time_toggled(_button_pressed):
-	Global.Is_Current_Time_Info_Visible = !Global.Is_Current_Time_Info_Visible
+	Global.Settings_Data.Is_Current_Time_Info_Visible = !Global.Settings_Data.Is_Current_Time_Info_Visible
 
 @onready var PlayerCurrentRoomButton: Button = %CurrentRoom
 func _on_current_room_toggled(_button_pressed):
-	Global.Is_Player_Current_Room_Info_Visible = !Global.Is_Player_Current_Room_Info_Visible
+	Global.Settings_Data.Is_Player_Current_Room_Info_Visible = !Global.Settings_Data.Is_Player_Current_Room_Info_Visible
 
 @onready var MonsterInfoButton: Button = %MonsterInfo
 func _on_monster_info_toggled(_button_pressed):
-	Global.Is_Monster_Info_Visible = !Global.Is_Monster_Info_Visible
+	Global.Settings_Data.Is_Monster_Info_Visible = !Global.Settings_Data.Is_Monster_Info_Visible
 
 # Normal Options
 ## Volume sliders
@@ -48,7 +48,7 @@ func _on_master_volume_slider_drag_started():
 	pass
 
 func _on_master_volume_slider_value_changed(value):
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), value)
+	Global.Settings_Data.Master_Volume_Setting = value
 
 func _on_master_volume_slider_drag_ended(value_changed):
 	if value_changed == true:
@@ -59,7 +59,7 @@ func _on_music_volume_slider_drag_started():
 	pass
 
 func _on_music_volume_slider_value_changed(value):
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), value)
+	Global.Settings_Data.Music_Volume_Setting = value
 
 func _on_music_volume_slider_drag_ended(value_changed):
 	if value_changed == true:
@@ -67,11 +67,11 @@ func _on_music_volume_slider_drag_ended(value_changed):
 		pass
 
 func manage_music_volume_sliders():
-	if Global.Master_Volume_Setting != 0:
-		MasterVolumeSlider.set_value_no_signal(Global.Master_Volume_Setting)
+	if Global.Settings_Data.Master_Volume_Setting != MasterVolumeSlider.value:
+		MasterVolumeSlider.set_value_no_signal(Global.Settings_Data.Master_Volume_Setting)
 
-	if Global.Music_Volume_Setting != 0:
-		MusicVolumeSlider.set_value_no_signal(Global.Music_Volume_Setting)
+	if Global.Settings_Data.Music_Volume_Setting != MusicVolumeSlider.value:
+		MusicVolumeSlider.set_value_no_signal(Global.Settings_Data.Music_Volume_Setting)
 
 ## Resolution
 @onready var ResolutionButton: OptionButton = %ResolutionButton
@@ -121,52 +121,52 @@ func _on_option_button_item_selected(index):
 		DevOptionsCollection.set_visible(false)
 
 func visibility_check():
-	if Global.Is_Fps_Counter_Visible == true:
+	if Global.Settings_Data.Is_Fps_Counter_Visible == true:
 		FpsCounterButton.set_pressed_no_signal(true)
 
-	if Global.Is_Fps_Counter_Visible == false:
+	if Global.Settings_Data.Is_Fps_Counter_Visible == false:
 		FpsCounterButton.set_pressed_no_signal(false)
 
-	if Global.Is_Player_Info_Visible == true:
+	if Global.Settings_Data.Is_Player_Info_Visible == true:
 		PlayerInfoButton.set_pressed_no_signal(true)
 
-	if Global.Is_Player_Info_Visible == false:
+	if Global.Settings_Data.Is_Player_Info_Visible == false:
 		PlayerInfoButton.set_pressed_no_signal(false)
 
-	if Global.Is_Hovering_Block_Visible == true:
+	if Global.Settings_Data.Is_Hovering_Block_Visible == true:
 		HoveringBlockButton.set_pressed_no_signal(true)
 
-	if Global.Is_Hovering_Block_Visible == false:
+	if Global.Settings_Data.Is_Hovering_Block_Visible == false:
 		HoveringBlockButton.set_pressed_no_signal(false)
 
-	if Global.Is_Current_Active_Block_Visible == true:
+	if Global.Settings_Data.Is_Current_Active_Block_Visible == true:
 		CurrentBlockButton.set_pressed_no_signal(true)
 
-	if Global.Is_Current_Active_Block_Visible == false:
+	if Global.Settings_Data.Is_Current_Active_Block_Visible == false:
 		CurrentBlockButton.set_pressed_no_signal(false)
 
-	if Global.Is_Current_Active_Event_Visible == true:
+	if Global.Settings_Data.Is_Current_Active_Event_Visible == true:
 		CurrentEventButton.set_pressed_no_signal(true)
 
-	if Global.Is_Current_Active_Event_Visible == false:
+	if Global.Settings_Data.Is_Current_Active_Event_Visible == false:
 		CurrentEventButton.set_pressed_no_signal(false)
 
-	if Global.Is_Current_Time_Info_Visible == true:
+	if Global.Settings_Data.Is_Current_Time_Info_Visible == true:
 		CurrentTimeButton.set_pressed_no_signal(true)
 
-	if Global.Is_Current_Time_Info_Visible == false:
+	if Global.Settings_Data.Is_Current_Time_Info_Visible == false:
 		CurrentTimeButton.set_pressed_no_signal(false)
 
-	if Global.Is_Player_Current_Room_Info_Visible == true:
+	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == true:
 		PlayerCurrentRoomButton.set_pressed_no_signal(true)
 
-	if Global.Is_Player_Current_Room_Info_Visible == false:
+	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == false:
 		PlayerCurrentRoomButton.set_pressed_no_signal(false)
 
-	if Global.Is_Monster_Info_Visible == true:
+	if Global.Settings_Data.Is_Monster_Info_Visible == true:
 		MonsterInfoButton.set_pressed_no_signal(true)
 
-	if Global.Is_Monster_Info_Visible == false:
+	if Global.Settings_Data.Is_Monster_Info_Visible == false:
 		MonsterInfoButton.set_pressed_no_signal(false)
 
 func _on_main_menu_button_up():
