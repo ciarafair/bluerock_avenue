@@ -28,7 +28,7 @@ func mouse_position(_mask, _camera, _area_bool, _body_bool):
 		return RESULT
 
 func block_raycast():
-	if Global.Is_Hovering_Over_Right_Movement_Panel == false and Global.Is_Hovering_Over_Bottom_Movement_Panel == false and Global.Is_Hovering_Over_Left_Movement_Panel == false:
+	if Global.Mouse_State == 0 or Global.Mouse_State == 2:
 		var CollisionMask: int = 2
 		var AreaBool: bool = false
 		var BodyBool: bool = true
@@ -167,9 +167,8 @@ func _process(_delta):
 	if Global.Loaded_Game_World == null:
 		Global.Loaded_Game_World = self
 
-	if Global.Is_Pause_Menu_Open == false:
-		manage_flashlight_raycast()
-		block_raycast()
+	manage_flashlight_raycast()
+	block_raycast()
 
 func _on_child_order_changed():
 	if Has_Not_Looped_Yet == true:

@@ -102,7 +102,7 @@ func find_current_room():
 		#print_debug("Opposite room is #" + str(ConnectedRoomOne))
 		return ConnectedRoomOne
 	else:
-		push_error("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
+		push_error("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
 
 func start_event():
 	if Global.Is_In_Animation == false:

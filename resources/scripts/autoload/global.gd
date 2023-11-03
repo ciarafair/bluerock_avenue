@@ -2,11 +2,6 @@ extends Node
 
 var Settings_Data: SettingsData = SettingsData.new()
 
-@onready var EyeSprite = preload("res://resources/sprites/eye.png")
-@onready var DownArrowSprite = preload("res://Resources/sprites/down_arrow.png")
-@onready var LeftArrowSprite = preload("res://Resources/sprites/left_arrow.png")
-@onready var RightArrowSprite = preload("res://Resources/sprites/right_arrow.png")
-
 # Sound
 var Current_Track: String = ""
 
@@ -17,6 +12,8 @@ var Time_String: String
 var Time_Hour: int
 var Time_Minute: int
 var Is_Window_Focused := true
+
+var Mouse_State: int = 0
 
 # Bools
 ## Misc
@@ -38,11 +35,7 @@ var Is_Clickable: bool = false
 var Is_In_Animation: bool = false
 var Is_Timed_Out: bool = false
 
-## Cursor Icon Control
-var Is_Hovering_Over_Bottom_Movement_Panel: bool = false
-var Is_Hovering_Over_Left_Movement_Panel: bool = false
-var Is_Hovering_Over_Right_Movement_Panel: bool = false
-
+var Current_Movement_Panel: Panel = null
 var Current_Active_Block: Block = null
 var Current_Event: String = ""
 var Current_Room: Block = null
@@ -198,13 +191,36 @@ func load_data(path: String):
 		push_error("Cannot open non-existent file at %s!" % [path])
 		return
 
+@onready var EyeSprite = preload("res://resources/sprites/eye.png")
+@onready var DialogueSprite = preload("res://resources/sprites/speech_bubble.png")
+@onready var DownArrowSprite = preload("res://Resources/sprites/down_arrow.png")
+@onready var LeftArrowSprite = preload("res://Resources/sprites/left_arrow.png")
+@onready var RightArrowSprite = preload("res://Resources/sprites/right_arrow.png")
+
 func manage_mouse_cursor():
 	if MousePosition2D.x > -get_viewport().get_visible_rect().size.x: MousePosition2D.x = get_viewport().get_visible_rect().size.x
 	if MousePosition2D.y > -get_viewport().get_visible_rect().size.y: MousePosition2D.y = get_viewport().get_visible_rect().size.y
 
-	if Is_Hovering_Over_Bottom_Movement_Panel == false && Is_Hovering_Over_Left_Movement_Panel == false && Is_Hovering_Over_Right_Movement_Panel == false:
+	if Mouse_State == 0:
 		if Hovering_Block != null:
 			Input.set_custom_mouse_cursor(EyeSprite)
+		else:
+			Input.set_custom_mouse_cursor(null)
+
+	elif Mouse_State == 1:
+		if Current_Movement_Panel != null:
+			if Current_Movement_Panel.name == "Bottom":
+				Input.set_custom_mouse_cursor(DownArrowSprite)
+			elif Current_Movement_Panel.name == "Right":
+				Input.set_custom_mouse_cursor(RightArrowSprite)
+			elif Current_Movement_Panel.name == "Left":
+				Input.set_custom_mouse_cursor(LeftArrowSprite)
+		else:
+			Input.set_custom_mouse_cursor(null)
+
+	elif Mouse_State == 2:
+		if Hovering_Block != null:
+			Input.set_custom_mouse_cursor(DialogueSprite)
 		else:
 			Input.set_custom_mouse_cursor(null)
 
