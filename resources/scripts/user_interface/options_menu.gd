@@ -45,38 +45,14 @@ func _on_monster_info_toggled(_button_pressed):
 @onready var MusicVolumeSlider: HSlider = %MusicVolumeSlider
 @onready var SFXVolumeSlider: HSlider = %SFXVolumeSlider
 
-func _on_master_volume_slider_drag_started():
-	pass
-
 func _on_master_volume_slider_value_changed(value):
 	Global.Settings_Data.Master_Volume_Setting = value
-
-func _on_master_volume_slider_drag_ended(value_changed):
-	if value_changed == true:
-		#print_debug("Master volume changed to " + str(Global.Master_Volume_Setting))
-		pass
-
-func _on_music_volume_slider_drag_started():
-	pass
 
 func _on_music_volume_slider_value_changed(value):
 	Global.Settings_Data.Music_Volume_Setting = value
 
-func _on_music_volume_slider_drag_ended(value_changed):
-	if value_changed == true:
-		#print_debug("Music volume changed to " + str(Global.Music_Volume_Setting))
-		pass
-
-func _on_sfx_volume_slider_drag_started():
-	pass
-
 func _on_sfx_volume_slider_value_changed(value):
 	Global.Settings_Data.SFX_Volume_Setting = value
-
-func _on_sfx_volume_slider_drag_ended(value_changed):
-	if value_changed == true:
-		#print_debug("Music volume changed to " + str(Global.Music_Volume_Setting))
-		pass
 
 func manage_volume_sliders():
 	if Global.Settings_Data.Master_Volume_Setting != MasterVolumeSlider.value:
@@ -124,6 +100,14 @@ func _on_resolution_button_item_selected(index):
 		Global.Current_Window_Size = Vector2i(1920,1080)
 		Global.Selected_Resolution_Index = 0
 		get_window().size = Global.Current_Window_Size
+
+@onready var SensitivitySlider = %SensitivitySlider
+func _on_sensitivity_slider_value_changed(value):
+	Global.Settings_Data.Mouse_Sensitivity = value
+
+func manage_sensitivity_slider():
+	if Global.Settings_Data.Mouse_Sensitivity != SensitivitySlider.value:
+		SensitivitySlider.set_value_no_signal(Global.Settings_Data.Mouse_Sensitivity)
 
 # Internal
 func _on_option_button_item_selected(index):
@@ -192,6 +176,7 @@ func _on_save_changes_button_up():
 
 func _process(_delta):
 	manage_volume_sliders()
+	manage_sensitivity_slider()
 	manage_resolution_list()
 	visibility_check()
 

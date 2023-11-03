@@ -91,6 +91,9 @@ func verify_save_directory(path: String):
 				"Master_Volume_Setting": 0,
 				"Music_Volume_Setting": -30,
 				"SFX_Volume_Setting": -30
+			},
+			"misc_settings": {
+				"Mouse_Sensitivity": 0.01
 			}
 		}
 
@@ -131,14 +134,26 @@ func save_sound_settings():
 
 	Settings_Dictionary.merge(data, true)
 
+func save_miscellaneous_settings():
+	print_debug("Saving sound settings")
+
+	var data: Dictionary = {
+		"misc_settings": {
+			"Mouse_Sensitivity": Settings_Data.Mouse_Sensitivity
+		}
+	}
+
+	Settings_Dictionary.merge(data, true)
+
 func save_settings():
 	var file = FileAccess.open(Settings_File_Path, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
 		return
 
-	save_sound_settings()
 	save_dev_settings()
+	save_sound_settings()
+	save_miscellaneous_settings()
 
 	var json_string = JSON.stringify(Settings_Dictionary, "\t")
 	file.store_string(json_string)
@@ -161,6 +176,8 @@ func load_data(path: String):
 		if parsed_data == null:
 			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
 			return
+
+		Settings_Data.Mouse_Sensitivity = parsed_data.misc_settings.Mouse_Sensitivity
 
 		Settings_Data.Master_Volume_Setting = parsed_data.sound_settings.Master_Volume_Setting
 		Settings_Data.Music_Volume_Setting = parsed_data.sound_settings.Music_Volume_Setting
@@ -190,6 +207,9 @@ func manage_mouse_cursor():
 			Input.set_custom_mouse_cursor(EyeSprite)
 		else:
 			Input.set_custom_mouse_cursor(null)
+
+	if Is_Game_Active == false:
+		Input.set_custom_mouse_cursor(null)
 
 func _process(_delta):
 	manage_mouse_cursor()

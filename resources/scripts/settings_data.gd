@@ -15,3 +15,6 @@ var Is_Player_Current_Room_Info_Visible: bool
 var Master_Volume_Setting: float
 var Music_Volume_Setting: float
 var SFX_Volume_Setting: float
+
+# Miscellanious
+var Mouse_Sensitivity: float

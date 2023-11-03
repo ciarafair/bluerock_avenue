@@ -67,6 +67,7 @@ func on_close_window(_node):
 		if self.MoveablePaneInstance != null:
 			Global.Is_Window_Being_Closed = true
 			Global.Is_Window_Being_Opened = false
+			SignalManager.window_close_sound.emit(_node, WindowTweenInstance.get_total_elapsed_time())
 			WindowTweenInstance.tween_property(self.MoveablePaneInstance, "position:x", self.MoveablePaneOriginalXPosition, Window_Closing_Time).from_current()
 			return
 

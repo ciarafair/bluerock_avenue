@@ -17,7 +17,7 @@ func check_pause_menu():
 	if Global.Is_Pause_Menu_Open == true:
 		get_tree().paused = true
 		Input.set_custom_mouse_cursor(null)
-		Input.set_mouse_mode(0)
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		self.set_visible(true)
 
 	if Global.Is_Pause_Menu_Open == false:

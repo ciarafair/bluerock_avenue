@@ -4,19 +4,16 @@ extends Node3D
 @onready var Flashlight = $SpotLight3D
 var TweenInstance: Tween
 
-@export var MouseSensitivity: float
-
 var camera_target_rotation = Vector2()
 var camera_current_rotation = Vector2()
 var minPitch = -360 * 2
 var maxPitch = 360 * 2
 
 func on_mouse_movement(_position):
-	var sensitivity = Vector2(MouseSensitivity, MouseSensitivity)
-	var mouse_delta = Global.MousePosition2D - Global.CentreOfScreen
+	var sensitivity = Vector2(Global.Settings_Data.Mouse_Sensitivity, Global.Settings_Data.Mouse_Sensitivity)
 
-	camera_target_rotation.y += (-mouse_delta.x + -_position.x) * sensitivity.y
-	camera_target_rotation.x += (-mouse_delta.y + -_position.y) * sensitivity.x
+	camera_target_rotation.y += -_position.x * sensitivity.x
+	camera_target_rotation.x += -_position.y * sensitivity.y
 
 	camera_target_rotation.x = clamp(camera_target_rotation.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
 	camera_target_rotation.y = clamp(camera_target_rotation.y, deg_to_rad(minPitch), deg_to_rad(maxPitch))
@@ -68,18 +65,29 @@ func automatic_rounded_rotation():
 	if self.rotation_degrees.y == -90 and Global.Current_Active_Block is RoomBlock:
 		self.rotation_degrees.y = 270
 
-func _process(_delta):
-	if Global.Is_Able_To_Turn == true && Global.Is_In_Animation == false:
-		camera_current_rotation = camera_current_rotation.lerp(camera_target_rotation, MouseSensitivity)
-		Camera.set_rotation_degrees(Vector3(camera_current_rotation.x, camera_current_rotation.y, Camera.rotation_degrees.z))
-		automatic_rounded_rotation()
+func on_reset_player_camera():
+	if TweenInstance:
+		TweenInstance.kill()
 
-func _ready():
+	TweenInstance = get_tree().create_tween()
+	TweenInstance.bind_node(Camera)
+	TweenInstance.tween_property(Camera, "rotation", Vector3(0,0,0), 0.25)
+
+func manage_signals():
 	SignalManager.mouse_movement.connect(on_mouse_movement)
+	SignalManager.reset_player_camera.connect(on_reset_player_camera)
 	SignalManager.turn_180_degrees.connect(on_turn_180_degrees)
 	SignalManager.turn_negative_90_degrees.connect(on_turn_negative_90_degrees)
 	SignalManager.turn_positive_90_degrees.connect(on_turn_positive_90_degrees)
 
+func _process(_delta):
+	if Global.Is_Able_To_Turn == true && Global.Is_In_Animation == false:
+		camera_current_rotation = camera_current_rotation.lerp(camera_target_rotation, Global.Settings_Data.Mouse_Sensitivity)
+		Camera.set_rotation_degrees(Vector3(camera_current_rotation.x, camera_current_rotation.y, Camera.rotation_degrees.z))
+		automatic_rounded_rotation()
+
+func _ready():
+	manage_signals()
 	Global.Loaded_Player = self
 	Flashlight.set_visible(false)
 

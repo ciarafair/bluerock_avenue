@@ -57,6 +57,7 @@ func camera_position_tween(_node, _position: bool, _rotation: bool):
 
 	#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
 	if _node is PropBlock:
+		SignalManager.reset_player_camera.emit()
 		if BlockCameraPosition != null:
 			Global.Is_In_Animation = true
 			if _rotation:
@@ -69,6 +70,7 @@ func camera_position_tween(_node, _position: bool, _rotation: bool):
 			pass
 
 	if _node is LocationBlock:
+		SignalManager.reset_player_camera.emit()
 		if BlockCameraPosition != null:
 			Global.Is_In_Animation = true
 

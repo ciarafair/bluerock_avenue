@@ -3,15 +3,18 @@
 		"Is_Current_Active_Block_Visible": false,
 		"Is_Current_Active_Event_Visible": false,
 		"Is_Current_Time_Info_Visible": false,
-		"Is_Fps_Counter_Visible": true,
-		"Is_Hovering_Block_Visible": true,
-		"Is_Monster_Info_Visible": false,
+		"Is_Fps_Counter_Visible": false,
+		"Is_Hovering_Block_Visible": false,
+		"Is_Monster_Info_Visible": true,
 		"Is_Player_Current_Room_Info_Visible": false,
 		"Is_Player_Info_Visible": false
 	},
+	"misc_settings": {
+		"Mouse_Sensitivity": 0.03
+	},
 	"sound_settings": {
 		"Master_Volume_Setting": 0,
-		"Music_Volume_Setting": -30,
-		"SFX_Volume_Setting": -30
+		"Music_Volume_Setting": -15,
+		"SFX_Volume_Setting": -14
 	}
 }

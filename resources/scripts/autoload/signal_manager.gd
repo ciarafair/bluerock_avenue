@@ -1,6 +1,5 @@
 extends Node
 
-
 # Global
 signal load_settings
 signal save_settings
@@ -10,7 +9,7 @@ signal stop_event
 signal random_tick
 signal game_over
 
-## Monster
+# Monster
 signal set_monster_position
 signal reset_monster
 signal find_monster_room
@@ -33,6 +32,9 @@ signal play_track
 signal stop_track
 signal door_open_sound
 signal door_close_sound
+signal window_open_sound
+signal window_close_sound
+signal clock_ticking
 
 # Block
 signal activate_hovering
@@ -59,6 +61,7 @@ signal exit_options_menu
 
 # Player
 signal mouse_movement
+signal reset_player_camera
 signal turn_180_degrees
 signal turn_negative_90_degrees
 signal turn_positive_90_degrees

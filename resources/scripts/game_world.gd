@@ -111,7 +111,7 @@ func tween_to_room(_node):
 	TweenInstance.bind_node(_node)
 	Global.Is_In_Animation = true
 	TweenInstance.tween_property(Global.Loaded_Player, "position", _node.BlockCameraPosition.position + _node.position, TweenDuration).from_current()
-	TweenInstance.tween_property(Global.Loaded_Player, "rotation", _node.BlockCameraPosition.rotation, TweenDuration).from_current()
+	#TweenInstance.tween_property(Global.Loaded_Player, "rotation", _node.BlockCameraPosition.rotation, TweenDuration).from_current()
 	return
 
 func on_move_to_room(_int):

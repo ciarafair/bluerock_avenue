@@ -347,7 +347,7 @@ size = Vector3(2.5, 2.5, 1)
 height = 1.2276
 radius = 0.325701
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ucb17"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fpvdg"]
 transparency = 2
 alpha_scissor_threshold = 1.0
 alpha_antialiasing_mode = 0
@@ -358,19 +358,19 @@ roughness = 0.37
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_mi1tc"]
 lightmap_size_hint = Vector2i(9, 10)
-material = SubResource("StandardMaterial3D_ucb17")
+material = SubResource("StandardMaterial3D_fpvdg")
 add_uv2 = true
 top_radius = 0.25
 bottom_radius = 0.25
 height = 0.75
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqto1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vrxt5"]
 albedo_texture = ExtResource("8_t1ua6")
 albedo_texture_force_srgb = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_dha8h"]
 lightmap_size_hint = Vector2i(21, 33)
-material = SubResource("StandardMaterial3D_aqto1")
+material = SubResource("StandardMaterial3D_vrxt5")
 add_uv2 = true
 size = Vector3(2.5, 1.5, 1)
 
@@ -561,8 +561,6 @@ script = ExtResource("2_nyq4s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.75, 5)
 collision_layer = 3
 script = ExtResource("3_2re5g")
-Is_Window_Open = null
-PlayerRotation = null
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Window"]
 transform = Transform3D(-0.963626, -0.00445142, 0.267217, 0, 0.999862, 0.0166561, -0.267254, 0.0160503, -0.963493, 0.803194, -0.234522, -1.8722)
