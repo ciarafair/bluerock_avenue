@@ -726,7 +726,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_p5ugq")
 
 [node name="DoorWall" type="MeshInstance3D" parent="KidBedroomOneMesh/PositiveZ"]
-transform = Transform3D(1, -6.10377e-17, 3.48787e-16, 3.48787e-16, 0.175, -3.48787e-16, -3.48787e-16, 6.10377e-17, 1, 2.08165e-12, 2, 2.08165e-12)
+transform = Transform3D(1, -6.10377e-17, 3.48787e-16, 3.48787e-16, 0.175, -3.48787e-16, -3.48787e-16, 6.10377e-17, 1, 2.08165e-12, 2.10025, 0)
 material_override = ExtResource("10_44224")
 cast_shadow = 2
 mesh = SubResource("ArrayMesh_htlu3")

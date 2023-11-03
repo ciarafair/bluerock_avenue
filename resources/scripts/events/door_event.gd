@@ -35,6 +35,7 @@ func find_door_handle(_node: Node3D):
 			find_door_handle(child)
 
 func on_open_door():
+	SignalManager.enable_other_side_of_door.emit(find_current_room())
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
 			DoorTweenInstance.kill()
@@ -63,9 +64,6 @@ func on_open_door():
 				push_warning("Pivot point returned null. Could not animate.")
 				return
 
-func play_close_sound_effect():
-	SignalManager.door_close_sound.emit(self)
-
 func on_close_door():
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
@@ -75,7 +73,7 @@ func on_close_door():
 		DoorTweenInstance.bind_node(self)
 
 		if self.PivotPoint != null:
-			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(play_close_sound_effect)
+			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(door_close_finished)
 			pass
 
 		elif self.PivotPoint == null:
@@ -89,6 +87,11 @@ func on_close_door():
 		elif self.DoorHandle == null:
 			push_warning("Door handle returned null. Could not animate.")
 			return
+
+func door_close_finished():
+	SignalManager.door_close_sound.emit(self)
+	await DoorTweenInstance.finished
+	SignalManager.disable_other_side_of_door.emit(find_current_room())
 
 func find_current_room():
 	# If the current room number is one of the two options move to the other one.
@@ -126,7 +129,6 @@ func on_stop_event():
 	if self.Is_Door_Open == true:
 		SignalManager.close_door.emit()
 	Global.Current_Event = ""
-	SignalManager.disable_other_side_of_door.emit(find_current_room())
 
 func manage_signals():
 	if Global.Current_Active_Block == self:
