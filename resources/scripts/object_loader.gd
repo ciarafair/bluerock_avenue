@@ -106,8 +106,10 @@ func on_load_game_world():
 	if Game_World_Instance != null:
 		self.add_child(Game_World_Instance)
 		add_player()
-		if Global.Is_Monster_Active == true:
+		if Global.Monster_Data.Is_Monster_Active == true:
 			add_monster()
+		else:
+			pass
 		add_pause_menu()
 		add_movement_interface()
 		add_game_over_screen()

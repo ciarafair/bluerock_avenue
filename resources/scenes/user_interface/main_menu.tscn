@@ -1,12 +1,42 @@
-[gd_scene load_steps=6 format=3 uid="uid://g7gc87d1nati"]
+[gd_scene load_steps=16 format=3 uid="uid://g7gc87d1nati"]
 
-[ext_resource type="Script" path="res://resources/scripts/user_interface/main_menu.gd" id="1_d4l08"]
-[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_dqe5r"]
-[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_pqe1g"]
-[ext_resource type="Shader" path="res://resources/shaders/Overlay.gdshader" id="4_f0oej"]
+[ext_resource type="Script" path="res://resources/scripts/user_interface/main_menu.gd" id="1_5gjp7"]
+[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_6h55f"]
+[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_tcmue"]
+[ext_resource type="Texture2D" uid="uid://pjiy5yvrmvw5" path="res://resources/textures/github.png" id="4_asntc"]
+[ext_resource type="Shader" path="res://resources/shaders/Overlay.gdshader" id="5_lhjht"]
+[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="6_x42fu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fp78c"]
+texture = ExtResource("4_asntc")
+expand_margin_left = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_726pp"]
+texture = ExtResource("4_asntc")
+expand_margin_left = 5.0
+modulate_color = Color(1, 1, 1, 0.396078)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0nn4b"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_p4kl3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1k1s3"]
+texture = SubResource("PlaceholderTexture2D_p4kl3")
+expand_margin_left = 5.0
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_c81hi"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_860ac"]
+texture = SubResource("PlaceholderTexture2D_c81hi")
+expand_margin_left = 5.0
+modulate_color = Color(1, 1, 1, 0.396078)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d3k0y"]
+texture = ExtResource("4_asntc")
+expand_margin_left = 5.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0viog"]
-shader = ExtResource("4_f0oej")
+shader = ExtResource("5_lhjht")
 shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.4
 shader_parameter/scanlines_width = 0.25
@@ -16,7 +46,7 @@ shader_parameter/pixelate = true
 shader_parameter/brightness = 1.4
 
 [node name="MainMenu" type="CanvasLayer"]
-script = ExtResource("1_d4l08")
+script = ExtResource("1_5gjp7")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -24,79 +54,158 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_dqe5r")
+theme = ExtResource("2_6h55f")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="RootMargin" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_pqe1g")
+theme = ExtResource("3_tcmue")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 75
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="RootMargin"]
 layout_mode = 2
 
-[node name="Title" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TitleMargin" type="MarginContainer" parent="RootMargin/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Title"]
+[node name="Label" type="RichTextLabel" parent="RootMargin/VBoxContainer/TitleMargin"]
 layout_mode = 2
-theme = ExtResource("3_pqe1g")
+theme = ExtResource("3_tcmue")
 bbcode_enabled = true
 text = "[center][color=#C81D25]The House On Bluerock Avenue"
 fit_content = true
 autowrap_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ContentMargin" type="MarginContainer" parent="RootMargin/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 600
-theme_override_constants/margin_top = 500
-theme_override_constants/margin_right = -350
+size_flags_vertical = 3
+theme = ExtResource("3_tcmue")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+[node name="Content" type="HBoxContainer" parent="RootMargin/VBoxContainer/ContentMargin"]
 layout_mode = 2
-theme = ExtResource("3_pqe1g")
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="LinksMargin" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 725
+theme_override_constants/margin_right = 550
+theme_override_constants/margin_bottom = 50
+
+[node name="Links" type="HBoxContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_tcmue")
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_tcmue")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="GithubButton" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("3_tcmue")
+theme_override_styles/normal = SubResource("StyleBoxTexture_fp78c")
+theme_override_styles/hover = SubResource("StyleBoxTexture_726pp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fp78c")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0nn4b")
+expand_icon = true
+
+[node name="PlaceholderPanelContainer" type="PanelContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_tcmue")
+
+[node name="PlaceHolderButton" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links/PlaceholderPanelContainer"]
+layout_mode = 2
+theme = ExtResource("3_tcmue")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1k1s3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_860ac")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d3k0y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0nn4b")
+expand_icon = true
+
+[node name="PlaceholderPanelContainer2" type="PanelContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_tcmue")
+
+[node name="PlaceHolderButton" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links/PlaceholderPanelContainer2"]
+layout_mode = 2
+theme = ExtResource("3_tcmue")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1k1s3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_860ac")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d3k0y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_0nn4b")
+expand_icon = true
+
+[node name="ButtonsMargin" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_tcmue")
+theme_override_constants/margin_left = -450
+theme_override_constants/margin_top = 500
+theme_override_constants/margin_right = -450
+theme_override_constants/margin_bottom = 50
+
+[node name="Buttons" type="VBoxContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin"]
+layout_mode = 2
+theme = ExtResource("3_tcmue")
+alignment = 1
+
+[node name="StartGameMargin" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="StartGame" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="StartGame" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/StartGameMargin"]
 layout_mode = 2
-theme = ExtResource("3_pqe1g")
+theme = ExtResource("3_tcmue")
 theme_type_variation = &"MainMenu"
 text = "Start Game"
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="OptionsMargin" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Options" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="Options" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/OptionsMargin"]
 layout_mode = 2
-theme = ExtResource("3_pqe1g")
+theme = ExtResource("3_tcmue")
 text = "Options"
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="QuitMargin" type="MarginContainer" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="Quit" type="Button" parent="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/QuitMargin"]
 layout_mode = 2
-theme = ExtResource("3_pqe1g")
+theme = ExtResource("3_tcmue")
 text = "Quit To Desktop"
 
 [node name="Overlay" type="Panel" parent="."]
@@ -107,8 +216,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("6_x42fu")
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer/StartGame" to="." method="_on_start_game_button_up"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/Quit" to="." method="_on_quit_button_up"]
+[connection signal="button_up" from="RootMargin/VBoxContainer/ContentMargin/Content/LinksMargin/Links/MarginContainer/GithubButton" to="." method="_on_github_button_button_up"]
+[connection signal="button_up" from="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/StartGameMargin/StartGame" to="." method="_on_start_game_button_up"]
+[connection signal="button_up" from="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/OptionsMargin/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="RootMargin/VBoxContainer/ContentMargin/Content/ButtonsMargin/Buttons/QuitMargin/Quit" to="." method="_on_quit_button_up"]

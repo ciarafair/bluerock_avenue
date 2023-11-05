@@ -20,22 +20,22 @@ var door_closing_time: float
 const handle_turning_time: float = 0.5
 const handle_turning_degrees: float = 25
 
-func find_pivot_point(_node: Node3D):
-	for child in _node.get_children():
+func find_pivot_point(node: Node3D):
+	for child in node.get_children():
 		if child.name == "PivotPoint":
 			return child
 		elif child.name != "PivotPoint":
 			pass
 
-func find_door_handle(_node: Node3D):
-	for child in _node.get_children():
+func find_door_handle(node: Node3D):
+	for child in node.get_children():
 		if child.name == "DoorHandle":
 			return child
 		else:
 			find_door_handle(child)
 
 func on_open_door():
-	SignalManager.enable_other_side_of_door.emit(find_current_room())
+	SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
 			DoorTweenInstance.kill()
@@ -91,7 +91,7 @@ func on_close_door():
 func door_close_finished():
 	SignalManager.door_close_sound.emit(self)
 	await DoorTweenInstance.finished
-	SignalManager.disable_other_side_of_door.emit(find_current_room())
+	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 
 func find_current_room():
 	# If the current room number is one of the two options move to the other one.
@@ -101,13 +101,13 @@ func find_current_room():
 	elif Global.Current_Room.RoomNumber == ConnectedRoomTwo:
 		#print_debug("Opposite room is #" + str(ConnectedRoomOne))
 		return ConnectedRoomOne
-	else:
-		push_error("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
+	elif Global.Current_Room.RoomNumber != ConnectedRoomOne and Global.Current_Room.RoomNumber != ConnectedRoomTwo:
+		push_warning("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
 
 func start_event():
 	if Global.Is_In_Animation == false:
 		# Game world
-		SignalManager.enable_other_side_of_door.emit(find_current_room())
+		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 		Global.Current_Event = "door"
 		# Self
 		if SignalManager.open_door.is_connected(on_open_door):

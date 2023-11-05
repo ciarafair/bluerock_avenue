@@ -15,7 +15,7 @@ func on_wait_timer_timeout():
 func manage_normal_input():
 	if Global.Hovering_Block != null:
 		if Global.Is_Clickable == true:
-			if Global.Mouse_State == 0:
+			if Global.Mouse_State == 1:
 				if Input.is_action_just_released("mouse_button_1"):
 					SignalManager.activate_block.emit(Global.Hovering_Block) # EventManager.gd
 					return
@@ -84,13 +84,13 @@ func manage_door_input():
 				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
 				Global.Current_Room.set_visible(false)
 				Global.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomTwo)
+				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Current_Active_Block.ConnectedRoomTwo)
 				return
 			elif Global.Current_Room.RoomNumber == Global.Current_Active_Block.ConnectedRoomTwo:
 				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
 				Global.Current_Room.set_visible(false)
 				Global.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Current_Active_Block.ConnectedRoomOne)
+				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Current_Active_Block.ConnectedRoomOne)
 				return
 			else:
 				print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
@@ -109,11 +109,12 @@ func _unhandled_input(event: InputEvent):
 		if Input.is_action_just_released("pause_menu_toggle"):
 			Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
 
-		if Input.is_action_pressed("select_dialogue"):
-			Global.Mouse_State = 2
+		if Global.Mouse_State != 3:
+			if Input.is_action_pressed("select_dialogue"):
+					Global.Mouse_State = 2
 
-		if Input.is_action_just_released("select_dialogue"):
-			Global.Mouse_State = 0
+			if Input.is_action_just_released("select_dialogue"):
+				Global.Mouse_State = 1
 
 		if Global.Current_Event == "":
 			if Global.Is_In_Animation != true:

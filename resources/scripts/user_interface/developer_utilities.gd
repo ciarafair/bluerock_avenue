@@ -62,7 +62,7 @@ func player_current_room_info():
 		player_current_room_label.set_visible(false)
 
 func monster_current_stage_info():
-	monster_current_stage_label.text = "Monster's current stage: " + str(Global.Monster_Current_Stage)
+	monster_current_stage_label.text = "Monster's current stage: " + str(Global.Monster_Data.Monster_Current_Stage)
 
 	if Global.Settings_Data.Is_Monster_Info_Visible == true:
 		monster_current_stage_label.set_visible(true)
@@ -71,8 +71,8 @@ func monster_current_stage_info():
 		monster_current_stage_label.set_visible(false)
 
 func monster_current_room_info():
-	if Global.Monster_Current_Room != null:
-		monster_current_room_label.text = "Monster's current room: " + str(Global.Monster_Current_Room.name)
+	if Global.Monster_Data.Monster_Current_Room != null:
+		monster_current_room_label.text = "Monster's current room: " + str(Global.Monster_Data.Monster_Current_Room.name)
 	else:
 		monster_current_room_label.text = "Monster's current room: null"
 

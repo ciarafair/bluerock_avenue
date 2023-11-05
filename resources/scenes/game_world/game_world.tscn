@@ -7,7 +7,7 @@
 [ext_resource type="CameraAttributesPractical" uid="uid://bcmemrh4ia4wg" path="res://resources/camera_attributes/Player.tres" id="4_mgfog"]
 [ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/parents_bedroom.tscn" id="5_iiyqp"]
 [ext_resource type="Environment" uid="uid://83bq1txta8r5" path="res://resources/environments/active_game.tres" id="6_u2lc4"]
-[ext_resource type="LightmapGIData" uid="uid://jg74cnrplmw7" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
+[ext_resource type="LightmapGIData" uid="uid://dmu7v62sd3o5p" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
 [ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/Grass/Grass_001_COLOR.jpg" id="9_625td"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="10_6ogec"]
 
@@ -225,16 +225,18 @@ shadow_mesh = SubResource("ArrayMesh_nia43")
 process_mode = 1
 script = ExtResource("1_lcsd0")
 
-[node name="Hallway" parent="." instance=ExtResource("2_3ded8")]
+[node name="InsideMesh" type="Node3D" parent="."]
+
+[node name="Hallway" parent="InsideMesh" instance=ExtResource("2_3ded8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.08165e-12, -7.55)
 PlayerRotation = null
 
-[node name="KidOneBedroom" parent="." instance=ExtResource("3_qgxjy")]
+[node name="KidOneBedroom" parent="InsideMesh" instance=ExtResource("3_qgxjy")]
 
-[node name="Office" parent="." instance=ExtResource("4_2oedj")]
+[node name="Office" parent="InsideMesh" instance=ExtResource("4_2oedj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 2.08165e-12, 2.08165e-12)
 
-[node name="ParentsBedroom" parent="." instance=ExtResource("5_iiyqp")]
+[node name="ParentsBedroom" parent="InsideMesh" instance=ExtResource("5_iiyqp")]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 25, 2.08165e-12, -6.25)
 
 [node name="Lighting" type="Node3D" parent="."]

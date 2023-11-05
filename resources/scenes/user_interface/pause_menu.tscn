@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxd0ayaq5s7qt"]
+[gd_scene load_steps=7 format=3 uid="uid://cxd0ayaq5s7qt"]
 
-[ext_resource type="Script" path="res://resources/scripts/user_interface/pause_menu.gd" id="1_7gsnt"]
-[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="1_76pop"]
-[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_km1ca"]
-[ext_resource type="Shader" path="res://Resources/Shaders/Overlay.gdshader" id="4_ya0kj"]
+[ext_resource type="Script" path="res://resources/scripts/user_interface/pause_menu.gd" id="1_u25ih"]
+[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_qnnea"]
+[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_23pmw"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Overlay.gdshader" id="4_q4tin"]
+[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_w2gbb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8ewku"]
-shader = ExtResource("4_ya0kj")
+shader = ExtResource("4_q4tin")
 shader_parameter/overlay = true
 shader_parameter/scanlines_opacity = 0.4
 shader_parameter/scanlines_width = 0.25
@@ -17,7 +18,7 @@ shader_parameter/brightness = 1.4
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
-script = ExtResource("1_7gsnt")
+script = ExtResource("1_u25ih")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -25,7 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_km1ca")
+theme = ExtResource("2_qnnea")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 2
@@ -51,7 +52,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Label" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer2/Title"]
 layout_mode = 2
-theme = ExtResource("1_76pop")
+theme = ExtResource("3_23pmw")
 bbcode_enabled = true
 text = "[center][color=#C81D25]Paused"
 fit_content = true
@@ -59,12 +60,12 @@ autowrap_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer2"]
 layout_mode = 2
-theme = ExtResource("2_km1ca")
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_top = 150
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("1_76pop")
+theme = ExtResource("3_23pmw")
 alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
@@ -74,7 +75,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="ResumeGame" type="Button" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("1_76pop")
+theme = ExtResource("3_23pmw")
 text = "Resume Game"
 
 [node name="MarginContainer2" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
@@ -84,7 +85,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Options" type="Button" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
-theme = ExtResource("1_76pop")
+theme = ExtResource("3_23pmw")
 text = "Options"
 
 [node name="MarginContainer3" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
@@ -94,7 +95,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Quit" type="Button" parent="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3"]
 layout_mode = 2
-theme = ExtResource("1_76pop")
+theme = ExtResource("3_23pmw")
 text = "Quit To Menu"
 
 [node name="Overlay" type="Panel" parent="."]
@@ -105,6 +106,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("5_w2gbb")
 
 [connection signal="button_up" from="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame" to="." method="_on_resume_game_button_up"]
 [connection signal="button_up" from="Panel/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]

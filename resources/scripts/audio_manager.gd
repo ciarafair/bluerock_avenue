@@ -1,6 +1,6 @@
 extends Node
 
-const Audio_Bus_Layout: String = "res://default_bus_layout.tres"
+const Audio_Bus_Layout: String =  "res://resources/audio/default_bus_layout.tres"
 
 func load_mp3(path):
 	var file = FileAccess.open(path, FileAccess.READ)

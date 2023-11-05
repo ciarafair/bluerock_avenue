@@ -1,9 +1,5 @@
 extends CanvasLayer
 
-# Collections
-@onready var DevOptionsCollection: VBoxContainer = %DevOptions
-@onready var NormalOptionsCollection: VBoxContainer = %NormalOptions
-
 var Is_Dragging: bool = false
 
 # Dev utilities
@@ -39,7 +35,11 @@ func _on_current_room_toggled(_button_pressed):
 func _on_monster_info_toggled(_button_pressed):
 	Global.Settings_Data.Is_Monster_Info_Visible = !Global.Settings_Data.Is_Monster_Info_Visible
 
-# Normal Options
+@onready var MonsterEnabledButton: Button  = %MonsterEnabled
+func _on_monster_enabled_toggled(_button_pressed):
+	Global.Monster_Data.Is_Monster_Active = !Global.Monster_Data.Is_Monster_Active
+
+# Volume Options
 ## Volume sliders
 @onready var MasterVolumeSlider: HSlider = %MasterVolumeSlider
 @onready var MusicVolumeSlider: HSlider = %MusicVolumeSlider
@@ -64,6 +64,7 @@ func manage_volume_sliders():
 	if Global.Settings_Data.SFX_Volume_Setting != SFXVolumeSlider.value:
 		SFXVolumeSlider.set_value_no_signal(Global.Settings_Data.SFX_Volume_Setting)
 
+# General Options
 ## Resolution
 @onready var ResolutionButton: OptionButton = %ResolutionButton
 
@@ -109,17 +110,20 @@ func manage_sensitivity_slider():
 	if Global.Settings_Data.Mouse_Sensitivity != SensitivitySlider.value:
 		SensitivitySlider.set_value_no_signal(Global.Settings_Data.Mouse_Sensitivity)
 
-# Internal
-func _on_option_button_item_selected(index):
-	if index == 0:
-		DevOptionsCollection.set_visible(true)
-		NormalOptionsCollection.set_visible(false)
-
-	if index == 1:
-		NormalOptionsCollection.set_visible(true)
-		DevOptionsCollection.set_visible(false)
+@onready var OverlayEffectButton = %OverlayEffect
+func _on_overlay_effect_toggled(_button_pressed):
+	Global.Settings_Data.Is_Overlay_Effect_Enabled = !Global.Settings_Data.Is_Overlay_Effect_Enabled
 
 func visibility_check():
+
+# General Settings
+	if Global.Settings_Data.Is_Overlay_Effect_Enabled == true:
+		OverlayEffectButton.set_pressed_no_signal(true)
+
+	if Global.Settings_Data.Is_Overlay_Effect_Enabled == false:
+		OverlayEffectButton.set_pressed_no_signal(false)
+
+# Developer Settings
 	if Global.Settings_Data.Is_Fps_Counter_Visible == true:
 		FpsCounterButton.set_pressed_no_signal(true)
 
@@ -168,6 +172,12 @@ func visibility_check():
 	if Global.Settings_Data.Is_Monster_Info_Visible == false:
 		MonsterInfoButton.set_pressed_no_signal(false)
 
+	if Global.Monster_Data.Is_Monster_Active == true:
+		MonsterEnabledButton.set_pressed_no_signal(true)
+
+	if Global.Monster_Data.Is_Monster_Active == false:
+		MonsterEnabledButton.set_pressed_no_signal(false)
+
 func _on_main_menu_button_up():
 	SignalManager.exit_options_menu.emit()
 
@@ -182,5 +192,3 @@ func _process(_delta):
 
 func _ready():
 	SignalManager.options_menu_loaded.emit()
-	DevOptionsCollection.set_visible(false)
-	NormalOptionsCollection.set_visible(true)

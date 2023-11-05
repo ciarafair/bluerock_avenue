@@ -78,7 +78,7 @@ func on_close_window(_node):
 		pass
 
 func manage_event_signals():
-	if Global.Monster_Current_Room == self.BlockParent:
+	if Global.Monster_Data.Monster_Current_Room == self.BlockParent:
 		if SignalManager.open_window.is_connected(on_open_window):
 			pass
 		else:
@@ -89,7 +89,7 @@ func manage_event_signals():
 		else:
 			SignalManager.close_window.connect(on_close_window)
 
-	if Global.Monster_Current_Room != self.BlockParent:
+	if Global.Monster_Data.Monster_Current_Room != self.BlockParent:
 		if !SignalManager.open_window.is_connected(on_open_window):
 			pass
 		else:
@@ -146,6 +146,6 @@ func _process(_delta):
 		search_for_props(self, true)
 		start_event()
 
-	if Global.Monster_Current_Room != self.BlockParent:
+	if Global.Monster_Data.Monster_Current_Room != self.BlockParent:
 		if MoveablePaneInstance.position.x != MoveablePaneOriginalXPosition:
 			MoveablePaneInstance.position.x = MoveablePaneOriginalXPosition

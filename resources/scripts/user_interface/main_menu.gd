@@ -13,3 +13,6 @@ func _on_quit_button_up():
 func _on_tree_entered():
 	SignalManager.main_menu_loaded.emit()
 	SignalManager.play_track.emit()
+
+func _on_github_button_button_up():
+	OS.shell_open("https://github.com/ciarafair/bluerock_avenue")
