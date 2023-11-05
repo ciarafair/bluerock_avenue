@@ -1,106 +1,109 @@
 extends StaticBody3D
 
-var MonsterPositionNumber: int = 0
-var MonsterRoomNumber: int = 0
-var MonsterRoom: RoomBlock
-
 var WindowTimer: Timer = Timer.new()
 const DefaultRoomPool = [1,3,4]
 var RoomPool: Array = []
 
-func get_random_number_from_window_pool():
-	if RoomPool.size() == 0:
-		return -1
-	var index =  randi_range(0, RoomPool.size() - 1)
-	return RoomPool[index]
+func on_random_tick():
+	manage_monster_room()
+
+func manage_monster_room():
+	if Global.Monster_Data.Monster_Room_Number == 0:
+		move_monster_to_room()
+		return
+	else:
+		manage_monster_position()
+		return
+
 
 func find_room_with_window():
 	if RoomPool.size() > 0:
 		var random_room_number = get_random_number_from_window_pool()
-		#print_debug("Chosen room number: " + str(random_room_number))
+		#print_debug("Chosen room number: %s" % [random_room_number])
 		RoomPool.erase(random_room_number)
-		#print_debug("New pool of possible rooms: " + str(room_pool))
+		#print_debug("New pool of possible rooms: %s" % [RoomPool])
 		return random_room_number
 	else:
-		#push_error("No more numbers in the pool.")
+		#push_warning("No more numbers in the pool.")
 		RoomPool.append_array(DefaultRoomPool)
-		#print_debug("New pool of possible rooms: " + str(room_pool))
+		#print_debug("New pool of possible rooms:  %s" % [RoomPool])
 		var random_room_number = get_random_number_from_window_pool()
-		#print_debug("Chosen room number: " + str(random_room_number))
+		#print_debug("Chosen room number: %s" % [RoomPool])
 		RoomPool.erase(random_room_number)
-		#print_debug("New pool of possible rooms: " + str(room_pool))
+		#print_debug("New pool of possible rooms: %s" % [RoomPool])
 		return random_room_number
 
-func manage_window_timer():
-	if WindowTimer == null:
-		WindowTimer = Timer.new()
-		self.add_child(WindowTimer)
-		if !WindowTimer.timeout.is_connected(on_window_timer_timeout):
-			WindowTimer.timeout.connect(on_window_timer_timeout)
+func move_monster_to_room():
+	Global.Monster_Data.Monster_Room_Number = find_room_with_window()
+	find_monster_room(Global.Loaded_Game_World, Global.Monster_Data.Monster_Room_Number)
+	return
+
+func find_monster_room(node, number):
+	for child in node.get_children(true):
+		#print_debug("Scanning %s"%[child])
+		if child is RoomBlock && child.RoomNumber == number:
+			Global.Monster_Data.Monster_Current_Room = child
+			print_debug("Monster is in the " + str(child.name))
+			manage_monster_position()
+			return
+		elif child is RoomBlock && child.RoomNumber != number:
+			#push_warning(str(child) + " is a room but not with the number " + str(number))
+			pass
+		elif not child is RoomBlock:
+			find_monster_room(child, number)
+			pass
 
 func manage_monster_position():
-	if not MonsterPositionNumber > 3:
-		#print_debug("Monster position is " + str(MonsterPositionNumber))
-		pass
-
-	if MonsterPositionNumber == 0:
+	if Global.Monster_Data.Monster_Current_Stage == 0:
 		self.set_visible(false)
 		self.position = Vector3(0, -10, 0)
-		MonsterPositionNumber += 1
+		Global.Monster_Data.Monster_Current_Stage += 1
 		return
 
-	elif MonsterPositionNumber == 1:
-		#print_debug("Finding monster position #" + str(MonsterPositionNumber))
+	if Global.Monster_Data.Monster_Current_Stage == 1:
+		print_debug("Setting monster position to #%s" % [Global.Monster_Data.Monster_Current_Stage] )
 		self.set_visible(true)
 		set_monster_position(Global.Monster_Data.Monster_Current_Room, 1)
-		MonsterPositionNumber += 1
+		Global.Monster_Data.Monster_Current_Stage += 1
 		return
 
-	elif MonsterPositionNumber == 2:
-		#print_debug("Finding monster position #" + str(MonsterPositionNumber))
+	if Global.Monster_Data.Monster_Current_Stage == 2:
+		print_debug("Setting monster position #%s" % [Global.Monster_Data.Monster_Current_Stage] )
 		self.set_visible(true)
 		set_monster_position(Global.Monster_Data.Monster_Current_Room, 2)
-		MonsterPositionNumber += 1
+		Global.Monster_Data.Monster_Current_Stage += 1
 		return
 
-	elif MonsterPositionNumber == 3:
-		#print_debug("Finding monster position #" + str(MonsterPositionNumber))
+	if Global.Monster_Data.Monster_Current_Stage == 3:
+		print_debug("Setting monster position #%s" % [Global.Monster_Data.Monster_Current_Stage] )
 		self.set_visible(true)
 		set_monster_position(Global.Monster_Data.Monster_Current_Room, 3)
 		manage_window_timer()
 		WindowTimer.one_shot = true
 		WindowTimer.start(2)
-		return
-	else:
-		push_error("Monster position is unkown")
+		Global.Monster_Data.Monster_Current_Stage += 1
 		return
 
-func manage_monster_room():
-	if MonsterRoomNumber <= 0:
-		move_monster_to_room()
-		MonsterPositionNumber = 0
-		return
-	else:
+	if Global.Monster_Data.Monster_Current_Stage > 3:
 		pass
 
-func window_movement_management():
-	manage_monster_room()
-	manage_monster_position()
-
 func set_monster_position(node, number):
-	if MonsterRoom != null:
+	if Global.Monster_Data.Monster_Current_Room != null:
 		for child in node.get_children():
 			if child is MonsterPosition:
 				if child.PositionNumber == number:
-					if child.PositionRoom == MonsterRoom:
-						#print_debug("Setting monsters position to " + str(child.name))
-						SignalManager.set_monster_position.emit(child)
+					if child.PositionRoom == Global.Monster_Data.Monster_Current_Room:
+						print_debug("Setting monsters position to %s"%[child.name])
+						self.position = child.position + Global.Monster_Data.Monster_Current_Room.position
+						print_debug("Monster's position: " + str(self.get_position) + " should equal the set position of " + str(child.position))
+						self.rotation = child.rotation + Global.Monster_Data.Monster_Current_Room.rotation
+						print_debug("Monster's rotation: " + str(self.get_rotation) + " should equal the set rotation of " + str(child.rotation))
 						return
 					else:
-						#push_warning("Monster position was not in the right room.")
+						#push_warning("Monster position %s was not in the right room."%[child.name])
 						pass
 				else:
-					#push_warning("Monster position was not the right number.")
+					#push_warning("Monster position %s was not the right number."%[child.PositionNumber])
 					pass
 			if not child is MonsterPosition:
 				set_monster_position(child, number)
@@ -109,32 +112,34 @@ func set_monster_position(node, number):
 		push_error("Could not find monster room.")
 		return
 
-func on_window_timer_timeout():
-	find_window_node(MonsterRoom)
+func get_random_number_from_window_pool():
+	if RoomPool.size() == 0:
+		return -1
+	var index =  randi_range(0, RoomPool.size() - 1)
+	return RoomPool[index]
 
-func on_random_tick():
-	window_movement_management()
+func manage_window_timer():
+	if WindowTimer == null:
+		WindowTimer = Timer.new()
+		self.add_child(WindowTimer)
+		if !WindowTimer.timeout.is_connected(on_window_timer_timeout):
+			WindowTimer.timeout.connect(on_window_timer_timeout)
+
+func on_window_timer_timeout():
+	find_window_node(Global.Monster_Data.Monster_Current_Room)
 
 func on_monster_reset():
-	MonsterPositionNumber = 0
-	MonsterRoomNumber = 0
-	MonsterRoom = null
+	Global.Monster_Data.Monster_Current_Stage = 0
+	Global.Monster_Data.Monster_Room_Number = 0
 	Global.Monster_Data.Monster_Current_Room = null
 	WindowTimer.queue_free()
-	window_movement_management()
-	return
-
-func move_monster_to_room():
-	MonsterRoomNumber = find_room_with_window()
-	# Game world
-	SignalManager.find_monster_room.emit(Global.Loaded_Game_World, MonsterRoomNumber)
-	#print_debug("Moving monster to room #" + str(MonsterRoomNumber))
+	manage_monster_room()
 	return
 
 func find_window_node(node):
 	for child in node.get_children():
 		if child is WindowEvent:
-			#print_debug("Using " + str(child.name) +" from " + str(child.BlockParent.name) + " as the window the monster is currently at.")
+			print_debug("Using " + str(child.name) +" from " + str(child.BlockParent.name) + " as the window the monster is currently at.")
 			SignalManager.open_window.emit(child)
 			return
 
@@ -142,7 +147,6 @@ func find_window_node(node):
 			find_window_node(child)
 
 func _ready():
-	self.set_visible(false)
 	if Global.Monster_Data.Is_Monster_Active == true:
 		RoomPool.append_array(DefaultRoomPool)
 		SignalManager.random_tick.connect(on_random_tick)
@@ -153,12 +157,3 @@ func _ready():
 
 		self.position = Vector3(0, -10, 0)
 
-func _process(_delta):
-	if Global.Monster_Data.Is_Monster_Active == true:
-		if Global.Monster_Data.Monster_Current_Room != null && Global.Monster_Data.Monster_Current_Room != self.MonsterRoom:
-			self.MonsterRoom = Global.Monster_Data.Monster_Current_Room
-
-		if MonsterPositionNumber <= 0:
-			Global.Monster_Data.Monster_Current_Stage = 0
-		else:
-			Global.Monster_Data.Monster_Current_Stage = MonsterPositionNumber - 1

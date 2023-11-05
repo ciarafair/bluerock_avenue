@@ -127,19 +127,6 @@ func on_move_to_room(node, number):
 			SignalManager.move_to_room.emit(child, number)
 			pass
 
-func on_find_monster_room(node, number):
-	for child in node.get_children(true):
-		if child is RoomBlock && child.RoomNumber == number:
-			Global.Monster_Data.Monster_Current_Room = child
-			print_debug("Monster is in the " + str(child.name))
-			return
-		elif child is RoomBlock && child.RoomNumber != number:
-			#push_warning(str(child) + " is a room but not with the number " + str(number))
-			pass
-		elif not child is RoomBlock:
-			SignalManager.find_monster_room.emit(child, number)
-			pass
-
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	SignalManager.game_world_loaded.emit()
@@ -147,7 +134,6 @@ func _ready():
 	SignalManager.enable_other_side_of_door.connect(on_enable_door_view)
 	SignalManager.disable_other_side_of_door.connect(on_disable_door_view)
 	SignalManager.move_to_room.connect(on_move_to_room)
-	SignalManager.find_monster_room.connect(on_find_monster_room)
 
 	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true

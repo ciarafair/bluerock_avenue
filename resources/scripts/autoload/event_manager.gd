@@ -1,6 +1,6 @@
 extends Node
 
-const random_tick_interval: float = 1
+const random_tick_interval: float = 0.5
 const clock_tick_interval: float = 15
 
 var IS_FLASHLIGHT_TOGGLEABLE = true
@@ -31,13 +31,13 @@ func manage_time():
 		meridiem = "am"
 
 	if minute_int != 0:
-		Global.Time_String = str(hour_int) + ":" + str(minute_int) + meridiem
-		Global.Time_Hour = hour_int
-		Global.Time_Minute = minute_int
+		Global.Game_Data.Time_String = str(hour_int) + ":" + str(minute_int) + meridiem
+		Global.Game_Data.Time_Hour = hour_int
+		Global.Game_Data.Time_Minute = minute_int
 	else:
-		Global.Time_String = str(hour_int) + ":00" + meridiem
-		Global.Time_Hour = hour_int
-		Global.Time_Minute = minute_int
+		Global.Game_Data.Time_String = str(hour_int) + ":00" + meridiem
+		Global.Game_Data.Time_Hour = hour_int
+		Global.Game_Data.Time_Minute = minute_int
 
 func on_clock_timeout():
 	minute_int = minute_int + 10

@@ -5,17 +5,18 @@
 		"Is_Current_Time_Info_Visible": false,
 		"Is_Fps_Counter_Visible": false,
 		"Is_Hovering_Block_Visible": false,
-		"Is_Monster_Info_Visible": false,
+		"Is_Monster_Info_Visible": true,
 		"Is_Player_Current_Room_Info_Visible": false,
 		"Is_Player_Info_Visible": false
 	},
 	"general_settings": {
 		"Is_Overlay_Effect_Enabled": true,
-		"Mouse_Sensitivity": 0
+		"Mouse_Sensitivity": 0.01,
+		"Selected_Resolution_Index": 0
 	},
 	"volume_settings": {
 		"Master_Volume_Setting": 0,
-		"Music_Volume_Setting": -22,
-		"SFX_Volume_Setting": -22
+		"Music_Volume_Setting": -30,
+		"SFX_Volume_Setting": -30
 	}
 }

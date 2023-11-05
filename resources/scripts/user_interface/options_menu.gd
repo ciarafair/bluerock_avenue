@@ -69,38 +69,20 @@ func manage_volume_sliders():
 @onready var ResolutionButton: OptionButton = %ResolutionButton
 
 func manage_resolution_list():
-	if Global.Selected_Resolution_Index == 3:
-		ResolutionButton.select(3)
-
-	if Global.Selected_Resolution_Index == 2:
-		ResolutionButton.select(2)
-
-	if Global.Selected_Resolution_Index == 1:
-		ResolutionButton.select(1)
-
-	if Global.Selected_Resolution_Index == 0:
+	if Global.Settings_Data.Selected_Resolution_Index == 0:
 		ResolutionButton.select(0)
 
+	if Global.Settings_Data.Selected_Resolution_Index == 1:
+		ResolutionButton.select(1)
+
+	if Global.Settings_Data.Selected_Resolution_Index == 2:
+		ResolutionButton.select(2)
+
+	if Global.Settings_Data.Selected_Resolution_Index == 3:
+		ResolutionButton.select(3)
+
 func _on_resolution_button_item_selected(index):
-	if index == 3:
-		Global.Current_Window_Size = Vector2i(1024,546)
-		Global.Selected_Resolution_Index = 3
-		get_window().size = Global.Current_Window_Size
-
-	if index == 2:
-		Global.Current_Window_Size = Vector2i(1280,720)
-		Global.Selected_Resolution_Index = 2
-		get_window().size = Global.Current_Window_Size
-
-	if index == 1:
-		Global.Current_Window_Size = Vector2i(1600,900)
-		Global.Selected_Resolution_Index = 1
-		get_window().size = Global.Current_Window_Size
-
-	if index == 0:
-		Global.Current_Window_Size = Vector2i(1920,1080)
-		Global.Selected_Resolution_Index = 0
-		get_window().size = Global.Current_Window_Size
+	Global.set_window_resolution(index)
 
 @onready var SensitivitySlider = %SensitivitySlider
 func _on_sensitivity_slider_value_changed(value):

@@ -191,11 +191,6 @@ func load_audio_manager():
 		#print_debug("Audio manager loaded.")
 		self.add_child(Audio_Manager_Instance)
 
-func on_set_monster_position(_node):
-	Monster_Instance.position = _node.position + Global.Monster_Current_Room.position
-	#print_debug("Monster's position: " + str(Monster_Instance.position) + " should equal the set position of " + str(_node.position))
-	Monster_Instance.rotation = _node.rotation + Global.Monster_Current_Room.rotation
-	#print_debug("Monster's rotation: " + str(Monster_Instance.rotation) + " should equal the set rotation of " + str(_node.rotation))
 
 func _process(_delta):
 	Global.Screen_Centre = get_viewport().get_visible_rect().size/2

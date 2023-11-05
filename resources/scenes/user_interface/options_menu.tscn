@@ -52,7 +52,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
 bbcode_enabled = true
-text = "[center][color=#C81D25]Options"
+text = "[center][font_size=75][color=#C81D25][i]Options[/i]"
 fit_content = true
 autowrap_mode = 0
 
@@ -179,16 +179,14 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
-item_count = 4
-selected = 3
+item_count = 3
+selected = 0
 popup/item_0/text = "1920x1080"
-popup/item_0/id = 3
+popup/item_0/id = 0
 popup/item_1/text = "1600x900"
-popup/item_1/id = 2
+popup/item_1/id = 1
 popup/item_2/text = "1280x720"
-popup/item_2/id = 1
-popup/item_3/text = "1024x546"
-popup/item_3/id = 0
+popup/item_2/id = 2
 
 [node name="MouseSensitivity" type="HBoxContainer" parent="MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2

@@ -52,7 +52,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("2_r475x")
 bbcode_enabled = true
-text = "[center][color=#C81D25]Game Over."
+text = "[center][font_size=75][color=#C81D25][i]Game Over.[/i]"
 fit_content = true
 autowrap_mode = 0
 
