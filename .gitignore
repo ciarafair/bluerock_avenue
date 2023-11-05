@@ -6,3 +6,5 @@ screenshots
 .DS_Store
 .bak
 .config
+.exr
+settings.json
