@@ -1,0 +1,20 @@
+{
+	"monster": {
+		"Is_Monster_Active": true,
+		"Monster_Current_Room": "KidOneBedroom:<Node3D#123799079055>",
+		"Monster_Current_Stage": 1,
+		"Monster_Room_Number": 1
+	},
+	"player": {
+		"Current_Active_Block": "KidOneBedroom:<Node3D#123799079055>",
+		"Current_Block_Name": "KidOneBedroom",
+		"Current_Event": "",
+		"Current_Room": "KidOneBedroom:<Node3D#123799079055>",
+		"Current_Room_Number": 1
+	},
+	"time": {
+		"Time_Hour": 12,
+		"Time_Minute": 40,
+		"Time_String": "12:40am"
+	}
+}

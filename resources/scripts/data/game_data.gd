@@ -1,10 +1,17 @@
 extends Node
 class_name GameData
 
-var Is_Window_Being_Opened: bool = false
-var Is_Window_Open: bool = false
-var Is_Door_Opened: bool = false
-var Is_Window_Being_Closed: bool = false
-var Time_String: String
-var Time_Hour: int
-var Time_Minute: int
+var Time_Hour: int = 11
+var Time_Minute: int = 30
+var Time_String: String = "11:30am"
+
+var Is_Monster_Active: bool = true
+var Monster_Current_Room: RoomBlock = null
+var Monster_Current_Stage: int = 0
+var Monster_Room_Number: int = 0
+
+var Current_Active_Block: Block = null
+var Current_Block_Name: String = ""
+var Current_Event: String = ""
+var Current_Room: Block = null
+var Current_Room_Number = 1

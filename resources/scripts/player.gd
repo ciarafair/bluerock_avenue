@@ -62,7 +62,7 @@ func automatic_rounded_rotation():
 	if self.rotation_degrees.y <= -360:
 		self.rotation_degrees.y = 0
 
-	if self.rotation_degrees.y == -90 and Global.Current_Active_Block is RoomBlock:
+	if self.rotation_degrees.y == -90 and Global.Game_Data.Current_Active_Block is RoomBlock:
 		self.rotation_degrees.y = 270
 
 func on_reset_player_camera():
@@ -80,16 +80,50 @@ func manage_signals():
 	SignalManager.turn_negative_90_degrees.connect(on_turn_negative_90_degrees)
 	SignalManager.turn_positive_90_degrees.connect(on_turn_positive_90_degrees)
 
+func search_for_room(node: Node, identifier: int):
+	for child in node.get_children(true):
+		if child is RoomBlock and child.RoomNumber == identifier:
+			#print_debug("Using %s as the starting room." % [child])
+			Global.Game_Data.Current_Room = child
+			await SignalManager.animation_finished
+			return
+		elif child is RoomBlock and child.RoomNumber != identifier:
+			pass
+		elif child is Node:
+			search_for_room(child, identifier)
+			pass
+
+func search_for_block(node: Node, identifier: String):
+	for child in node.get_children(true):
+		if child is Block and child.name == identifier:
+			Global.Game_Data.Current_Active_Block = child
+			await SignalManager.animation_finished
+			return
+		elif child is Block and child.name != identifier:
+			pass
+		search_for_block(child, identifier)
+
 func _process(_delta):
-	if Global.Is_Able_To_Turn == true && Global.Is_In_Animation == false:
+	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
 		camera_current_rotation = camera_current_rotation.lerp(camera_target_rotation, Global.Settings_Data.Mouse_Sensitivity)
 		Camera.set_rotation_degrees(Vector3(camera_current_rotation.x, camera_current_rotation.y, Camera.rotation_degrees.z))
 		automatic_rounded_rotation()
+
+	if Global.Game_Data.Current_Room == null:
+		search_for_room(Global.Loaded_Game_World, Global.Game_Data.Current_Room_Number)
+		search_for_block(Global.Loaded_Game_World, Global.Game_Data.Current_Block_Name)
+		if Global.Game_Data.Current_Block_Name == "":
+			print_debug("Block name returned null. Searching for room instead.")
+			SignalManager.activate_block.emit(Global.Game_Data.Current_Room)
+			return
+
+		SignalManager.activate_block.emit(Global.Game_Data.Current_Active_Block)
+		return
+
 
 func _ready():
 	manage_signals()
 	Global.Loaded_Player = self
 	Flashlight.set_visible(false)
-
 	if Global.Loaded_Player == null:
 		push_error(str(self.name) + " was not loaded to Global.")

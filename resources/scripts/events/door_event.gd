@@ -95,20 +95,20 @@ func door_close_finished():
 
 func find_current_room():
 	# If the current room number is one of the two options move to the other one.
-	if Global.Current_Room.RoomNumber == ConnectedRoomOne:
+	if Global.Game_Data.Current_Room.RoomNumber == ConnectedRoomOne:
 		#print_debug("Opposite room is #" + str(ConnectedRoomTwo))
 		return ConnectedRoomTwo
-	elif Global.Current_Room.RoomNumber == ConnectedRoomTwo:
+	elif Global.Game_Data.Current_Room.RoomNumber == ConnectedRoomTwo:
 		#print_debug("Opposite room is #" + str(ConnectedRoomOne))
 		return ConnectedRoomOne
-	elif Global.Current_Room.RoomNumber != ConnectedRoomOne and Global.Current_Room.RoomNumber != ConnectedRoomTwo:
+	elif Global.Game_Data.Current_Room.RoomNumber != ConnectedRoomOne and Global.Game_Data.Current_Room.RoomNumber != ConnectedRoomTwo:
 		push_warning("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
 
 func start_event():
 	if Global.Is_In_Animation == false:
 		# Game world
 		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
-		Global.Current_Event = "door"
+		Global.Game_Data.Current_Event = "door"
 		# Self
 		if SignalManager.open_door.is_connected(on_open_door):
 			pass
@@ -128,10 +128,10 @@ func on_stop_event():
 	# Game world
 	if self.Is_Door_Open == true:
 		SignalManager.close_door.emit()
-	Global.Current_Event = ""
+	Global.Game_Data.Current_Event = ""
 
 func manage_signals():
-	if Global.Current_Active_Block == self:
+	if Global.Game_Data.Current_Active_Block == self:
 		# Self
 		if !SignalManager.stop_event.is_connected(on_stop_event):
 			SignalManager.stop_event.connect(on_stop_event)
@@ -198,17 +198,17 @@ func _process(_delta):
 	if DoorTweenInstance != null:
 		door_closing_time = DoorTweenInstance.get_total_elapsed_time()
 
-	if Global.Current_Active_Block == self:
+	if Global.Game_Data.Current_Active_Block == self:
 		self.Is_Enabled = true
-		if Global.Current_Event != "door":
+		if Global.Game_Data.Current_Event != "door":
 			search_for_props(self, true)
 			start_event()
-	elif Global.Current_Active_Block != self:
+	elif Global.Game_Data.Current_Active_Block != self:
 		self.Is_Enabled = false
 		search_for_props(self, false)
 
-	if BlockParent == Global.Current_Room:
+	if BlockParent == Global.Game_Data.Current_Room:
 		#print_debug(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")
 		self.set_visible(true)
-	elif BlockParent != Global.Current_Room:
+	elif BlockParent != Global.Game_Data.Current_Room:
 		self.set_visible(false)

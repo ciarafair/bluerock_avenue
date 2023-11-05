@@ -229,7 +229,6 @@ script = ExtResource("1_lcsd0")
 
 [node name="Hallway" parent="InsideMesh" instance=ExtResource("2_3ded8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.08165e-12, -7.55)
-PlayerRotation = null
 
 [node name="KidOneBedroom" parent="InsideMesh" instance=ExtResource("3_qgxjy")]
 
@@ -550,6 +549,5 @@ light_data = ExtResource("7_xxvdt")
 environment = ExtResource("6_u2lc4")
 camera_attributes = ExtResource("4_mgfog")
 
-[connection signal="child_order_changed" from="." to="." method="_on_child_order_changed"]
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]

@@ -85,12 +85,12 @@ func add_monster():
 		Game_World_Instance.add_child(Monster_Instance)
 
 func on_room_loaded(_node):
-	if Global.Current_Room == _node:
+	if Global.Game_Data.Current_Room == _node:
 		#print_debug(str(_node.name) + \" is already the current room.\")
 		pass
 	else:
 		#print_debug(\"Setting \" + str(_node.name) + \" as current room\")
-		Global.Current_Room = _node
+		Global.Game_Data.Current_Room = _node
 
 func load_user_interface():
 	User_Interface_Instance.name = \"UserInterface\"
@@ -138,6 +138,8 @@ func on_main_menu_loaded():
 		Movement_Interface_Instance.queue_free()
 	if Options_Menu_Instance != null:
 		Options_Menu_Instance.queue_free()
+	if Game_Over_Screen_Instance != null:
+		Game_Over_Screen_Instance.queue_free()
 
 func on_load_pause_menu():
 	if Pause_Menu_Instance != null:

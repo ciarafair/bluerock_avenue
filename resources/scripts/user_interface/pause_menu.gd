@@ -6,15 +6,19 @@ func _on_resume_game_button_up():
 
 func _on_options_button_up():
 	#print_debug("Options button was pressed.")
-	SignalManager.load_settings.emit()
+	SignalManager.load_settings_data.emit()
 	SignalManager.load_options_menu.emit()
 
 func _on_quit_button_up():
 	#print_debug("Quit button was pressed.")
 	SignalManager.load_main_menu.emit()
+	SignalManager.save_game_data.emit()
 
 func check_pause_menu():
 	if Global.Is_Pause_Menu_Open == true:
+		if Global.Is_In_Animation == true:
+			await SignalManager.animation_finished
+
 		get_tree().paused = true
 		Input.set_custom_mouse_cursor(null)
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

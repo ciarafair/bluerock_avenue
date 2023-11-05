@@ -1,46 +1,40 @@
 extends Node
 
-const random_tick_interval: float = 0.5
-const clock_tick_interval: float = 15
+const random_tick_interval: float = 1
+const clock_tick_interval: float = 2.5
 
 var IS_FLASHLIGHT_TOGGLEABLE = true
-var ClockTimer: Timer = Timer.new()
-var RandomTimer: Timer = Timer.new()
+var ClockTimer: Timer
+var RandomTimer: Timer
 
 var Is_Clock_Timer_Running: bool = false
 var Is_Random_Timer_Running: bool = false
 
-var minute_int: int = 30
-var hour_int: int = 11
 var meridiem: String
 
 var target_number: int
 var number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 func manage_time():
-	if minute_int >= 60:
-		minute_int = 0
-		hour_int += 1
+	if Global.Game_Data.Time_Minute >= 60:
+		Global.Game_Data.Time_Minute = 0
+		Global.Game_Data.Time_Hour += 1
 
-	if hour_int > 12:
-		hour_int = 1
+	if Global.Game_Data.Time_Hour > 12:
+		Global.Game_Data.Time_Hour = 1
 
-	if hour_int == 11:
+	if Global.Game_Data.Time_Hour == 11:
 		meridiem = "pm"
 	else:
 		meridiem = "am"
 
-	if minute_int != 0:
-		Global.Game_Data.Time_String = str(hour_int) + ":" + str(minute_int) + meridiem
-		Global.Game_Data.Time_Hour = hour_int
-		Global.Game_Data.Time_Minute = minute_int
+	if Global.Game_Data.Time_Minute != 0:
+		Global.Game_Data.Time_String = "%s:%s%s" % [str(Global.Game_Data.Time_Hour), str(Global.Game_Data.Time_Minute), str(meridiem)]
 	else:
-		Global.Game_Data.Time_String = str(hour_int) + ":00" + meridiem
-		Global.Game_Data.Time_Hour = hour_int
-		Global.Game_Data.Time_Minute = minute_int
+		Global.Game_Data.Time_String = "%s:00%s" % [str(Global.Game_Data.Time_Hour), str(meridiem)]
 
 func on_clock_timeout():
-	minute_int = minute_int + 10
+	Global.Game_Data.Time_Minute = Global.Game_Data.Time_Minute + 10
 	#print_debug("Clock timer timed out.")
 
 func get_random_number_from_pool():
@@ -66,24 +60,32 @@ func on_random_timeout():
 	print("No more numbers in the pool.")
 
 func start_random_timer():
-	if Is_Random_Timer_Running == false:
-		RandomTimer.timeout.connect(on_random_timeout)
-		RandomTimer.one_shot = false
-		RandomTimer.start(random_tick_interval)
-		Is_Random_Timer_Running = true
+	RandomTimer.one_shot = false
+	RandomTimer.start(random_tick_interval)
+	Is_Random_Timer_Running = true
 
 func start_clock_timer():
-	if Is_Clock_Timer_Running == false:
-		ClockTimer.timeout.connect(on_clock_timeout)
-		ClockTimer.one_shot = false
-		ClockTimer.start(clock_tick_interval)
-		Is_Clock_Timer_Running = true
+	ClockTimer.one_shot = false
+	ClockTimer.start(clock_tick_interval)
+	Is_Clock_Timer_Running = true
 
 func _process(_delta):
+	if !ClockTimer:
+		ClockTimer = Timer.new()
+		ClockTimer.timeout.connect(on_clock_timeout)
+		self.add_child(ClockTimer)
+
+	if !RandomTimer:
+		RandomTimer = Timer.new()
+		RandomTimer.timeout.connect(on_random_timeout)
+		self.add_child(RandomTimer)
+
 	if Global.Is_Game_Active == true && get_tree().paused == false:
 		manage_time()
-		start_clock_timer()
-		start_random_timer()
+		if ClockTimer.is_stopped():
+			start_clock_timer()
+		if RandomTimer.is_stopped():
+			start_random_timer()
 
 	if Global.Is_Game_Active == false:
 		ClockTimer.stop()
@@ -95,5 +97,4 @@ func _process(_delta):
 
 func _ready():
 	target_number = randi_range(1, 10)
-	self.add_child(ClockTimer)
-	self.add_child(RandomTimer)
+	print_debug("Target number for event is %s" %[target_number])

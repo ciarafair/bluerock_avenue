@@ -1,17 +1,7 @@
 extends Node
 
 var Settings_Data: SettingsData
-var Monster_Data: MonsterData
 var Game_Data: GameData
-
-# Game Data
-var Is_Window_Being_Opened: bool = false
-var Is_Window_Open: bool = false
-var Is_Door_Opened: bool = false
-var Is_Window_Being_Closed: bool = false
-var Time_String: String
-var Time_Hour: int
-var Time_Minute: int
 
 # Meta Data - Stays in this script as it does not need to be saved
 var Is_Window_Focused := true
@@ -32,18 +22,19 @@ var SpaceState: PhysicsDirectSpaceState3D
 var RAYCAST_COLLISION_OBJECT
 var Hovering_Block: Block
 var FLASHLIGHT_RAY_ARRAY: Array = []
+var Is_Window_Being_Opened: bool = false
+var Is_Window_Open: bool = false
+var Is_Door_Opened: bool = false
+var Is_Window_Being_Closed: bool = false
 
 # Player Data - move to seperate instance
 var Is_Flashlight_On: bool = false
 var Is_Able_To_Turn: bool = false
 
-var Current_Active_Block: Block = null
-var Current_Event: String = ""
-var Current_Room: Block = null
-
 func on_tween_finished():
 	#print_debug("Tween completed")
 	Global.Is_In_Animation = false
+	SignalManager.animation_finished.emit()
 
 @onready var EyeCursor = preload("res://resources/textures/mouse_cursors/eye.png")
 @onready var DialogueCursor = preload("res://resources/textures/mouse_cursors/speech_bubble.png")
@@ -84,9 +75,12 @@ func manage_mouse_cursor():
 		else:
 			Input.set_custom_mouse_cursor(null)
 
-func verify_save_directory(path: String):
+const Settings_File_Path: String = "res://settings.json"
+var Settings_Dictionary: Dictionary = {}
+
+func verify_settings_file_directory(path: String):
 	if FileAccess.file_exists(path):
-		load_data(Settings_File_Path)
+		load_data(Settings_File_Path, "settings")
 		return
 	else:
 		Global.Settings_Data = SettingsData.new()
@@ -101,7 +95,8 @@ func verify_save_directory(path: String):
 				"Is_Hovering_Block_Visible": Settings_Data.Is_Hovering_Block_Visible,
 				"Is_Monster_Info_Visible": Settings_Data.Is_Monster_Info_Visible,
 				"Is_Player_Current_Room_Info_Visible": Settings_Data.Is_Player_Current_Room_Info_Visible,
-				"Is_Player_Info_Visible": Settings_Data.Is_Player_Info_Visible
+				"Is_Player_Info_Visible": Settings_Data.Is_Player_Info_Visible,
+				"Is_Monster_Active": Game_Data.Is_Monster_Active
 			},
 			"volume_settings": {
 				"Master_Volume_Setting": Settings_Data.Master_Volume_Setting,
@@ -133,7 +128,8 @@ func save_developer_settings():
 			"Is_Current_Active_Event_Visible" = Settings_Data.Is_Current_Active_Event_Visible,
 			"Is_Current_Time_Info_Visible" = Settings_Data.Is_Current_Time_Info_Visible,
 			"Is_Player_Current_Room_Info_Visible" = Settings_Data.Is_Player_Current_Room_Info_Visible,
-			"Is_Monster_Info_Visible" = Settings_Data.Is_Monster_Info_Visible
+			"Is_Monster_Info_Visible" = Settings_Data.Is_Monster_Info_Visible,
+			"Is_Monster_Active" = Game_Data.Is_Monster_Active
 		}
 	}
 
@@ -165,7 +161,8 @@ func save_general_settings():
 
 	Settings_Dictionary.merge(data, true)
 
-func save_settings():
+func on_save_settings_data():
+	print_debug("Saving settings data")
 	var file = FileAccess.open(Settings_File_Path, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
@@ -180,50 +177,7 @@ func save_settings():
 	file.close()
 	return
 
-func load_data(path: String):
-	print_debug("Loading data from %s." % [path])
-
-	if FileAccess.file_exists(path):
-		var file = FileAccess.open(path, FileAccess.READ)
-		if file == null:
-			push_warning(str(FileAccess.get_open_error()))
-			return
-
-		var raw_data = file.get_as_text()
-		file.close()
-
-		var parsed_data = JSON.parse_string(raw_data)
-		if parsed_data == null:
-			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
-			return
-
-		Settings_Data.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
-		Settings_Data.Is_Overlay_Effect_Enabled = parsed_data.general_settings.Is_Overlay_Effect_Enabled
-		Settings_Data.Selected_Resolution_Index = parsed_data.general_settings.Selected_Resolution_Index
-
-		Settings_Data.Master_Volume_Setting = parsed_data.volume_settings.Master_Volume_Setting
-		Settings_Data.Music_Volume_Setting = parsed_data.volume_settings.Music_Volume_Setting
-		Settings_Data.SFX_Volume_Setting = parsed_data.volume_settings.SFX_Volume_Setting
-
-		Settings_Data.Is_Monster_Info_Visible = parsed_data.developer_settings.Is_Monster_Info_Visible
-		Settings_Data.Is_Fps_Counter_Visible = parsed_data.developer_settings.Is_Fps_Counter_Visible
-		Settings_Data.Is_Player_Info_Visible = parsed_data.developer_settings.Is_Player_Info_Visible
-		Settings_Data.Is_Hovering_Block_Visible = parsed_data.developer_settings.Is_Hovering_Block_Visible
-		Settings_Data.Is_Current_Active_Block_Visible = parsed_data.developer_settings.Is_Current_Active_Block_Visible
-		Settings_Data.Is_Current_Active_Event_Visible = parsed_data.developer_settings.Is_Current_Active_Event_Visible
-		Settings_Data.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
-		Settings_Data.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
-
-		return
-
-	else:
-		push_error("Cannot open non-existent file at %s!" % [path])
-		return
-
-const Settings_File_Path: String = "res://settings.json"
-var Settings_Dictionary: Dictionary = {}
-
-func set_window_resolution(index):
+func set_window_resolution(index: int):
 	if index == 0:
 		Global.Settings_Data.Current_Window_Size = Vector2i(1920,1080)
 		Global.Settings_Data.Selected_Resolution_Index = 0
@@ -239,15 +193,200 @@ func set_window_resolution(index):
 		Global.Settings_Data.Selected_Resolution_Index = 2
 		get_window().size = Global.Settings_Data.Current_Window_Size
 
+func load_settings_data(parsed_data: Dictionary):
+	Settings_Data.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
+	Settings_Data.Is_Overlay_Effect_Enabled = parsed_data.general_settings.Is_Overlay_Effect_Enabled
+	Settings_Data.Selected_Resolution_Index = parsed_data.general_settings.Selected_Resolution_Index
+
+	Settings_Data.Master_Volume_Setting = parsed_data.volume_settings.Master_Volume_Setting
+	Settings_Data.Music_Volume_Setting = parsed_data.volume_settings.Music_Volume_Setting
+	Settings_Data.SFX_Volume_Setting = parsed_data.volume_settings.SFX_Volume_Setting
+
+	Settings_Data.Is_Monster_Info_Visible = parsed_data.developer_settings.Is_Monster_Info_Visible
+	Settings_Data.Is_Fps_Counter_Visible = parsed_data.developer_settings.Is_Fps_Counter_Visible
+	Settings_Data.Is_Player_Info_Visible = parsed_data.developer_settings.Is_Player_Info_Visible
+	Settings_Data.Is_Hovering_Block_Visible = parsed_data.developer_settings.Is_Hovering_Block_Visible
+	Settings_Data.Is_Current_Active_Block_Visible = parsed_data.developer_settings.Is_Current_Active_Block_Visible
+	Settings_Data.Is_Current_Active_Event_Visible = parsed_data.developer_settings.Is_Current_Active_Event_Visible
+	Settings_Data.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
+	Settings_Data.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
+
+const Game_File_Path: String = "res://game.json"
+var Game_Dictionary: Dictionary = {}
+
+func verify_game_file_directory(path: String):
+	if FileAccess.file_exists(path):
+		Game_Data = GameData.new()
+		load_data(Game_File_Path, "game")
+		return
+	else:
+		Global.Game_Data = GameData.new()
+		var file = FileAccess.open(path, FileAccess.WRITE)
+
+		var default_data = {
+			"time": {
+				"Time_String" = Game_Data.Time_String,
+				"Time_Hour" = Game_Data.Time_Hour,
+				"Time_Minute" = Game_Data.Time_Minute,
+			},
+			"monster": {
+				"Is_Monster_Active" = Game_Data.Is_Monster_Active,
+				"Monster_Current_Room" = Game_Data.Monster_Current_Room,
+				"Monster_Current_Stage" = Game_Data.Monster_Current_Stage,
+				"Monster_Room_Number" = Game_Data.Monster_Room_Number,
+			},
+			"player": {
+				"Current_Active_Block" = Game_Data.Current_Active_Block,
+				"Current_Block_Name" = Game_Data.Current_Block_Name,
+				"Current_Event" = Game_Data.Current_Event,
+				"Current_Room" = Game_Data.Current_Room,
+				"Current_Room_Number" = Game_Data.Current_Room_Number
+			}
+		}
+
+		Game_Dictionary.merge(default_data, true)
+		var json_string = JSON.stringify(Game_Dictionary, "\t")
+		file.store_string(json_string)
+		file.close()
+		return
+
+func save_time_game_data():
+	print_debug("Saving time data")
+
+	var data: Dictionary = {
+		"time": {
+			"Time_String" = Game_Data.Time_String,
+			"Time_Hour" = Game_Data.Time_Hour,
+			"Time_Minute" = Game_Data.Time_Minute,
+		}
+	}
+
+	Game_Dictionary.merge(data, true)
+
+func save_monster_game_data():
+	print_debug("Saving monster data")
+
+	var data: Dictionary = {
+		"monster": {
+			"Is_Monster_Active" = Game_Data.Is_Monster_Active,
+			"Monster_Current_Room" = Game_Data.Monster_Current_Room,
+			"Monster_Current_Stage" = Game_Data.Monster_Current_Stage,
+			"Monster_Room_Number" = Game_Data.Monster_Room_Number,
+		}
+	}
+
+	Game_Dictionary.merge(data, true)
+
+
+func save_player_game_data():
+	print_debug("Saving player data")
+
+	var data: Dictionary = {
+		"player": {
+			"Current_Active_Block" = Game_Data.Current_Active_Block,
+			"Current_Block_Name" = Game_Data.Current_Block_Name,
+			"Current_Event" = Game_Data.Current_Event,
+			"Current_Room" = Game_Data.Current_Room,
+			"Current_Room_Number" = Game_Data.Current_Room_Number
+		}
+	}
+
+	Game_Dictionary.merge(data, true)
+
+func on_save_game_data():
+	print_debug("Saving game data")
+	var file = FileAccess.open(Game_File_Path, FileAccess.WRITE)
+	if file == null:
+		push_warning(str(FileAccess.get_open_error()))
+		return
+
+	save_monster_game_data()
+	save_player_game_data()
+	save_time_game_data()
+
+	var json_string = JSON.stringify(Game_Dictionary, "\t")
+	file.store_string(json_string)
+	file.close()
+	return
+
+func search_for_block(node: Node, identifier: String):
+	for child in node.get_children(true):
+		if child is Block and child.name == identifier:
+			print_debug(child)
+			return child
+		elif child is Block and child.name != identifier:
+			pass
+		search_for_block(child, identifier)
+
+func search_for_room(node: Node, identifier: int):
+	for child in node.get_children(true):
+		if child is RoomBlock and child.RoomNumber == identifier:
+			print_debug(child)
+			Game_Data.Monster_Current_Room = child
+		elif child is RoomBlock and child.RoomNumber != identifier:
+			pass
+		search_for_room(child, identifier)
+
+func load_game_data(parsed_data: Dictionary):
+	Game_Data.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
+	Game_Data.Current_Block_Name = parsed_data.player.Current_Block_Name
+	Game_Data.Current_Event = parsed_data.player.Current_Event
+	Game_Data.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
+	Game_Data.Current_Room_Number = parsed_data.player.Current_Room_Number
+
+	Game_Data.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
+	search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
+	Game_Data.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
+	Game_Data.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
+
+	Game_Data.Time_String = parsed_data.time.Time_String
+	Game_Data.Time_Hour = parsed_data.time.Time_Hour
+	Game_Data.Time_Minute = parsed_data.time.Time_Minute
+
+func load_data(path: String, type: String):
+	print_debug("Loading %s-data from %s." % [type, path])
+
+	if FileAccess.file_exists(path):
+		var file = FileAccess.open(path, FileAccess.READ)
+		if file == null:
+			push_warning(str(FileAccess.get_open_error()))
+			return
+
+		var raw_data = file.get_as_text()
+		file.close()
+
+		var parsed_data = JSON.parse_string(raw_data)
+		if parsed_data == null:
+			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+			return
+
+		if type == "settings":
+			load_settings_data(parsed_data)
+			return
+		elif type == "game":
+			load_game_data(parsed_data)
+			return
+	else:
+		push_error("Cannot open non-existent file at %s!" % [path])
+		return
+
+func on_delete_game_data():
+	if FileAccess.file_exists(Global.Game_File_Path) == true:
+		print_debug("Deleting file %s" % [Global.Game_File_Path])
+		DirAccess.remove_absolute(Game_File_Path)
+	else:
+		print_debug("File %s does not exist." % [Global.Game_File_Path])
+
 
 func _ready():
 	Settings_Data = SettingsData.new()
-	Monster_Data = MonsterData.new()
 	Game_Data = GameData.new()
 
-	verify_save_directory(Settings_File_Path)
+	verify_settings_file_directory(Settings_File_Path)
 	set_window_resolution(Settings_Data.Selected_Resolution_Index)
-	SignalManager.save_settings.connect(save_settings)
+	SignalManager.save_settings_data.connect(on_save_settings_data)
+	SignalManager.save_game_data.connect(on_save_game_data)
+	SignalManager.delete_game_data.connect(on_delete_game_data)
 
 func _process(_delta):
 	manage_mouse_cursor()

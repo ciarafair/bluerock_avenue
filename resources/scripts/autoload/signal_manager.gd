@@ -1,8 +1,14 @@
 extends Node
 
+signal animation_finished
+
 # Global
-signal load_settings
-signal save_settings
+signal load_settings_data
+signal save_settings_data
+
+signal load_game_data
+signal save_game_data
+signal delete_game_data
 
 # Event manager
 signal stop_event

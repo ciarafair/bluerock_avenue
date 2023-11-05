@@ -8,8 +8,6 @@ var FLASHLIGHT_RAY_ARRAY: Array = []
 var BLOCK_RESULT_VALUE
 var SpaceState: PhysicsDirectSpaceState3D
 
-var Has_Not_Looped_Yet: bool = true
-
 func mouse_position(mask, camera, area_bool, body_bool):
 	if Global.SpaceState == null:
 		return
@@ -69,17 +67,6 @@ func manage_flashlight_raycast():
 	else:
 		Global.Loaded_Player.Flashlight.visible = false
 		return
-
-func search_for_starting_room(node):
-	for child in node.get_children():
-		if child is RoomBlock && child.RoomNumber == 1:
-			SignalManager.activate_block.emit(child)
-			Has_Not_Looped_Yet = false
-		elif child is RoomBlock && child.RoomNumber != 1:
-			#print_debug("Setting " + str(child.name) + " as not visible")
-			child.set_visible(false)
-		else:
-			search_for_starting_room(child)
 
 func on_enable_door_view(node, number):
 	#print_debug("Enabling door view of room #" + str(number))
@@ -149,7 +136,8 @@ func _on_tree_exited():
 	pass
 
 func _process(_delta):
-	Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
+	if Global.Loaded_Player != null:
+		Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
 	Global.CentreOfScreen = get_viewport().get_visible_rect().size / 2
 	Global.MousePosition2D = get_viewport().get_mouse_position()
 
@@ -159,8 +147,3 @@ func _process(_delta):
 
 	manage_flashlight_raycast()
 	block_raycast()
-
-func _on_child_order_changed():
-	if Has_Not_Looped_Yet == true:
-		search_for_starting_room(self)
-		return

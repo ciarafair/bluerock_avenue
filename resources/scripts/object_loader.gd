@@ -89,13 +89,13 @@ func add_monster():
 	else:
 		Game_World_Instance.add_child(Monster_Instance)
 
-func on_room_loaded(_node):
-	if Global.Current_Room == _node:
+func on_room_loaded(node):
+	if Global.Current_Room == node:
 		#print_debug(str(_node.name) + " is already the current room.")
 		pass
 	else:
 		#print_debug("Setting " + str(_node.name) + " as current room")
-		Global.Current_Room = _node
+		Global.Current_Room = node
 
 func load_user_interface():
 	User_Interface_Instance.name = "UserInterface"
@@ -105,12 +105,12 @@ func load_user_interface():
 func on_load_game_world():
 	if Game_World_Instance != null:
 		self.add_child(Game_World_Instance)
-		add_player()
-		if Global.Monster_Data.Is_Monster_Active == true:
+		if Global.Game_Data.Is_Monster_Active == true:
 			add_monster()
 		else:
 			pass
 		add_pause_menu()
+		add_player()
 		add_movement_interface()
 		add_game_over_screen()
 		return
@@ -217,7 +217,6 @@ func manage_signals_on_start():
 	SignalManager.main_menu_loaded.connect(on_main_menu_loaded)
 
 	SignalManager.room_loaded.connect(on_room_loaded)
-	SignalManager.set_monster_position.connect(on_set_monster_position)
 
 func _ready():
 	manage_signals_on_start()
