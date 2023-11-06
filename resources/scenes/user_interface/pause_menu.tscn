@@ -53,7 +53,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("3_23pmw")
 bbcode_enabled = true
-text = "[center][color=#C81D25][i]Paused[/i]"
+text = "[center][font_size=75][color=#C81D25][i]Paused[/i]"
 fit_content = true
 autowrap_mode = 0
 
