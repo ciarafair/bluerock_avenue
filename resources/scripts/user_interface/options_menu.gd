@@ -161,11 +161,15 @@ func visibility_check():
 		MonsterEnabledButton.set_pressed_no_signal(false)
 
 func _on_main_menu_button_up():
+	self.set_visible(false)
 	SignalManager.save_game_data.emit()
 	SignalManager.exit_options_menu.emit()
 
 func _on_save_changes_button_up():
 	SignalManager.save_settings_data.emit()
+
+func _on_tree_exiting():
+	Global.Loaded_Main_Menu = null
 
 func _process(_delta):
 	manage_volume_sliders()
@@ -174,4 +178,7 @@ func _process(_delta):
 	visibility_check()
 
 func _ready():
+	self.set_visible(false)
+	Global.Loaded_Options_Menu = self
 	SignalManager.options_menu_loaded.emit()
+	SignalManager.show_options_menu.connect(Callable(self.set_visible).bind(true))

@@ -121,6 +121,7 @@ func _ready():
 	SignalManager.enable_other_side_of_door.connect(on_enable_door_view)
 	SignalManager.disable_other_side_of_door.connect(on_disable_door_view)
 	SignalManager.move_to_room.connect(on_move_to_room)
+	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
 	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
@@ -138,7 +139,7 @@ func _on_tree_exited():
 func _process(_delta):
 	if Global.Loaded_Player != null:
 		Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
-	Global.CentreOfScreen = get_viewport().get_visible_rect().size / 2
+	Global.ScreenCentre = get_window().size / 2
 	Global.MousePosition2D = get_viewport().get_mouse_position()
 
 	# Flashlight Raycasting

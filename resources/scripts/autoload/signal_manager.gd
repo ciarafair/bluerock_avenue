@@ -2,13 +2,17 @@ extends Node
 
 signal animation_finished
 
+# Pause menu
+signal show_options_menu
+
 # Global
 signal load_settings_data
 signal save_settings_data
-
 signal load_game_data
 signal save_game_data
 signal delete_game_data
+signal delete_settings_data
+signal new_game
 
 # Event manager
 signal stop_event
@@ -48,21 +52,25 @@ signal activate_block
 signal deactivate_block
 
 # Object Loader
-signal load_bedroom
-signal load_hallway
-signal room_loaded
 
+signal show_main_menu
+signal show_pause_menu
+
+signal load_audio_manager
 signal load_game_world
-signal game_world_loaded
-
+signal load_player
+signal load_monster
+signal free_game_world
 signal load_main_menu
-signal main_menu_loaded
-
 signal load_pause_menu
-signal pause_menu_loaded
 
+signal game_world_loaded
 signal load_options_menu
 signal options_menu_loaded
+signal pause_menu_loaded
+signal main_menu_loaded
+signal room_loaded
+
 signal exit_options_menu
 
 # Player

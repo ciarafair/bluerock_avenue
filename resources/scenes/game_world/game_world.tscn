@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bhqpysp2fmp7s"]
+[gd_scene load_steps=37 format=3 uid="uid://bhqpysp2fmp7s"]
 
 [ext_resource type="Script" path="res://resources/scripts/game_world.gd" id="1_lcsd0"]
 [ext_resource type="PackedScene" uid="uid://8t20480hhnsb" path="res://resources/scenes/game_world/rooms/hallway.tscn" id="2_3ded8"]
@@ -10,6 +10,7 @@
 [ext_resource type="LightmapGIData" uid="uid://dmu7v62sd3o5p" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
 [ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/Grass/Grass_001_COLOR.jpg" id="9_625td"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="10_6ogec"]
+[ext_resource type="VoxelGIData" uid="uid://cf41u4fimujus" path="res://resources/light_data/game_world.VoxelGI_data.res" id="11_pw5yy"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sf5j4"]
 frequency = 1.0
@@ -19,8 +20,8 @@ noise = SubResource("FastNoiseLite_sf5j4")
 
 [sub_resource type="FogMaterial" id="FogMaterial_ejgkk"]
 density = 0.12
-albedo = Color(0.541176, 0.541176, 0.541176, 1)
-edge_fade = 0.2
+albedo = Color(0, 0, 0, 1)
+edge_fade = 2.98571
 density_texture = SubResource("NoiseTexture3D_qv1be")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fdkqv"]
@@ -541,6 +542,7 @@ spot_angle = 27.2881
 [node name="LightmapGI" type="LightmapGI" parent="."]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 quality = 3
+directional = true
 interior = true
 camera_attributes = ExtResource("4_mgfog")
 light_data = ExtResource("7_xxvdt")
@@ -548,6 +550,13 @@ light_data = ExtResource("7_xxvdt")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_u2lc4")
 camera_attributes = ExtResource("4_mgfog")
+
+[node name="VoxelGI" type="VoxelGI" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6229, 5, -4.959)
+visible = false
+size = Vector3(38.5119, 10, 20)
+camera_attributes = ExtResource("4_mgfog")
+data = ExtResource("11_pw5yy")
 
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]

@@ -62,7 +62,7 @@ func player_current_room_info():
 		player_current_room_label.set_visible(false)
 
 func monster_current_stage_info():
-	monster_current_stage_label.text = "Monster's current stage: %s" %[Global.Game_Data.Monster_Current_Stage]
+	monster_current_stage_label.text = "Monster's current stage: %s" %[Global.Game_Data.Monster_Current_Stage - 1]
 
 	if Global.Settings_Data.Is_Monster_Info_Visible == true:
 		monster_current_stage_label.set_visible(true)

@@ -4,6 +4,12 @@ var Settings_Data: SettingsData
 var Game_Data: GameData
 
 # Meta Data - Stays in this script as it does not need to be saved
+var Loaded_Player: Node3D = null
+var Loaded_Game_World: Node3D = null
+var Loaded_Options_Menu: CanvasLayer = null
+var Loaded_Main_Menu: CanvasLayer = null
+var Loaded_Pause_Menu: CanvasLayer = null
+
 var Is_Window_Focused := true
 var Current_Track: String = ""
 var Mouse_State: int = 1
@@ -12,12 +18,10 @@ var Is_Game_Active: bool = false
 var Is_Pause_Menu_Open: bool = false
 var Is_Clickable: bool = false
 var Is_In_Animation: bool = false
-var Loaded_Player: Node3D = null
-var Loaded_Game_World: Node3D = null
 var Is_Timed_Out: bool = false
 var Current_Movement_Panel: Panel = null
 var MousePosition2D: Vector2
-var CentreOfScreen: Vector2
+var ScreenCentre: Vector2i
 var SpaceState: PhysicsDirectSpaceState3D
 var RAYCAST_COLLISION_OBJECT
 var Hovering_Block: Block
@@ -80,7 +84,7 @@ var Settings_Dictionary: Dictionary = {}
 
 func verify_settings_file_directory(path: String):
 	if FileAccess.file_exists(path):
-		load_data(Settings_File_Path, "settings")
+		SignalManager.load_settings_data.emit()
 		return
 	else:
 		Global.Settings_Data = SettingsData.new()
@@ -211,13 +215,23 @@ func load_settings_data(parsed_data: Dictionary):
 	Settings_Data.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
 	Settings_Data.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
 
+func on_delete_settings_data():
+	if FileAccess.file_exists(Settings_File_Path) == true:
+		print_debug("Deleting file %s" % [Settings_File_Path])
+		DirAccess.remove_absolute(Settings_File_Path)
+		return
+	else:
+		print_debug("File %s does not exist." % [Settings_File_Path])
+		return
+
+
 const Game_File_Path: String = "res://game.json"
 var Game_Dictionary: Dictionary = {}
 
 func verify_game_file_directory(path: String):
 	if FileAccess.file_exists(path):
 		Game_Data = GameData.new()
-		load_data(Game_File_Path, "game")
+		SignalManager.load_game_data.emit()
 		return
 	else:
 		Global.Game_Data = GameData.new()
@@ -371,22 +385,42 @@ func load_data(path: String, type: String):
 		return
 
 func on_delete_game_data():
-	if FileAccess.file_exists(Global.Game_File_Path) == true:
-		print_debug("Deleting file %s" % [Global.Game_File_Path])
+	if FileAccess.file_exists(Game_File_Path) == true:
+		print_debug("Deleting file %s" % [Game_File_Path])
 		DirAccess.remove_absolute(Game_File_Path)
+		return
 	else:
-		print_debug("File %s does not exist." % [Global.Game_File_Path])
+		print_debug("File %s does not exist." % [Game_File_Path])
+		return
 
+func on_new_game():
+	# Global.gd
+	SignalManager.delete_game_data.emit()
+
+	print_debug("File %s does not exist." % [Game_File_Path])
+	# Objectloader.gd
+	SignalManager.free_game_world.emit()
+	SignalManager.load_game_world.emit()
+	verify_game_file_directory(Game_File_Path)
+	return
+
+func manage_signals():
+	SignalManager.load_settings_data.connect(Callable(load_data).bind(Settings_File_Path, "settings"))
+	SignalManager.save_settings_data.connect(on_save_settings_data)
+	SignalManager.delete_settings_data.connect(on_delete_settings_data)
+
+	SignalManager.load_game_data.connect(Callable(load_data).bind(Game_File_Path, "game"))
+	SignalManager.save_game_data.connect(on_save_game_data)
+	SignalManager.delete_game_data.connect(on_delete_game_data)
+	SignalManager.new_game.connect(on_new_game)
 
 func _ready():
 	Settings_Data = SettingsData.new()
 	Game_Data = GameData.new()
 
+	manage_signals()
 	verify_settings_file_directory(Settings_File_Path)
 	set_window_resolution(Settings_Data.Selected_Resolution_Index)
-	SignalManager.save_settings_data.connect(on_save_settings_data)
-	SignalManager.save_game_data.connect(on_save_game_data)
-	SignalManager.delete_game_data.connect(on_delete_game_data)
 
 func _process(_delta):
 	manage_mouse_cursor()

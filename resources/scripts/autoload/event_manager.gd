@@ -97,4 +97,4 @@ func _process(_delta):
 
 func _ready():
 	target_number = randi_range(1, 10)
-	print_debug("Target number for event is %s" %[target_number])
+	print_verbose("Target number for event is %s" %[target_number])

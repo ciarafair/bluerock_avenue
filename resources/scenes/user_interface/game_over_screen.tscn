@@ -18,37 +18,37 @@ shader_parameter/brightness = 1.4
 layer = 2
 script = ExtResource("1_55fx1")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+ratio = 1.8
+
+[node name="ColorRect" type="ColorRect" parent="AspectRatioContainer"]
+layout_mode = 2
 color = Color(1, 0, 0, 0.0941176)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
 theme = ExtResource("2_r475x")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 75
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Title" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Title"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Title"]
 layout_mode = 2
 theme = ExtResource("2_r475x")
 bbcode_enabled = true
@@ -56,11 +56,89 @@ text = "[center][font_size=75][color=#C81D25][i]Game Over.[/i]"
 fit_content = true
 autowrap_mode = 0
 
-[node name="Overlay" type="Panel" parent="."]
-material = SubResource("ShaderMaterial_tf81l")
+[node name="Time" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="ScoreLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Time"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_r475x")
+bbcode_enabled = true
+text = "[center][font_size=45][i]Score: 0[/i]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ButtonMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 500
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 500
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin"]
+layout_mode = 2
+
+[node name="NewGameMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 0
+
+[node name="NewGame" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin"]
+layout_mode = 2
+text = " "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin/NewGame"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("2_r475x")
+bbcode_enabled = true
+text = "[center][font_size=5
+0]New Game"
+fit_content = true
+scroll_active = false
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 0
+
+[node name="QuitToMenu" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = " "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer/QuitToMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_r475x")
+bbcode_enabled = true
+text = "[center][font_size=5
+0]Quit To Menu"
+fit_content = true
+scroll_active = false
+
+[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
+material = SubResource("ShaderMaterial_tf81l")
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer/QuitToMenu" to="." method="_on_quit_to_menu_button_up"]

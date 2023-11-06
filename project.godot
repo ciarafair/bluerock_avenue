@@ -16,13 +16,14 @@ config/features=PackedStringArray("4.1", "Forward Plus")
 
 [audio]
 
-buses/default_bus_layout="res://Resources/Audio/default_bus_layout.tres"
+buses/default_bus_layout="res://resources/audio/default_bus_layout.tres"
 
 [autoload]
 
 EventManager="*res://resources/scripts/autoload/event_manager.gd"
 Global="*res://resources/scripts/autoload/global.gd"
 InputManager="*res://resources/scripts/autoload/input_manager.gd"
+Path="*res://resources/scripts/autoload/path_manager.gd"
 SignalManager="*res://resources/scripts/autoload/signal_manager.gd"
 
 [display]
