@@ -5,6 +5,7 @@ var IsOptionsMenuOpen: bool = false
 func _on_resume_game_button_up():
 	#print_debug("Resume button was pressed.")
 	Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
+	get_tree().paused = false
 
 func _on_options_button_up():
 	#print_debug("Options button was pressed.")
@@ -31,7 +32,6 @@ func check_pause_menu():
 			return
 
 	if Global.Is_Pause_Menu_Open == false:
-		get_tree().paused = false
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		self.set_visible(false)
 		return

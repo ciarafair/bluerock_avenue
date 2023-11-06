@@ -116,16 +116,14 @@ func on_move_to_room(node, number):
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	Global.Loaded_Game_World = self
 	SignalManager.game_world_loaded.emit()
 	SignalManager.stop_track.emit()
 	SignalManager.enable_other_side_of_door.connect(on_enable_door_view)
 	SignalManager.disable_other_side_of_door.connect(on_disable_door_view)
 	SignalManager.move_to_room.connect(on_move_to_room)
-	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
-	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
-	Global.Loaded_Game_World = self
 
 func _on_tree_entered():
 	#print_debug(str(self.name) + " has entered the tree.")
@@ -133,7 +131,6 @@ func _on_tree_entered():
 
 func _on_tree_exited():
 	#print_debug(str(self.name) + " has exited the tree.")
-	Global.Is_Game_Active = false
 	pass
 
 func _process(_delta):

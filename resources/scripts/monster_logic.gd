@@ -142,7 +142,6 @@ func find_window_node(node):
 			print_debug("Using " + str(child.name) +" from " + str(child.BlockParent.name) + " as the window the monster is currently at.")
 			SignalManager.open_window.emit(child)
 			return
-
 		elif not child is WindowEvent:
 			find_window_node(child)
 

@@ -47,37 +47,46 @@ func on_tween_finished():
 @onready var RightArrowCursor = preload("res://resources/textures/mouse_cursors/right_arrow.png")
 
 func manage_mouse_cursor():
-	if MousePosition2D.x > -get_viewport().get_visible_rect().size.x: MousePosition2D.x = get_viewport().get_visible_rect().size.x
-	if MousePosition2D.y > -get_viewport().get_visible_rect().size.y: MousePosition2D.y = get_viewport().get_visible_rect().size.y
-
-	if Mouse_State == 1:
-		if Hovering_Block != null:
-			Input.set_custom_mouse_cursor(EyeCursor)
-		else:
-			Input.set_custom_mouse_cursor(null)
-
-	elif Mouse_State == 2:
-		if Hovering_Block != null:
-			if Hovering_Block.BlockDialoguePath == "":
-				Input.set_custom_mouse_cursor(null)
+	if Is_Game_Active == true:
+		if Mouse_State == 1:
+			if Hovering_Block != null:
+				Input.set_custom_mouse_cursor(EyeCursor)
+				return
 			else:
-				Input.set_custom_mouse_cursor(DialogueCursor)
-		else:
+				Input.set_custom_mouse_cursor(null)
+				return
+
+		elif Mouse_State == 2:
+			if Hovering_Block != null:
+				if Hovering_Block.BlockDialoguePath == "":
+					Input.set_custom_mouse_cursor(null)
+					return
+				else:
+					Input.set_custom_mouse_cursor(DialogueCursor)
+					return
+			else:
+				Input.set_custom_mouse_cursor(null)
+
+		if Is_Game_Active == false:
 			Input.set_custom_mouse_cursor(null)
 
-	if Is_Game_Active == false:
-		Input.set_custom_mouse_cursor(null)
+		elif Mouse_State == 3:
+			if Current_Movement_Panel != null:
+				if Current_Movement_Panel.name == "Bottom":
+					Input.set_custom_mouse_cursor(DownArrowCursor)
+					return
+				elif Current_Movement_Panel.name == "Right":
+					Input.set_custom_mouse_cursor(RightArrowCursor)
+					return
+				elif Current_Movement_Panel.name == "Left":
+					Input.set_custom_mouse_cursor(LeftArrowCursor)
+					return
+			else:
+				Input.set_custom_mouse_cursor(null)
+				return
 
-	elif Mouse_State == 3:
-		if Current_Movement_Panel != null:
-			if Current_Movement_Panel.name == "Bottom":
-				Input.set_custom_mouse_cursor(DownArrowCursor)
-			elif Current_Movement_Panel.name == "Right":
-				Input.set_custom_mouse_cursor(RightArrowCursor)
-			elif Current_Movement_Panel.name == "Left":
-				Input.set_custom_mouse_cursor(LeftArrowCursor)
-		else:
-			Input.set_custom_mouse_cursor(null)
+	Input.set_custom_mouse_cursor(null)
+	return
 
 const Settings_File_Path: String = "res://settings.json"
 var Settings_Dictionary: Dictionary = {}
@@ -380,9 +389,6 @@ func load_data(path: String, type: String):
 		elif type == "game":
 			load_game_data(parsed_data)
 			return
-	else:
-		push_error("Cannot open non-existent file at %s!" % [path])
-		return
 
 func on_delete_game_data():
 	if FileAccess.file_exists(Game_File_Path) == true:
@@ -393,17 +399,6 @@ func on_delete_game_data():
 		print_debug("File %s does not exist." % [Game_File_Path])
 		return
 
-func on_new_game():
-	# Global.gd
-	SignalManager.delete_game_data.emit()
-
-	print_debug("File %s does not exist." % [Game_File_Path])
-	# Objectloader.gd
-	SignalManager.free_game_world.emit()
-	SignalManager.load_game_world.emit()
-	verify_game_file_directory(Game_File_Path)
-	return
-
 func manage_signals():
 	SignalManager.load_settings_data.connect(Callable(load_data).bind(Settings_File_Path, "settings"))
 	SignalManager.save_settings_data.connect(on_save_settings_data)
@@ -412,7 +407,6 @@ func manage_signals():
 	SignalManager.load_game_data.connect(Callable(load_data).bind(Game_File_Path, "game"))
 	SignalManager.save_game_data.connect(on_save_game_data)
 	SignalManager.delete_game_data.connect(on_delete_game_data)
-	SignalManager.new_game.connect(on_new_game)
 
 func _ready():
 	Settings_Data = SettingsData.new()

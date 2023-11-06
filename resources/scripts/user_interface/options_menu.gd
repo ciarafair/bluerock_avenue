@@ -180,5 +180,4 @@ func _process(_delta):
 func _ready():
 	self.set_visible(false)
 	Global.Loaded_Options_Menu = self
-	SignalManager.options_menu_loaded.emit()
 	SignalManager.show_options_menu.connect(Callable(self.set_visible).bind(true))

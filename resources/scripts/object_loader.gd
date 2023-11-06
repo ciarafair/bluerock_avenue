@@ -12,7 +12,6 @@ var Monster_Instance
 
 # User Interface
 var User_Interface_Instance = Control.new()
-
 var Dev_Utilities_Instance
 var Movement_Interface_Instance
 var Main_Menu_Instance
@@ -29,31 +28,10 @@ func check_if_exists(node, parent):
 func add_object(node_path, node_instance, parent_instance):
 	if check_if_exists(node_instance, parent_instance):
 		node_instance.queue_free()
+		push_warning("%s instance already exists."%[node_instance])
 		add_object(node_path, node_instance, parent_instance)
-		return
 	node_instance = load(str(node_path)).instantiate()
 	parent_instance.add_child(node_instance)
-
-func add_pause_menu():
-	if check_if_exists(Main_Menu_Instance, User_Interface_Instance):
-		return
-	Pause_Menu_Instance = preload(Path.PauseMenuPath).instantiate()
-	User_Interface_Instance.add_child(Pause_Menu_Instance)
-
-func add_game_over_screen():
-	if check_if_exists(Game_Over_Screen_Instance, User_Interface_Instance):
-		return
-	Game_Over_Screen_Instance = preload(Path.GameOverScreenPath).instantiate()
-	User_Interface_Instance.add_child(Game_Over_Screen_Instance)
-	return
-
-func add_options_menu():
-	if check_if_exists(Options_Menu_Instance, User_Interface_Instance):
-		return
-	Options_Menu_Instance = preload(Path.OptionsMenuPath).instantiate()
-	User_Interface_Instance.add_child(Options_Menu_Instance)
-	return
-
 
 func on_room_loaded(node):
 	if Global.Game_Data.Current_Room == node:
@@ -69,40 +47,38 @@ func load_user_interface():
 	add_object(Path.DevUtilitiesPath, Dev_Utilities_Instance, User_Interface_Instance)
 	add_object(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance)
 
-func on_free_game_world():
-	if Game_World_Instance != null:
-		Game_World_Instance.queue_free()
-		await Game_World_Instance.tree_exited
+func delete_game_world():
+	print_debug("Game world freed.")
+	Global.Loaded_Game_World.queue_free()
+	return
 
 func on_load_game_world():
-	if Game_World_Instance != null:
-		self.add_child(Game_World_Instance)
-		if Global.Game_Data.Is_Monster_Active == true:
-			add_object(Path.MonsterPath, Monster_Instance, Game_World_Instance)
-		else:
-			pass
-		add_object(Path.PlayerPath, Player_Instance, Game_World_Instance)
-		add_object(Path.PauseMenuPath, Player_Instance, User_Interface_Instance)
-		add_object(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance)
-		add_object(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance)
-		return
+	Game_World_Instance = preload(Path.GameWorldPath).instantiate()
+	self.add_child(Game_World_Instance)
+	if Global.Game_Data.Is_Monster_Active == true:
+		add_object(Path.MonsterPath, Monster_Instance, Game_World_Instance)
+	add_object(Path.PlayerPath, Player_Instance, Game_World_Instance)
+	add_object(Path.PauseMenuPath, Player_Instance, User_Interface_Instance)
+	add_object(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance)
+	add_object(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance)
+	Global.load_data(Global.Game_File_Path, "game")
+	return
 
-	if Game_World_Instance == null:
-		#print_debug("Could not find game world instance. Trying again.")
-		Game_World_Instance = preload(Path.GameWorldPath).instantiate()
-		on_load_game_world()
+func on_game_world_loaded():
+	print_debug("Game world loaded.")
+	if Global.Loaded_Main_Menu:
+		delete_main_menu()
+
+func delete_main_menu():
+	print_debug("Main menu freed.")
+	Global.Loaded_Main_Menu.queue_free()
+	return
 
 func on_main_menu_loaded():
-	#print_debug("Main menu was loaded.")
+	print_debug("Main menu was loaded.")
+	if Global.Loaded_Game_World:
+		delete_game_world()
 	get_tree().paused = false
-	if Game_World_Instance != null:
-		Game_World_Instance.queue_free()
-	if Pause_Menu_Instance != null:
-		Pause_Menu_Instance.queue_free()
-	if Movement_Interface_Instance != null:
-		Movement_Interface_Instance.queue_free()
-	if Options_Menu_Instance != null:
-		Options_Menu_Instance.queue_free()
 
 func on_pause_menu_loaded():
 	if Options_Menu_Instance != null:
@@ -117,13 +93,6 @@ func on_load_options_menu():
 		push_error("Could not find options menu. Trying again.")
 		Options_Menu_Instance = preload(Path.OptionsMenuPath).instantiate()
 		on_load_options_menu()
-
-func on_options_menu_loaded():
-	#print_debug("Options menu was loaded.")
-	if Main_Menu_Instance != null:
-		Main_Menu_Instance.queue_free()
-	if Pause_Menu_Instance != null:
-		Pause_Menu_Instance.queue_free()
 
 func on_exit_options_menu():
 	if Global.Is_Game_Active == true:
@@ -152,9 +121,10 @@ func manage_signals():
 	SignalManager.load_pause_menu.connect(Callable(add_object).bind(Path.PauseMenuPath, Pause_Menu_Instance, User_Interface_Instance))
 	SignalManager.load_options_menu.connect(Callable(add_object).bind(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance))
 
-	SignalManager.free_game_world.connect(on_free_game_world)
+	SignalManager.game_world_loaded.connect(Callable(on_game_world_loaded))
+	SignalManager.main_menu_loaded.connect(Callable(on_main_menu_loaded))
+
 	SignalManager.pause_menu_loaded.connect(on_pause_menu_loaded)
-	SignalManager.options_menu_loaded.connect(on_options_menu_loaded)
 	SignalManager.exit_options_menu.connect(on_exit_options_menu)
 	SignalManager.room_loaded.connect(on_room_loaded)
 

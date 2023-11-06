@@ -11,9 +11,7 @@ func manage_visibility():
 
 func _ready():
 	self.set_material(OverlayMaterial)
-	var ScaleFactorX = get_window().size.x / 1080
-	var ScaleFactorY = get_window().size.y / 1920
-	OverlayMaterial.set_shader_parameter("Resolution", Vector2(ScaleFactorX * 720, ScaleFactorY * 480 ))
+	OverlayMaterial.set_shader_parameter("Resolution", Vector2(get_window().size.x * 720, get_window().size.y * 480 ))
 
 func _process(_delta):
 	manage_visibility()
