@@ -12,6 +12,7 @@ func _on_quit_button_up():
 
 func _ready():
 	Global.Loaded_Main_Menu = self
+	Global.Is_Game_Active = false
 	SignalManager.game_world_loaded.connect(Callable(self.queue_free))
 	SignalManager.show_main_menu.connect(Callable(self.set_visible).bind(true))
 	SignalManager.main_menu_loaded.emit()
@@ -36,3 +37,7 @@ func _process(_delta):
 
 func _on_tree_exiting():
 	Global.Loaded_Main_Menu = null
+
+
+func _on_discord_button_button_up():
+	pass # Replace with function body.

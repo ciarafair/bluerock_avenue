@@ -120,7 +120,7 @@ func on_clock_ticking(_node):
 	AudioPlayer3D.set_name("ClockTickingSoundEffect")
 	AudioPlayer3D.set_bus("SFX")
 	AudioPlayer3D.set_max_distance(20)
-	AudioPlayer3D.set_volume_db(25)
+	AudioPlayer3D.set_volume_db(15)
 	AudioPlayer3D.play()
 
 func setup_audio_server():

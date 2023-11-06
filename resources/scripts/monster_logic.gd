@@ -1,7 +1,7 @@
 extends StaticBody3D
 
 var WindowTimer: Timer = Timer.new()
-const DefaultRoomPool = [1,3,4]
+const DefaultRoomPool = [1,3]
 var RoomPool: Array = []
 
 func on_random_tick():

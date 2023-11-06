@@ -47,14 +47,14 @@ func on_open_door():
 			return
 
 		if Is_Door_Open == false:
-			if self.DoorHandle != null:
-				DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
-				SignalManager.door_open_sound.emit(self)
-				pass
-
-			elif self.DoorHandle == null:
-				push_warning("Door handle returned null. Could not animate.")
-				pass
+#			if self.DoorHandle != null:
+#				DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
+#				#SignalManager.door_open_sound.emit(self)
+#				pass
+#
+#			elif self.DoorHandle == null:
+#				push_warning("Door handle returned null. Could not animate.")
+#				pass
 
 			if self.PivotPoint != null:
 				DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current()
@@ -80,16 +80,16 @@ func on_close_door():
 			push_warning("Pivot point returned null. Could not animate.")
 			pass
 
-		if self.DoorHandle != null:
-			DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, 0.5).from_current()
-			return
-
-		elif self.DoorHandle == null:
-			push_warning("Door handle returned null. Could not animate.")
-			return
+#		if self.DoorHandle != null:
+#			DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, 0.5).from_current()
+#			return
+#
+#		elif self.DoorHandle == null:
+#			push_warning("Door handle returned null. Could not animate.")
+#			return
 
 func door_close_finished():
-	SignalManager.door_close_sound.emit(self)
+	#SignalManager.door_close_sound.emit(self)
 	await DoorTweenInstance.finished
 	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 

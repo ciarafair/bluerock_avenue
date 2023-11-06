@@ -1,7 +1,8 @@
 extends Node3D
 
-@onready var Camera = $Camera3D
-@onready var Flashlight = $SpotLight3D
+@onready var Camera = %Camera3D
+@onready var Flashlight = %SpotLight3D
+@onready var ListenPosition = %ListenPosition
 var TweenInstance: Tween
 
 var camera_target_rotation = Vector2()
@@ -72,6 +73,16 @@ func on_reset_player_camera():
 	TweenInstance = get_tree().create_tween()
 	TweenInstance.bind_node(Camera)
 	TweenInstance.tween_property(Camera, "rotation", Vector3(0,0,0), 0.25)
+	TweenInstance.tween_property(Camera, "position", Vector3(0,0,0), 0.25)
+
+func on_player_camera_listen():
+	if TweenInstance:
+		TweenInstance.kill()
+
+	TweenInstance = get_tree().create_tween()
+	TweenInstance.bind_node(Camera)
+	TweenInstance.tween_property(Camera, "position", Vector3(ListenPosition.position), 0.25)
+	TweenInstance.tween_property(Camera, "rotation", Vector3(ListenPosition.rotation), 0.25)
 
 func manage_signals():
 	SignalManager.mouse_movement.connect(on_mouse_movement)
@@ -79,6 +90,7 @@ func manage_signals():
 	SignalManager.turn_180_degrees.connect(on_turn_180_degrees)
 	SignalManager.turn_negative_90_degrees.connect(on_turn_negative_90_degrees)
 	SignalManager.turn_positive_90_degrees.connect(on_turn_positive_90_degrees)
+	SignalManager.player_camera_listen.connect(on_player_camera_listen)
 
 func search_for_room(node: Node, identifier: int):
 	for child in node.get_children(true):
@@ -119,7 +131,6 @@ func _process(_delta):
 
 		SignalManager.activate_block.emit(Global.Game_Data.Current_Active_Block)
 		return
-
 
 func _ready():
 	manage_signals()

@@ -1,7 +1,7 @@
 extends Node
 
-const random_tick_interval: float = 1
-const clock_tick_interval: float = 2.5
+const random_tick_interval: float = 10
+const clock_tick_interval: float = 15
 
 var IS_FLASHLIGHT_TOGGLEABLE = true
 var ClockTimer: Timer

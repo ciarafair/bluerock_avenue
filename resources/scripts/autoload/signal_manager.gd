@@ -52,7 +52,6 @@ signal activate_block
 signal deactivate_block
 
 # Object Loader
-
 signal show_main_menu
 signal show_pause_menu
 
@@ -74,6 +73,7 @@ signal room_loaded
 signal exit_options_menu
 
 # Player
+signal player_camera_listen
 signal mouse_movement
 signal reset_player_camera
 signal turn_180_degrees

@@ -145,7 +145,6 @@ func save_developer_settings():
 			"Is_Monster_Active" = Game_Data.Is_Monster_Active
 		}
 	}
-
 	Settings_Dictionary.merge(data, true)
 
 func save_volume_settings():
@@ -158,7 +157,6 @@ func save_volume_settings():
 			"SFX_Volume_Setting" = Settings_Data.SFX_Volume_Setting
 		}
 	}
-
 	Settings_Dictionary.merge(data, true)
 
 func save_general_settings():
@@ -171,7 +169,6 @@ func save_general_settings():
 			"Selected_Resolution_Index": Settings_Data.Selected_Resolution_Index
 		}
 	}
-
 	Settings_Dictionary.merge(data, true)
 
 func on_save_settings_data():
@@ -283,7 +280,6 @@ func save_time_game_data():
 			"Time_Minute" = Game_Data.Time_Minute,
 		}
 	}
-
 	Game_Dictionary.merge(data, true)
 
 func save_monster_game_data():
@@ -297,9 +293,7 @@ func save_monster_game_data():
 			"Monster_Room_Number" = Game_Data.Monster_Room_Number,
 		}
 	}
-
 	Game_Dictionary.merge(data, true)
-
 
 func save_player_game_data():
 	print_debug("Saving player data")
@@ -313,7 +307,6 @@ func save_player_game_data():
 			"Current_Room_Number" = Game_Data.Current_Room_Number
 		}
 	}
-
 	Game_Dictionary.merge(data, true)
 
 func on_save_game_data():

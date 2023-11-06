@@ -3,7 +3,8 @@ extends Node
 
 var STARTUP_TIMER: Timer = Timer.new()
 var WaitTimer: Timer = Timer.new()
-var IS_HOLDING_SPACE: bool = false
+var IsHoldingSpace: bool = false
+var IsHoldingShift: bool = false
 
 func _ready():
 	self.add_child(STARTUP_TIMER)
@@ -61,15 +62,31 @@ func manage_window_input():
 			return
 
 func manage_door_input():
-	if Input.is_action_pressed("space_bar"):
-		if IS_HOLDING_SPACE == false && Global.Is_In_Animation == false:
-			IS_HOLDING_SPACE = true
-			SignalManager.open_door.emit()
+	if IsHoldingShift == false:
+		if Input.is_action_pressed("manage_door_status"):
+			if IsHoldingSpace == true && Global.Is_In_Animation == false:
+				IsHoldingSpace = false
+				SignalManager.close_door.emit()
 
-	if Input.is_action_just_released("space_bar"):
-		if IS_HOLDING_SPACE == true:
-			IS_HOLDING_SPACE = false
-			SignalManager.close_door.emit()
+		if Input.is_action_just_released("manage_door_status"):
+			if IsHoldingSpace == false:
+				IsHoldingSpace = true
+				SignalManager.open_door.emit()
+	else:
+		SignalManager.close_door.emit()
+
+	if IsHoldingSpace == false:
+		if Input.is_action_pressed("manage_door_listening"):
+				if IsHoldingShift == false && Global.Is_In_Animation == false:
+					IsHoldingShift = true
+					SignalManager.player_camera_listen.emit()
+
+		if Input.is_action_just_released("manage_door_listening"):
+			if IsHoldingShift == true:
+				IsHoldingShift = false
+				SignalManager.reset_player_camera.emit()
+	else:
+			SignalManager.reset_player_camera.emit()
 
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data.Current_Active_Block) # EventManager.gd
@@ -79,7 +96,7 @@ func manage_door_input():
 		if Input.is_action_just_released("mouse_button_1"):
 			#print_debug("Left mouse button pressed.")
 			SignalManager.stop_event.emit()
-			IS_HOLDING_SPACE = false
+			IsHoldingSpace = false
 			if Global.Game_Data.Current_Room.RoomNumber == Global.Game_Data.Current_Active_Block.ConnectedRoomOne:
 				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
 				Global.Game_Data.Current_Room.set_visible(false)
