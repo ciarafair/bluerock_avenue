@@ -53,7 +53,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("3_23pmw")
 bbcode_enabled = true
-text = "[center][font_size=75][color=#C81D25][i]Paused[/i]"
+text = "[center][font_size=75][outline_size=25][outline_color=black][color=#C81D25][i]Paused[/i]"
 fit_content = true
 autowrap_mode = 0
 
@@ -92,7 +92,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_23pmw")
 bbcode_enabled = true
-text = "[center][font_size=50]Resume"
+text = "[center][font_size=50][outline_size=25][outline_color=black]Resume"
 fit_content = true
 scroll_active = false
 
@@ -118,7 +118,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_23pmw")
 bbcode_enabled = true
-text = "[center][font_size=50]Options"
+text = "[center][font_size=50][outline_size=25][outline_color=black]Options"
 fit_content = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
@@ -143,7 +143,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_23pmw")
 bbcode_enabled = true
-text = "[center][font_size=50]Quit To Menu"
+text = "[center][font_size=50][outline_size=25][outline_color=black]Quit To Menu"
 fit_content = true
 
 [node name="Overlay" type="Panel" parent="."]

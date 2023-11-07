@@ -1,13 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bc8i83tnnfque"]
+[gd_scene load_steps=6 format=3 uid="uid://bc8i83tnnfque"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/options_menu.gd" id="1_43ylw"]
 [ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_smco0"]
 [ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_qy8uc"]
 [ext_resource type="Material" uid="uid://b3p41gn5f3cwo" path="res://resources/materials/overlay_material.material" id="4_1lfxa"]
 [ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_m4v5n"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_ixwgr"]
-font_size = 50
 
 [node name="OptionsMenu" type="CanvasLayer"]
 script = ExtResource("1_43ylw")
@@ -43,7 +40,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
 bbcode_enabled = true
-text = "[center][font_size=75][color=#C81D25][i]Options[/i]"
+text = "[center][font_size=75][color=#C81D25][outline_size=25][outline_color=black][i]Options[/i]"
 fit_content = true
 autowrap_mode = 0
 
@@ -72,7 +69,19 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
-text = "Back To Menu"
+text = " "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/BackToMenuMargin/MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black]Back To Menu"
+fit_content = true
 
 [node name="SaveChangesMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer"]
 layout_mode = 2
@@ -87,7 +96,19 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
-text = "Save Changes"
+text = " "
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/SaveChangesMargin/SaveChanges"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black]Save Changes"
+fit_content = true
 
 [node name="TabContainerMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
@@ -147,15 +168,13 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Resolution:"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black] Resolution:"
+fit_content = true
 
 [node name="DropdownMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution"]
 layout_mode = 2
@@ -170,6 +189,9 @@ theme_override_constants/margin_bottom = 0
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("3_qy8uc")
+theme_override_constants/outline_size = 25
+theme_override_font_sizes/font_size = 50
+alignment = 1
 item_count = 3
 selected = 0
 popup/item_0/text = "1920x1080"
@@ -195,15 +217,13 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Mouse Sensitivity:"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black]Mouse Sensitivity:"
+fit_content = true
 
 [node name="SliderMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity"]
 layout_mode = 2
@@ -222,7 +242,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-mouse_default_cursor_shape = 6
+mouse_default_cursor_shape = 10
 theme = ExtResource("3_qy8uc")
 min_value = 0.01
 max_value = 0.1
@@ -248,19 +268,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection"]
 layout_mode = 2
 
-[node name="OverlayEffect" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -270,12 +282,17 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Overlay Effect"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black]Overlay Effect"
+
+[node name="OverlayEffect" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1"]
 layout_mode = 2
@@ -293,7 +310,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -303,13 +320,10 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "
-"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][font_size=50][outline_size=25][outline_color=black]"
+fit_content = true
 
 [node name="Volume" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
 visible = false
@@ -353,15 +367,13 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Master Volume:"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][outline_size=25][outline_color=black]Master Volume:"
+fit_content = true
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume"]
 layout_mode = 2
@@ -380,6 +392,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+mouse_default_cursor_shape = 10
 theme = ExtResource("3_qy8uc")
 min_value = -80.0
 max_value = 2.08165e-12
@@ -402,15 +415,13 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Music Volume:"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][outline_size=25][outline_color=black]Music Volume:"
+fit_content = true
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume"]
 layout_mode = 2
@@ -429,6 +440,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+mouse_default_cursor_shape = 10
 theme = ExtResource("3_qy8uc")
 min_value = -60.0
 max_value = 2.08165e-12
@@ -451,15 +463,13 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "SFX Volume:"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[center][outline_size=25][outline_color=black]SFX Volume:"
+fit_content = true
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume"]
 layout_mode = 2
@@ -478,6 +488,7 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
+mouse_default_cursor_shape = 10
 theme = ExtResource("3_qy8uc")
 min_value = -60.0
 max_value = 2.08165e-12
@@ -528,19 +539,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection"]
 layout_mode = 2
 
-[node name="FpsCounter" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -550,12 +553,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "FPS Counter"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] FPS Counter"
+fit_content = true
+
+[node name="FpsCounter" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="PlayerInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1"]
 layout_mode = 2
@@ -569,19 +578,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection"]
 layout_mode = 2
 
-[node name="PlayerInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -589,12 +590,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Player Info"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Player Info"
+fit_content = true
+
+[node name="PlayerInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Row2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -611,19 +618,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection"]
 layout_mode = 2
 
-[node name="CurrentBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -633,12 +632,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Current Block"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Current Block"
+fit_content = true
+
+[node name="CurrentBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="HoveringBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2"]
 layout_mode = 2
@@ -652,19 +657,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection"]
 layout_mode = 2
 
-[node name="HoveringBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -674,12 +671,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Hovering Block"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Hovering Block"
+fit_content = true
+
+[node name="HoveringBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Row3" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -696,19 +699,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection"]
 layout_mode = 2
 
-[node name="CurrentEvent" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -718,12 +713,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Current Event"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Current Event"
+fit_content = true
+
+[node name="CurrentEvent" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="CurrentTimeCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3"]
 layout_mode = 2
@@ -737,19 +738,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection"]
 layout_mode = 2
 
-[node name="CurrentTime" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -759,12 +752,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Current Time"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Current Time"
+fit_content = true
+
+[node name="CurrentTime" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Row4" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -781,19 +780,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection"]
 layout_mode = 2
 
-[node name="CurrentRoom" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -803,12 +794,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Current Room"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Current Room"
+fit_content = true
+
+[node name="CurrentRoom" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4"]
 layout_mode = 2
@@ -822,19 +819,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection"]
 layout_mode = 2
 
-[node name="MonsterInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -844,12 +833,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Monster Info"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Monster Info"
+fit_content = true
+
+[node name="MonsterInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Row5" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -870,7 +865,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -880,13 +875,10 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "
-"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black]"
+fit_content = true
 
 [node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
 layout_mode = 2
@@ -900,19 +892,11 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection"]
 layout_mode = 2
 
-[node name="MonsterEnabled" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
-
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer/Panel"]
+[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -922,12 +906,18 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 theme = ExtResource("3_qy8uc")
-text = "Monster Enabled"
-label_settings = SubResource("LabelSettings_ixwgr")
-horizontal_alignment = 1
-vertical_alignment = 1
+bbcode_enabled = true
+text = "[outline_size=25][outline_color=black] Monster Enabled"
+fit_content = true
+
+[node name="MonsterEnabled" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("3_qy8uc")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+toggle_mode = true
+text = "  X  "
 
 [node name="Overlay" type="Panel" parent="AspectRatioContainer"]
 material = ExtResource("4_1lfxa")

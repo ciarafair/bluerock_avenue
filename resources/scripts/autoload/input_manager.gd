@@ -23,8 +23,10 @@ func manage_normal_input():
 
 			if Global.Mouse_State == 2:
 				if Input.is_action_just_released("mouse_button_1"):
-					print_debug("Insert dialogue here")
-					return
+					if Global.Hovering_Block.BlockDialoguePath != null:
+						print_debug("Insert dialogue here")
+						SignalManager.begin_dialogue.emit(Global.Hovering_Block, Global.Hovering_Block.BlockDialoguePath)
+						return
 
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data.Current_Active_Block) # EventManager.gd

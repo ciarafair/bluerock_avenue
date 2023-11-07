@@ -2,7 +2,7 @@ extends Node3D
 class_name Block
 
 @export var PlayerRotation: bool
-@export var BlockDialoguePath: String
+@export var BlockDialoguePath: JSON
 
 const TweenDuration: float = 0.5
 var TweenInstance: Tween

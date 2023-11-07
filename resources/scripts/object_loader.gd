@@ -18,12 +18,16 @@ var Main_Menu_Instance
 var Pause_Menu_Instance
 var Options_Menu_Instance
 var Game_Over_Screen_Instance
+var Dialogue_Box_Instance
 
 func check_if_exists(node, parent):
-	for child in parent.get_children(true):
-		if child == node:
-			push_warning("%s instance already exists."%[child.name])
-			return true
+	if parent != null:
+		for child in parent.get_children(true):
+			if child == node:
+				push_warning("%s instance already exists."%[child.name])
+				return true
+		pass
+	push_error("%s does not exist and cannot add %s as a child." %[parent, node])
 
 func add_object(node_path, node_instance, parent_instance):
 	if check_if_exists(node_instance, parent_instance):
@@ -31,7 +35,9 @@ func add_object(node_path, node_instance, parent_instance):
 		push_warning("%s instance already exists."%[node_instance])
 		add_object(node_path, node_instance, parent_instance)
 	node_instance = load(str(node_path)).instantiate()
-	parent_instance.add_child(node_instance)
+	if parent_instance != null:
+		parent_instance.add_child(node_instance)
+		return
 
 func on_room_loaded(node):
 	if Global.Game_Data.Current_Room == node:
@@ -61,6 +67,7 @@ func on_load_game_world():
 	add_object(Path.PauseMenuPath, Player_Instance, User_Interface_Instance)
 	add_object(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance)
 	add_object(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance)
+	load_dialogue_box()
 	Global.load_data(Global.Game_File_Path, "game")
 	return
 
@@ -111,9 +118,17 @@ func _process(_delta):
 	else:
 		pass
 
+func load_dialogue_box():
+	if Dialogue_Box_Instance != null:
+		Dialogue_Box_Instance.queue_free()
+		push_warning("%s instance already exists."%[Dialogue_Box_Instance])
+		Dialogue_Box_Instance = preload(Path.DialogueBoxPath).instantiate()
+	Dialogue_Box_Instance = preload(Path.DialogueBoxPath).instantiate()
+	Global.Loaded_Player.add_child(Dialogue_Box_Instance)
+
 func manage_signals():
 	SignalManager.load_audio_manager.connect(Callable(add_object).bind(Path.AudioManagerPath, Audio_Manager_Instance, self))
-	SignalManager.load_game_world.connect(on_load_game_world)
+	SignalManager.load_game_world.connect(Callable(on_load_game_world))
 	SignalManager.load_main_menu.connect(Callable(add_object).bind(Path.MainMenuPath, Main_Menu_Instance, User_Interface_Instance))
 
 	SignalManager.load_player.connect(Callable(add_object).bind(Path.PlayerPath, Player_Instance, Game_World_Instance))
@@ -124,9 +139,9 @@ func manage_signals():
 	SignalManager.game_world_loaded.connect(Callable(on_game_world_loaded))
 	SignalManager.main_menu_loaded.connect(Callable(on_main_menu_loaded))
 
-	SignalManager.pause_menu_loaded.connect(on_pause_menu_loaded)
-	SignalManager.exit_options_menu.connect(on_exit_options_menu)
-	SignalManager.room_loaded.connect(on_room_loaded)
+	SignalManager.pause_menu_loaded.connect(Callable(on_pause_menu_loaded))
+	SignalManager.exit_options_menu.connect(Callable(on_exit_options_menu))
+	SignalManager.room_loaded.connect(Callable(on_room_loaded))
 
 func _ready():
 	manage_signals()

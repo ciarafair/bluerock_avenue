@@ -55,11 +55,16 @@ signal deactivate_block
 signal show_main_menu
 signal show_pause_menu
 
+signal load_dialogue_box
+signal begin_dialogue
+
 signal load_audio_manager
+
+signal free_game_world
 signal load_game_world
+
 signal load_player
 signal load_monster
-signal free_game_world
 signal load_main_menu
 signal load_pause_menu
 

@@ -30,10 +30,10 @@ var Is_Window_Being_Opened: bool = false
 var Is_Window_Open: bool = false
 var Is_Door_Opened: bool = false
 var Is_Window_Being_Closed: bool = false
-
-# Player Data - move to seperate instance
-var Is_Flashlight_On: bool = false
 var Is_Able_To_Turn: bool = false
+
+# Game Data - move to seperate instance
+var Is_Flashlight_On: bool = false
 
 func on_tween_finished():
 	#print_debug("Tween completed")
@@ -58,7 +58,7 @@ func manage_mouse_cursor():
 
 		elif Mouse_State == 2:
 			if Hovering_Block != null:
-				if Hovering_Block.BlockDialoguePath == "":
+				if Hovering_Block.BlockDialoguePath == null:
 					Input.set_custom_mouse_cursor(null)
 					return
 				else:

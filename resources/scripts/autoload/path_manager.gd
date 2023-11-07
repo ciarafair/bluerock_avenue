@@ -14,3 +14,9 @@ const MovementInterfacePath: String = "res://resources/scenes/user_interface/mov
 const DevUtilitiesPath: String = "res://resources/scenes/user_interface/developer_utilities.tscn"
 
 const OverlayMaterialPath: String = "res://resources/materials/overlay_material.material"
+const DialogueBoxPath: String = "res://resources/scenes/user_interface/dialogue_box.tscn"
+
+const PlayfairRegularPath: String = "res://resources/fonts/playfair_display/playfair_regular.ttf"
+const PlayfairBoldPath: String = "res://resources/fonts/playfair_display/playfair_bold.ttf"
+const PlayfairItalicath: String = "res://resources/fonts/playfair_display/playfair_italic.ttf"
+const PlayfairBoldItalicPath: String = "res://resources/fonts/playfair_display/playfair_bolditalic.ttf"
