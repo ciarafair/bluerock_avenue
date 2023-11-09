@@ -1,6 +1,6 @@
 {
 	"one":{
-		"name": "ThisIsAName",
-		"dialogue": "ThisIsSomeDialogue"
+		"name": "Example",
+		"dialogue": "This is some example dialogue."
 	}
 }

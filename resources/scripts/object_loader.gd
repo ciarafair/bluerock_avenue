@@ -27,7 +27,7 @@ func check_if_exists(node, parent):
 				push_warning("%s instance already exists."%[child.name])
 				return true
 		pass
-	push_error("%s does not exist and cannot add %s as a child." %[parent, node])
+	#push_error("%s does not exist and cannot add %s as a child." %[parent, node])
 
 func add_object(node_path, node_instance, parent_instance):
 	if check_if_exists(node_instance, parent_instance):

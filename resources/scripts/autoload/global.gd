@@ -401,6 +401,23 @@ func manage_signals():
 	SignalManager.save_game_data.connect(on_save_game_data)
 	SignalManager.delete_game_data.connect(on_delete_game_data)
 
+func stringify_json(json_file: JSON):
+	var path = json_file.resource_path
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_warning(str(FileAccess.get_open_error()))
+		return
+
+	var raw_data = file.get_as_text()
+	file.close()
+
+	var parsed_data = JSON.parse_string(raw_data)
+	if parsed_data == null:
+		push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+		return
+	return parsed_data
+
+
 func _ready():
 	Settings_Data = SettingsData.new()
 	Game_Data = GameData.new()

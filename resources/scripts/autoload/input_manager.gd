@@ -1,35 +1,27 @@
 extends Node
 
-
-var STARTUP_TIMER: Timer = Timer.new()
-var WaitTimer: Timer = Timer.new()
 var IsHoldingSpace: bool = false
 var IsHoldingShift: bool = false
-
-func _ready():
-	self.add_child(STARTUP_TIMER)
-
-func on_wait_timer_timeout():
-	Global.Is_Timed_Out = false
-	pass
 
 func manage_normal_input():
 	if Global.Hovering_Block != null:
 		if Global.Is_Clickable == true:
 			if Global.Mouse_State == 1:
 				if Input.is_action_just_released("mouse_button_1"):
-					SignalManager.activate_block.emit(Global.Hovering_Block) # EventManager.gd
+					print_debug("Activating %s"%[Global.Hovering_Block])
+					SignalManager.activate_block.emit(Global.Hovering_Block)
 					return
 
 			if Global.Mouse_State == 2:
 				if Input.is_action_just_released("mouse_button_1"):
 					if Global.Hovering_Block.BlockDialoguePath != null:
 						print_debug("Insert dialogue here")
-						SignalManager.begin_dialogue.emit(Global.Hovering_Block, Global.Hovering_Block.BlockDialoguePath)
+
+						SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
 						return
 
 	if Input.is_action_just_released("mouse_button_2"):
-		SignalManager.deactivate_block.emit(Global.Game_Data.Current_Active_Block) # EventManager.gd
+		SignalManager.deactivate_block.emit(Global.Game_Data.Current_Active_Block)
 		return
 
 	if Global.Current_Movement_Panel != null:
@@ -54,7 +46,7 @@ func manage_window_input():
 		if Global.Is_Window_Being_Opened == false && Global.Is_Window_Open == false:
 			SignalManager.open_window.emit(Global.Game_Data.Current_Active_Block)
 
-	if Input.is_action_just_released("space_bar"):
+	if Input.is_action_just_released("manage_door_status"):
 		if Global.Is_Window_Being_Opened == true && Global.Is_Window_Being_Closed == false or Global.Is_Window_Open == true && Global.Is_Window_Being_Closed == false:
 			SignalManager.close_window.emit(Global.Game_Data.Current_Active_Block)
 

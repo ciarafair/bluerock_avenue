@@ -49,86 +49,45 @@ func on_tween_finished():
 	TweenInstance.kill()
 	SignalManager.animation_finished.emit()
 
-func camera_position_tween(node, enable_position: bool, enable_rotation: bool):
-	if TweenInstance:
-		TweenInstance.kill()
+func move_to_camera_position(node, enable_position: bool, enable_rotation: bool):
+	if node.BlockCameraPosition != null:
+		#print_debug("Moving to " + str(_node))
+		if TweenInstance:
+			TweenInstance.kill()
 
-	TweenInstance = get_tree().create_tween()
-	TweenInstance.finished.connect(on_tween_finished)
-	TweenInstance.bind_node(self)
+		TweenInstance = get_tree().create_tween()
+		TweenInstance.finished.connect(on_tween_finished)
+		TweenInstance.bind_node(self)
 
-	#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
-	if node is PropBlock:
-		SignalManager.reset_player_camera.emit()
+		#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
 		if BlockCameraPosition != null:
-			Global.Is_In_Animation = true
-			if enable_position:
+			if node is PropBlock:
+				SignalManager.reset_player_camera.emit()
+				Global.Is_In_Animation = true
 				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + node.BlockParent.position + Global.Game_Data.Current_Room.position , TweenDuration).from_current()
-				pass
-			else:
-				print_debug("Position altering disabled")
-				pass
-
-			if enable_rotation:
 				TweenInstance.tween_property(Global.Loaded_Player, "rotation", node.BlockCameraPosition.rotation, TweenDuration).from_current()
-			else:
-				#print_debug("Rotation altering disabled")
-				pass
-			return
-		else:
-			pass
+				return
 
-	if node is LocationBlock:
-		SignalManager.reset_player_camera.emit()
-		if BlockCameraPosition != null:
-			Global.Is_In_Animation = true
-
-			if enable_position:
+			if node is LocationBlock:
+				SignalManager.reset_player_camera.emit()
+				Global.Is_In_Animation = true
 				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + Global.Game_Data.Current_Room.position, TweenDuration).from_current()
-				pass
-			else:
-				print_debug("Position altering disabled")
-				pass
-
-			if enable_rotation:
 				TweenInstance.tween_property(Global.Loaded_Player, "rotation_degrees", node.BlockCameraPosition.rotation_degrees, TweenDuration).from_current()
-				pass
-			else:
-				print_debug("Rotation altering disabled")
-				pass
-			return
-		else:
-			pass
+				return
 
-	if node is RoomBlock:
-		if BlockCameraPosition != null:
-			Global.Is_In_Animation = true
-
-			if enable_rotation:
+			if node is RoomBlock:
+				Global.Is_In_Animation = true
 				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position, TweenDuration)
-				pass
-			else:
-				#print_debug("Position altering disabled")
-				pass
-
-			if enable_rotation:
 				if node.PlayerRotation == true:
 					#print_debug("Rounding to the nearest 90 degrees.")
 					var target_rotation = 90 * round(Global.Loaded_Player.rotation_degrees.y / 90)
 					TweenInstance.tween_property(Global.Loaded_Player, "rotation_degrees", Vector3(node.BlockCameraPosition.rotation.x, target_rotation, node.BlockCameraPosition.rotation.z), TweenDuration).from_current()
+					return
 				else:
 					TweenInstance.tween_property(Global.Loaded_Player, "rotation_degrees", node.BlockCameraPosition.rotation_degrees, TweenDuration).from_current()
+					return
 			else:
-				#print_debug("Rotation altering disabled")
 				pass
-			return
-		else:
-			pass
-
-func move_to_camera_position(node, enable_position: bool, enable_rotation: bool):
-	if node.BlockCameraPosition != null:
-		#print_debug("Moving to " + str(_node))
-		camera_position_tween(node, enable_position, enable_rotation)
 
 	if node.BlockCameraPosition == null:
 		#print_debug("Could not find camera position for " + str(_node) + ". Trying again.")

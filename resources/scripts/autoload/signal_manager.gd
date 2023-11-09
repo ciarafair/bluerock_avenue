@@ -56,7 +56,7 @@ signal show_main_menu
 signal show_pause_menu
 
 signal load_dialogue_box
-signal begin_dialogue
+signal click_dialogue
 
 signal load_audio_manager
 

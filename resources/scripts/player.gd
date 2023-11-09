@@ -10,11 +10,11 @@ var camera_current_rotation = Vector2()
 var minPitch = -360 * 2
 var maxPitch = 360 * 2
 
-func on_mouse_movement(_position):
+func on_camera_follow_mouse(mouse):
 	var sensitivity = Vector2(Global.Settings_Data.Mouse_Sensitivity, Global.Settings_Data.Mouse_Sensitivity)
 
-	camera_target_rotation.y += -_position.x * sensitivity.x
-	camera_target_rotation.x += -_position.y * sensitivity.y
+	camera_target_rotation.y += -mouse.x * sensitivity.x
+	camera_target_rotation.x += -mouse.y * sensitivity.y
 
 	camera_target_rotation.x = clamp(camera_target_rotation.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
 	camera_target_rotation.y = clamp(camera_target_rotation.y, deg_to_rad(minPitch), deg_to_rad(maxPitch))
@@ -85,12 +85,12 @@ func on_player_camera_listen():
 	TweenInstance.tween_property(Camera, "rotation", Vector3(ListenPosition.rotation), 0.25)
 
 func manage_signals():
-	SignalManager.mouse_movement.connect(on_mouse_movement)
-	SignalManager.reset_player_camera.connect(on_reset_player_camera)
-	SignalManager.turn_180_degrees.connect(on_turn_180_degrees)
-	SignalManager.turn_negative_90_degrees.connect(on_turn_negative_90_degrees)
-	SignalManager.turn_positive_90_degrees.connect(on_turn_positive_90_degrees)
-	SignalManager.player_camera_listen.connect(on_player_camera_listen)
+	SignalManager.mouse_movement.connect(Callable(on_camera_follow_mouse))
+	SignalManager.reset_player_camera.connect(Callable(on_reset_player_camera))
+	SignalManager.turn_180_degrees.connect(Callable(on_turn_180_degrees))
+	SignalManager.turn_negative_90_degrees.connect(Callable(on_turn_negative_90_degrees))
+	SignalManager.turn_positive_90_degrees.connect(Callable(on_turn_positive_90_degrees))
+	SignalManager.player_camera_listen.connect(Callable(on_player_camera_listen))
 
 func search_for_room(node: Node, identifier: int):
 	for child in node.get_children(true):

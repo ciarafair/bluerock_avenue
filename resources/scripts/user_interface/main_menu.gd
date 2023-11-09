@@ -38,6 +38,5 @@ func _process(_delta):
 func _on_tree_exiting():
 	Global.Loaded_Main_Menu = null
 
-
 func _on_discord_button_button_up():
 	pass # Replace with function body.
