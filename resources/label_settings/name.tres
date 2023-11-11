@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://itip0wke1rlr"]
+
+[ext_resource type="FontFile" uid="uid://dnqhdn5457o5y" path="res://resources/fonts/playfair_display/playfair_bolditalic.ttf" id="1_hu3jr"]
+
+[resource]
+font = ExtResource("1_hu3jr")
+font_size = 50
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)

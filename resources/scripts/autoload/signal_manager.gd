@@ -1,14 +1,18 @@
 extends Node
 
+signal toggle_tv
+
 signal animation_finished
 
 # Pause menu
 signal show_options_menu
+signal hide_pause_menu
 
 # Global
 signal load_settings_data
 signal save_settings_data
 signal load_game_data
+signal game_data_loaded
 signal save_game_data
 signal delete_game_data
 signal delete_settings_data
@@ -45,6 +49,7 @@ signal door_close_sound
 signal window_open_sound
 signal window_close_sound
 signal clock_ticking
+signal television_cartoon
 
 # Block
 signal activate_hovering
@@ -52,30 +57,36 @@ signal activate_block
 signal deactivate_block
 
 # Object Loader
+## Audio
+signal load_audio_manager
+
+## User Interface
+signal set_task
+
+signal load_main_menu
+signal main_menu_loaded
 signal show_main_menu
+
+signal load_pause_menu
+signal pause_menu_loaded
 signal show_pause_menu
 
+signal load_options_menu
+signal options_menu_loaded
+signal exit_options_menu
+
+### Dialogue Box
 signal load_dialogue_box
 signal click_dialogue
 
-signal load_audio_manager
-
-signal free_game_world
+## Game World
 signal load_game_world
+signal game_world_loaded
+signal free_game_world
 
 signal load_player
 signal load_monster
-signal load_main_menu
-signal load_pause_menu
-
-signal game_world_loaded
-signal load_options_menu
-signal options_menu_loaded
-signal pause_menu_loaded
-signal main_menu_loaded
 signal room_loaded
-
-signal exit_options_menu
 
 # Player
 signal player_camera_listen

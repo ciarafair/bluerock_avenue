@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/parents_bedroom.tscn" id="5_iiyqp"]
 [ext_resource type="Environment" uid="uid://83bq1txta8r5" path="res://resources/environments/active_game.tres" id="6_u2lc4"]
 [ext_resource type="LightmapGIData" uid="uid://dmu7v62sd3o5p" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
-[ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/Grass/Grass_001_COLOR.jpg" id="9_625td"]
+[ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/grass/colour.jpg" id="9_625td"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="10_6ogec"]
 [ext_resource type="VoxelGIData" uid="uid://cf41u4fimujus" path="res://resources/light_data/game_world.VoxelGI_data.res" id="11_pw5yy"]
 

@@ -4,7 +4,7 @@ class_name OverlayEffect
 @onready var OverlayMaterial = preload(Path.OverlayMaterialPath)
 
 func manage_visibility():
-	if Global.Settings_Data.Is_Overlay_Effect_Enabled == true:
+	if Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled == true:
 		self.set_visible(true)
 	else:
 		self.set_visible(false)

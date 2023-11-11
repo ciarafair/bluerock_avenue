@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1iyobleqeren"
-path.s3tc="res://.godot/imported/Color.jpg-175c60efb9eaab9278ed2c6457ce9647.s3tc.ctex"
+path.s3tc="res://.godot/imported/color.jpg-f2017bc326be12666dff4bba907e1eaa.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://resources/textures/Carpet/Color.jpg"
-dest_files=["res://.godot/imported/Color.jpg-175c60efb9eaab9278ed2c6457ce9647.s3tc.ctex"]
+source_file="res://resources/textures/carpet/color.jpg"
+dest_files=["res://.godot/imported/color.jpg-f2017bc326be12666dff4bba907e1eaa.s3tc.ctex"]
 
 [params]
 

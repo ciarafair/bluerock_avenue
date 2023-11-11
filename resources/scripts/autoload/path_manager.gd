@@ -12,11 +12,16 @@ const GameOverScreenPath: String = "res://resources/scenes/user_interface/game_o
 const MainMenuPath: String = "res://resources/scenes/user_interface/main_menu.tscn"
 const MovementInterfacePath: String = "res://resources/scenes/user_interface/movement_interface.tscn"
 const DevUtilitiesPath: String = "res://resources/scenes/user_interface/developer_utilities.tscn"
+const TaskListPath: String = "res://resources/scenes/user_interface/task_list.tscn"
 
 const OverlayMaterialPath: String = "res://resources/materials/overlay_material.material"
 const DialogueBoxPath: String = "res://resources/scenes/user_interface/dialogue_box.tscn"
 
-const PlayfairRegularPath: String = "res://resources/fonts/playfair_display/playfair_regular.ttf"
-const PlayfairBoldPath: String = "res://resources/fonts/playfair_display/playfair_bold.ttf"
-const PlayfairItalicath: String = "res://resources/fonts/playfair_display/playfair_italic.ttf"
-const PlayfairBoldItalicPath: String = "res://resources/fonts/playfair_display/playfair_bolditalic.ttf"
+const StockCartoonVideoPath: String = "res://resources/video/stock_cartoon.ogv"
+const ScreenOffVideoPath: String = "res://resources/video/tv_off.ogv"
+const StockCartoonAudioPath: String = "res://resources/audio/sound_effects/stock_cartoon.mp3"
+const ScreenOffAudioPath: String = "res://resources/audio/sound_effects/tv_off.mp3"
+
+const task_error_dialogue: String = "res://resources/dialogue/task_error.json"
+
+const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"

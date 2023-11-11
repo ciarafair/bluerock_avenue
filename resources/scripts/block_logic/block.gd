@@ -11,6 +11,8 @@ var BlockCameraPosition: CameraPosition = null
 var BlockCollider: CollisionShape3D = null
 var BlockParent: Block = null
 var IsActive: bool = false
+var CanMove: bool = true
+
 
 func search_for_parent_block(node):
 	if node != null:
@@ -64,14 +66,14 @@ func move_to_camera_position(node, enable_position: bool, enable_rotation: bool)
 			if node is PropBlock:
 				SignalManager.reset_player_camera.emit()
 				Global.Is_In_Animation = true
-				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + node.BlockParent.position + Global.Game_Data.Current_Room.position , TweenDuration).from_current()
+				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position , TweenDuration).from_current()
 				TweenInstance.tween_property(Global.Loaded_Player, "rotation", node.BlockCameraPosition.rotation, TweenDuration).from_current()
 				return
 
 			if node is LocationBlock:
 				SignalManager.reset_player_camera.emit()
 				Global.Is_In_Animation = true
-				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + Global.Game_Data.Current_Room.position, TweenDuration).from_current()
+				TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position + Global.Game_Data_Instance.Current_Room.position, TweenDuration).from_current()
 				TweenInstance.tween_property(Global.Loaded_Player, "rotation_degrees", node.BlockCameraPosition.rotation_degrees, TweenDuration).from_current()
 				return
 
@@ -155,28 +157,30 @@ func search_for_props(node, enable: bool):
 			else:
 				search_for_props(child, false)
 
-func on_activate_block(node):
+func start_activation(node):
 	#print_debug("Activating " + str(Global.Current_Active_Block))
 	move_to_camera_position(node, true, true)
-	Global.Game_Data.Current_Active_Block = node
-	Global.Game_Data.Current_Block_Name = node.name
+	Global.Game_Data_Instance.Current_Active_Block = node
+	Global.Game_Data_Instance.Current_Block_Name = node.name
 
 	if node.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
 	else:
 		Global.Is_Able_To_Turn = false
-
 	if !SignalManager.deactivate_block.is_connected(on_deactivate_block):
 		SignalManager.deactivate_block.connect(on_deactivate_block)
-
 	if node is RoomBlock:
 		SignalManager.room_loaded.emit(node)
 	else:
 		disable_collider(node)
 	return
 
+func on_activate_block(node):
+	start_activation(node)
+
+
 func on_deactivate_block(node):
-	if Global.Game_Data.Current_Event != "":
+	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
 
 	if node.BlockParent != null:
@@ -192,11 +196,11 @@ func on_deactivate_block(node):
 		pass
 
 func set_rotation_ability():
-	if Global.Game_Data:
-		if Global.Game_Data.Current_Active_Block == self:
+	if Global.Game_Data_Instance:
+		if Global.Game_Data_Instance.Current_Active_Block == self:
 			Global.Is_Able_To_Turn = self.PlayerRotation
 
-func _ready():
+func block_ready():
 	SignalManager.activate_block.connect(on_activate_block)
 	SignalManager.deactivate_block.connect(on_deactivate_block)
 
@@ -211,3 +215,5 @@ func _ready():
 		#print_debug(str(self.name) + " does not have a collider.")
 		pass
 
+func _ready():
+	block_ready()

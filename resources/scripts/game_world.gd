@@ -26,7 +26,7 @@ func mouse_position(mask, camera, area_bool, body_bool):
 		return ray_result
 
 func block_raycast():
-	if Global.Mouse_State == 1 or Global.Mouse_State == 2:
+	if Global.CurrentMouseState == Global.MouseState.MOVEMENT or Global.CurrentMouseState == Global.MouseState.DIALOGUE:
 		var CollisionMask: int = 2
 		var AreaBool: bool = false
 		var BodyBool: bool = true
@@ -58,7 +58,7 @@ func flashlight_raycast():
 		Global.FLASHLIGHT_RAY_ARRAY = FlashlightResult.values()
 
 func manage_flashlight_raycast():
-	if Global.Is_Flashlight_On == true:
+	if Global.Game_Data_Instance.Is_Flashlight_On == true:
 		Global.Loaded_Player.Flashlight.visible = true
 		flashlight_raycast()
 		if Global.FLASHLIGHT_RAY_ARRAY != []:

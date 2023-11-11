@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bc8i83tnnfque"]
+[gd_scene load_steps=10 format=3 uid="uid://bc8i83tnnfque"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/options_menu.gd" id="1_43ylw"]
-[ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_smco0"]
-[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_qy8uc"]
+[ext_resource type="Theme" uid="uid://hbrnjcb723c6" path="res://resources/themes/options_menu.theme" id="2_dq3bs"]
+[ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="3_5ifbh"]
 [ext_resource type="Material" uid="uid://b3p41gn5f3cwo" path="res://resources/materials/overlay_material.material" id="4_1lfxa"]
+[ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_g8lgn"]
 [ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_m4v5n"]
+[ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="5_w2ofv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7ls5"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 0.0941176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx8jv"]
 
 [node name="OptionsMenu" type="CanvasLayer"]
 script = ExtResource("1_43ylw")
@@ -16,36 +23,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("2_dq3bs")
 ratio = 1.8
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer"]
 layout_mode = 2
-theme = ExtResource("2_smco0")
+theme = ExtResource("2_dq3bs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_c7ls5")
 
 [node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_top = 75
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
+[node name="Label2" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][font_size=75][color=#C81D25][outline_size=25][outline_color=black][i]Options[/i]"
-fit_content = true
-autowrap_mode = 0
+theme = ExtResource("3_5ifbh")
+text = "Options"
+label_settings = ExtResource("4_g8lgn")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StaticOptionsMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 250
@@ -54,12 +67,13 @@ theme_override_constants/margin_bottom = 0
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin"]
 clip_contents = true
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 alignment = 1
 
 [node name="BackToMenuMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -68,25 +82,13 @@ theme_override_constants/margin_bottom = 0
 [node name="MainMenu" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/BackToMenuMargin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
-text = " "
-
-[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/BackToMenuMargin/MainMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Back To Menu"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = " Back To Menu"
 
 [node name="SaveChangesMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -95,25 +97,13 @@ theme_override_constants/margin_bottom = 0
 [node name="SaveChanges" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/SaveChangesMargin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
-text = " "
-
-[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/SaveChangesMargin/SaveChanges"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Save Changes"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Save Changes"
 
 [node name="TabContainerMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 0
@@ -122,13 +112,12 @@ theme_override_constants/margin_bottom = 0
 [node name="TabContainer" type="TabContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin"]
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 tab_alignment = 1
-clip_tabs = false
-drag_to_rearrange_enabled = true
 
 [node name="General" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="ContentMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General"]
 layout_mode = 1
@@ -138,6 +127,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 250
@@ -145,20 +135,23 @@ theme_override_constants/margin_bottom = 175
 
 [node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 follow_focus = true
 
 [node name="NormalOptions" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="Resolution" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -167,19 +160,19 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black] Resolution:"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Resolution"
+horizontal_alignment = 1
 
 [node name="DropdownMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -188,8 +181,8 @@ theme_override_constants/margin_bottom = 0
 [node name="ResolutionButton" type="OptionButton" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/DropdownMargin"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
-theme_override_constants/outline_size = 25
+theme = ExtResource("2_dq3bs")
+theme_override_fonts/font = ExtResource("5_w2ofv")
 theme_override_font_sizes/font_size = 50
 alignment = 1
 item_count = 3
@@ -203,11 +196,12 @@ popup/item_2/id = 2
 
 [node name="MouseSensitivity" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -216,19 +210,20 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Mouse Sensitivity:"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Mouse Sensitivity"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SliderMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -237,13 +232,14 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/SliderMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="SensitivitySlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/SliderMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 min_value = 0.01
 max_value = 0.1
 step = 0.01
@@ -254,12 +250,13 @@ ticks_on_borders = true
 [node name="Row1" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
 clip_contents = true
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 alignment = 1
 
 [node name="FPSCounterCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -267,12 +264,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -282,22 +281,21 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Overlay Effect"
+theme = ExtResource("2_dq3bs")
+text = "Overlay Effect"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="OverlayEffect" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
+[node name="OverlayEffect" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/FPSCounterCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -305,12 +303,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -320,14 +320,14 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "
+"
 
 [node name="Volume" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="ContentMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume"]
 layout_mode = 1
@@ -337,6 +337,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 250
@@ -344,20 +345,23 @@ theme_override_constants/margin_bottom = 175
 
 [node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 follow_focus = true
 
 [node name="NormalOptions" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="MasterVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -366,19 +370,20 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][outline_size=25][outline_color=black]Master Volume:"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Master Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -387,13 +392,14 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="MasterVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 min_value = -80.0
 max_value = 2.08165e-12
 tick_count = 50
@@ -401,11 +407,12 @@ ticks_on_borders = true
 
 [node name="MusicVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -414,19 +421,20 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][outline_size=25][outline_color=black]Music Volume:"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Music Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -435,13 +443,14 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="MusicVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 min_value = -60.0
 max_value = 2.08165e-12
 tick_count = 15
@@ -449,11 +458,12 @@ ticks_on_borders = true
 
 [node name="SFXVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -462,19 +472,20 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[center][outline_size=25][outline_color=black]SFX Volume:"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "SFX Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -483,13 +494,14 @@ theme_override_constants/margin_bottom = 0
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="SFXVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Volume/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 min_value = -60.0
 max_value = 2.08165e-12
 tick_count = 15
@@ -498,6 +510,7 @@ ticks_on_borders = true
 [node name="Developer" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer"]
 layout_mode = 1
@@ -507,6 +520,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 250
@@ -514,23 +528,25 @@ theme_override_constants/margin_bottom = 175
 
 [node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 follow_focus = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/separation = 15
 
 [node name="Row1" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 alignment = 1
 
 [node name="FPSCounterCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -538,12 +554,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -553,23 +571,21 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] FPS Counter"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "FPS Counter"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="FpsCounter" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
+[node name="FpsCounter" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="PlayerInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -577,12 +593,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -590,26 +608,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Player Info"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Player Info"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="PlayerInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
+[node name="PlayerInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="Row2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="CurrentBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -617,12 +634,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -632,23 +651,23 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Current Block"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Current Block"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CurrentBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
+[node name="CurrentBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
+icon_alignment = 1
+expand_icon = true
 
 [node name="HoveringBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -656,12 +675,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -671,26 +692,25 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Hovering Block"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Hovering Block"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="HoveringBlock" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
+[node name="HoveringBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="Row3" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="CurrentEventCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -698,12 +718,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -713,23 +735,21 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Current Event"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Current Event"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CurrentEvent" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
+[node name="CurrentEvent" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="CurrentTimeCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -737,12 +757,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -752,26 +774,25 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Current Time"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Current Time"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CurrentTime" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
+[node name="CurrentTime" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="Row4" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="CurrentRoomCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -779,12 +800,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -794,23 +817,21 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Current Room"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Current Room"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CurrentRoom" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
+[node name="CurrentRoom" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -818,12 +839,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -833,57 +856,25 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Monster Info"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Monster Info"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MonsterInfo" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
+[node name="MonsterInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
 
 [node name="Row5" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-
-[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank"]
-layout_mode = 2
-
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black]"
-fit_content = true
+theme = ExtResource("2_dq3bs")
 
 [node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
@@ -891,12 +882,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection"]
 layout_mode = 2
+theme = ExtResource("2_dq3bs")
 
 [node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -906,23 +899,53 @@ offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource("3_qy8uc")
-bbcode_enabled = true
-text = "[outline_size=25][outline_color=black] Monster Enabled"
-fit_content = true
+theme = ExtResource("2_dq3bs")
+text = "Monster Enabled"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MonsterEnabled" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
+[node name="MonsterEnabled" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/MonsterInfoCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("3_qy8uc")
+theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
-toggle_mode = true
-text = "  X  "
+
+[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank"]
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
 
 [node name="Overlay" type="Panel" parent="AspectRatioContainer"]
 material = ExtResource("4_1lfxa")
 layout_mode = 2
 mouse_filter = 2
+theme = ExtResource("2_dq3bs")
+theme_override_styles/panel = SubResource("StyleBoxFlat_hx8jv")
 script = ExtResource("5_m4v5n")
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

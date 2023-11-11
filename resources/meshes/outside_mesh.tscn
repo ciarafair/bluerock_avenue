@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=3 uid="uid://brmxctieu7e42"]
 
-[ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/Grass/Grass_001_COLOR.jpg" id="1_cicuj"]
+[ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/grass/colour.jpg" id="1_cicuj"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="2_sc41d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x6ovc"]

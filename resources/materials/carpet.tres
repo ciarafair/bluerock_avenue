@@ -1,9 +1,9 @@
 [gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://e4b4cj68vue8"]
 
-[ext_resource type="Texture2D" uid="uid://d1iyobleqeren" path="res://resources/textures/Carpet/Color.jpg" id="1_bmbpw"]
-[ext_resource type="Texture2D" uid="uid://o8t51q6i5pk5" path="res://resources/textures/Carpet/AmbientOcclusion.jpg" id="2_bgm7y"]
-[ext_resource type="Texture2D" uid="uid://dv5qh7pdnamxr" path="res://resources/textures/Carpet/Height.png" id="3_bgqma"]
-[ext_resource type="Texture2D" uid="uid://bjg6ovnb4bisx" path="res://resources/textures/Carpet/Roughness.jpg" id="4_2pdqq"]
+[ext_resource type="Texture2D" uid="uid://d1iyobleqeren" path="res://resources/textures/carpet/color.jpg" id="1_bmbpw"]
+[ext_resource type="Texture2D" uid="uid://o8t51q6i5pk5" path="res://resources/textures/carpet/occlusion.jpg" id="2_bgm7y"]
+[ext_resource type="Texture2D" uid="uid://dv5qh7pdnamxr" path="res://resources/textures/carpet/height.png" id="3_bgqma"]
+[ext_resource type="Texture2D" uid="uid://bjg6ovnb4bisx" path="res://resources/textures/carpet/Roughness.jpg" id="4_2pdqq"]
 
 [resource]
 albedo_texture = ExtResource("1_bmbpw")

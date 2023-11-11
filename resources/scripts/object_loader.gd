@@ -19,6 +19,7 @@ var Pause_Menu_Instance
 var Options_Menu_Instance
 var Game_Over_Screen_Instance
 var Dialogue_Box_Instance
+var Task_List_Instance
 
 func check_if_exists(node, parent):
 	if parent != null:
@@ -40,12 +41,12 @@ func add_object(node_path, node_instance, parent_instance):
 		return
 
 func on_room_loaded(node):
-	if Global.Game_Data.Current_Room == node:
+	if Global.Game_Data_Instance.Current_Room == node:
 		#print_debug(str(_node.name) + " is already the current room.")
 		pass
 	else:
 		#print_debug("Setting " + str(_node.name) + " as current room")
-		Global.Game_Data.Current_Room = node
+		Global.Game_Data_Instance.Current_Room = node
 
 func load_user_interface():
 	User_Interface_Instance.name = "UserInterface"
@@ -61,28 +62,29 @@ func delete_game_world():
 func on_load_game_world():
 	Game_World_Instance = preload(Path.GameWorldPath).instantiate()
 	self.add_child(Game_World_Instance)
-	if Global.Game_Data.Is_Monster_Active == true:
+	if Global.Game_Data_Instance.Is_Monster_Active == true:
 		add_object(Path.MonsterPath, Monster_Instance, Game_World_Instance)
 	add_object(Path.PlayerPath, Player_Instance, Game_World_Instance)
 	add_object(Path.PauseMenuPath, Player_Instance, User_Interface_Instance)
 	add_object(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance)
 	add_object(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance)
+	add_object(Path.TaskListPath, Task_List_Instance, User_Interface_Instance)
 	load_dialogue_box()
 	Global.load_data(Global.Game_File_Path, "game")
 	return
 
 func on_game_world_loaded():
-	print_debug("Game world loaded.")
+	#print_debug("Game world loaded.")
 	if Global.Loaded_Main_Menu:
 		delete_main_menu()
 
 func delete_main_menu():
-	print_debug("Main menu freed.")
+	#print_debug("Main menu freed.")
 	Global.Loaded_Main_Menu.queue_free()
 	return
 
 func on_main_menu_loaded():
-	print_debug("Main menu was loaded.")
+	#print_debug("Main menu was loaded.")
 	if Global.Loaded_Game_World:
 		delete_game_world()
 	get_tree().paused = false

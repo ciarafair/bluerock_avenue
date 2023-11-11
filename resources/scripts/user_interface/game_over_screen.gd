@@ -23,6 +23,6 @@ func _on_new_game_button_up():
 	Global.Is_Game_Active = true
 	Global.Loaded_Game_World.queue_free()
 	SignalManager.delete_game_data.emit()
-	Global.Game_Data = GameData.new()
+	Global.Game_Data_Instance = GameData.new()
 	SignalManager.load_game_world.emit()
 	Global.verify_game_file_directory(Global.Game_File_Path)

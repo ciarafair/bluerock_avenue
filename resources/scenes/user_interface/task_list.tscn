@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=3 uid="uid://6bvpw5xjvm1s"]
+
+[ext_resource type="Script" path="res://resources/scripts/user_interface/task_list.gd" id="1_6du5c"]
+[ext_resource type="Theme" uid="uid://8yit3t7tlirq" path="res://resources/themes/objectives.theme" id="2_ahsdd"]
+[ext_resource type="FontFile" uid="uid://buj4o47nanhe" path="res://resources/fonts/playfair_title/playfair_title.ttf" id="2_am3r6"]
+
+[node name="Tasks" type="CanvasLayer"]
+script = ExtResource("1_6du5c")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+ratio = 1.8
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 500
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+
+[node name="StaticMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+
+[node name="CenterContainer" type="CenterContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/StaticMargin"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+
+[node name="StaticLabel" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/StaticMargin/CenterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_ahsdd")
+theme_type_variation = &"HeaderLarge"
+theme_override_fonts/font = ExtResource("2_am3r6")
+theme_override_font_sizes/font_size = 40
+text = "Current Task:"
+
+[node name="ObjectiveMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ObjectiveMargin"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("2_ahsdd")
+alignment = 1
+
+[node name="TaskLabel" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ObjectiveMargin/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_ahsdd")
+theme_override_font_sizes/font_size = 25
+text = "- Example"
+visible_characters = 0
+visible_ratio = 0.0

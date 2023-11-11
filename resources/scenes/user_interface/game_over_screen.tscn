@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cqvx3jp8xn376"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/game_over_screen.gd" id="1_55fx1"]
-[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="2_r475x"]
-[ext_resource type="Shader" path="res://resources/shaders/Overlay.gdshader" id="3_qpks3"]
+[ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_r475x"]
+[ext_resource type="Shader" path="res://resources/shaders/overlay.gdshader" id="3_qpks3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tf81l"]
 shader = ExtResource("3_qpks3")

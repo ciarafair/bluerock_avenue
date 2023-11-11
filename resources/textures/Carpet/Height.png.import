@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dv5qh7pdnamxr"
-path.s3tc="res://.godot/imported/Height.png-8d4615a0303bdcc85f97036579f00d07.s3tc.ctex"
+path.s3tc="res://.godot/imported/height.png-7f424c4b582722bb96d898672afe51e0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://resources/textures/Carpet/Height.png"
-dest_files=["res://.godot/imported/Height.png-8d4615a0303bdcc85f97036579f00d07.s3tc.ctex"]
+source_file="res://resources/textures/carpet/height.png"
+dest_files=["res://.godot/imported/height.png-7f424c4b582722bb96d898672afe51e0.s3tc.ctex"]
 
 [params]
 

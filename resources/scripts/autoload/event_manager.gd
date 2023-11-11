@@ -16,25 +16,25 @@ var target_number: int
 var number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 func manage_time():
-	if Global.Game_Data.Time_Minute >= 60:
-		Global.Game_Data.Time_Minute = 0
-		Global.Game_Data.Time_Hour += 1
+	if Global.Game_Data_Instance.Time_Minute >= 60:
+		Global.Game_Data_Instance.Time_Minute = 0
+		Global.Game_Data_Instance.Time_Hour += 1
 
-	if Global.Game_Data.Time_Hour > 12:
-		Global.Game_Data.Time_Hour = 1
+	if Global.Game_Data_Instance.Time_Hour > 12:
+		Global.Game_Data_Instance.Time_Hour = 1
 
-	if Global.Game_Data.Time_Hour == 11:
+	if Global.Game_Data_Instance.Time_Hour == 11:
 		meridiem = "pm"
 	else:
 		meridiem = "am"
 
-	if Global.Game_Data.Time_Minute != 0:
-		Global.Game_Data.Time_String = "%s:%s%s" % [str(Global.Game_Data.Time_Hour), str(Global.Game_Data.Time_Minute), str(meridiem)]
+	if Global.Game_Data_Instance.Time_Minute != 0:
+		Global.Game_Data_Instance.Time_String = "%s:%s%s" % [str(Global.Game_Data_Instance.Time_Hour), str(Global.Game_Data_Instance.Time_Minute), str(meridiem)]
 	else:
-		Global.Game_Data.Time_String = "%s:00%s" % [str(Global.Game_Data.Time_Hour), str(meridiem)]
+		Global.Game_Data_Instance.Time_String = "%s:00%s" % [str(Global.Game_Data_Instance.Time_Hour), str(meridiem)]
 
 func on_clock_timeout():
-	Global.Game_Data.Time_Minute = Global.Game_Data.Time_Minute + 10
+	Global.Game_Data_Instance.Time_Minute = Global.Game_Data_Instance.Time_Minute + 10
 	#print_debug("Clock timer timed out.")
 
 func get_random_number_from_pool():

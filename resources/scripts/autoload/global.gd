@@ -1,9 +1,11 @@
 extends Node
 
-var Settings_Data: SettingsData
-var Game_Data: GameData
+var Settings_Data_Instance: SettingsData
+var Game_Data_Instance: GameData
 
 # Meta Data - Stays in this script as it does not need to be saved
+const CharacterReadRate: float = 0.025
+
 var Loaded_Player: Node3D = null
 var Loaded_Game_World: Node3D = null
 var Loaded_Options_Menu: CanvasLayer = null
@@ -12,33 +14,45 @@ var Loaded_Pause_Menu: CanvasLayer = null
 
 var Is_Window_Focused := true
 var Current_Track: String = ""
-var Mouse_State: int = 1
+
 var Is_Music_Playing: bool = false
 var Is_Game_Active: bool = false
 var Is_Pause_Menu_Open: bool = false
 var Is_Clickable: bool = false
 var Is_In_Animation: bool = false
 var Is_Timed_Out: bool = false
-var Current_Movement_Panel: Panel = null
-var MousePosition2D: Vector2
-var ScreenCentre: Vector2i
-var SpaceState: PhysicsDirectSpaceState3D
-var RAYCAST_COLLISION_OBJECT
-var Hovering_Block: Block
-var FLASHLIGHT_RAY_ARRAY: Array = []
 var Is_Window_Being_Opened: bool = false
 var Is_Window_Open: bool = false
 var Is_Door_Opened: bool = false
 var Is_Window_Being_Closed: bool = false
 var Is_Able_To_Turn: bool = false
 
-# Game Data - move to seperate instance
-var Is_Flashlight_On: bool = false
+var Current_Movement_Panel: Panel = null
+var ScreenCentre: Vector2i
+var SpaceState: PhysicsDirectSpaceState3D
+var RAYCAST_COLLISION_OBJECT
+var Hovering_Block: Block
+var FLASHLIGHT_RAY_ARRAY: Array = []
 
 func on_tween_finished():
 	#print_debug("Tween completed")
 	Global.Is_In_Animation = false
 	SignalManager.animation_finished.emit()
+
+var CurrentMouseState: MouseState
+var MousePosition2D: Vector2
+
+enum MouseState {
+	MOVEMENT,
+	DIALOGUE,
+	ROTATION
+}
+
+enum task {
+	TURN_OFF_TV = 1,
+	EXPLORE = 2,
+	SURVIVE = 3
+}
 
 @onready var EyeCursor = preload("res://resources/textures/mouse_cursors/eye.png")
 @onready var DialogueCursor = preload("res://resources/textures/mouse_cursors/speech_bubble.png")
@@ -48,7 +62,7 @@ func on_tween_finished():
 
 func manage_mouse_cursor():
 	if Is_Game_Active == true:
-		if Mouse_State == 1:
+		if CurrentMouseState == MouseState.MOVEMENT:
 			if Hovering_Block != null:
 				Input.set_custom_mouse_cursor(EyeCursor)
 				return
@@ -56,7 +70,7 @@ func manage_mouse_cursor():
 				Input.set_custom_mouse_cursor(null)
 				return
 
-		elif Mouse_State == 2:
+		elif CurrentMouseState == MouseState.DIALOGUE:
 			if Hovering_Block != null:
 				if Hovering_Block.BlockDialoguePath == null:
 					Input.set_custom_mouse_cursor(null)
@@ -70,7 +84,7 @@ func manage_mouse_cursor():
 		if Is_Game_Active == false:
 			Input.set_custom_mouse_cursor(null)
 
-		elif Mouse_State == 3:
+		elif CurrentMouseState == MouseState.ROTATION:
 			if Current_Movement_Panel != null:
 				if Current_Movement_Panel.name == "Bottom":
 					Input.set_custom_mouse_cursor(DownArrowCursor)
@@ -88,6 +102,21 @@ func manage_mouse_cursor():
 	Input.set_custom_mouse_cursor(null)
 	return
 
+func set_mouse_state(next: MouseState):
+	CurrentMouseState = next
+	match CurrentMouseState:
+		MouseState.MOVEMENT:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
+		MouseState.DIALOGUE:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
+		MouseState.ROTATION:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
 const Settings_File_Path: String = "res://settings.json"
 var Settings_Dictionary: Dictionary = {}
 
@@ -96,30 +125,30 @@ func verify_settings_file_directory(path: String):
 		SignalManager.load_settings_data.emit()
 		return
 	else:
-		Global.Settings_Data = SettingsData.new()
+		Global.Settings_Data_Instance = SettingsData.new()
 		var file = FileAccess.open(path, FileAccess.WRITE)
 
 		var default_data = {
 			"developer_settings": {
-				"Is_Current_Active_Block_Visible": Settings_Data.Is_Current_Active_Block_Visible,
-				"Is_Current_Active_Event_Visible": Settings_Data.Is_Current_Active_Event_Visible,
-				"Is_Current_Time_Info_Visible": Settings_Data.Is_Current_Time_Info_Visible,
-				"Is_Fps_Counter_Visible": Settings_Data.Is_Fps_Counter_Visible,
-				"Is_Hovering_Block_Visible": Settings_Data.Is_Hovering_Block_Visible,
-				"Is_Monster_Info_Visible": Settings_Data.Is_Monster_Info_Visible,
-				"Is_Player_Current_Room_Info_Visible": Settings_Data.Is_Player_Current_Room_Info_Visible,
-				"Is_Player_Info_Visible": Settings_Data.Is_Player_Info_Visible,
-				"Is_Monster_Active": Game_Data.Is_Monster_Active
+				"Is_Current_Active_Block_Visible": Settings_Data_Instance.Is_Current_Active_Block_Visible,
+				"Is_Current_Active_Event_Visible": Settings_Data_Instance.Is_Current_Active_Event_Visible,
+				"Is_Current_Time_Info_Visible": Settings_Data_Instance.Is_Current_Time_Info_Visible,
+				"Is_Fps_Counter_Visible": Settings_Data_Instance.Is_Fps_Counter_Visible,
+				"Is_Hovering_Block_Visible": Settings_Data_Instance.Is_Hovering_Block_Visible,
+				"Is_Monster_Info_Visible": Settings_Data_Instance.Is_Monster_Info_Visible,
+				"Is_Player_Current_Room_Info_Visible": Settings_Data_Instance.Is_Player_Current_Room_Info_Visible,
+				"Is_Player_Info_Visible": Settings_Data_Instance.Is_Player_Info_Visible,
+				"Is_Monster_Active": Game_Data_Instance.Is_Monster_Active
 			},
 			"volume_settings": {
-				"Master_Volume_Setting": Settings_Data.Master_Volume_Setting,
-				"Music_Volume_Setting": Settings_Data.Music_Volume_Setting,
-				"SFX_Volume_Setting": Settings_Data.SFX_Volume_Setting
+				"Master_Volume_Setting": Settings_Data_Instance.Master_Volume_Setting,
+				"Music_Volume_Setting": Settings_Data_Instance.Music_Volume_Setting,
+				"SFX_Volume_Setting": Settings_Data_Instance.SFX_Volume_Setting
 			},
 			"general_settings": {
-				"Mouse_Sensitivity": Settings_Data.Mouse_Sensitivity,
-				"Is_Overlay_Effect_Enabled": Settings_Data.Is_Overlay_Effect_Enabled,
-				"Selected_Resolution_Index": Settings_Data.Selected_Resolution_Index
+				"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
+				"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
+				"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
 			}
 		}
 
@@ -130,43 +159,43 @@ func verify_settings_file_directory(path: String):
 		return
 
 func save_developer_settings():
-	print_debug("Saving developer settings.")
+	#print_debug("Saving developer settings.")
 
 	var data = {
 		"developer_settings":{
-			"Is_Fps_Counter_Visible" = Settings_Data.Is_Fps_Counter_Visible,
-			"Is_Player_Info_Visible" = Settings_Data.Is_Player_Info_Visible,
-			"Is_Hovering_Block_Visible" = Settings_Data.Is_Hovering_Block_Visible,
-			"Is_Current_Active_Block_Visible" = Settings_Data.Is_Current_Active_Block_Visible,
-			"Is_Current_Active_Event_Visible" = Settings_Data.Is_Current_Active_Event_Visible,
-			"Is_Current_Time_Info_Visible" = Settings_Data.Is_Current_Time_Info_Visible,
-			"Is_Player_Current_Room_Info_Visible" = Settings_Data.Is_Player_Current_Room_Info_Visible,
-			"Is_Monster_Info_Visible" = Settings_Data.Is_Monster_Info_Visible,
-			"Is_Monster_Active" = Game_Data.Is_Monster_Active
+			"Is_Fps_Counter_Visible" = Settings_Data_Instance.Is_Fps_Counter_Visible,
+			"Is_Player_Info_Visible" = Settings_Data_Instance.Is_Player_Info_Visible,
+			"Is_Hovering_Block_Visible" = Settings_Data_Instance.Is_Hovering_Block_Visible,
+			"Is_Current_Active_Block_Visible" = Settings_Data_Instance.Is_Current_Active_Block_Visible,
+			"Is_Current_Active_Event_Visible" = Settings_Data_Instance.Is_Current_Active_Event_Visible,
+			"Is_Current_Time_Info_Visible" = Settings_Data_Instance.Is_Current_Time_Info_Visible,
+			"Is_Player_Current_Room_Info_Visible" = Settings_Data_Instance.Is_Player_Current_Room_Info_Visible,
+			"Is_Monster_Info_Visible" = Settings_Data_Instance.Is_Monster_Info_Visible,
+			"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active
 		}
 	}
 	Settings_Dictionary.merge(data, true)
 
 func save_volume_settings():
-	print_debug("Saving volume settings")
+	#print_debug("Saving volume settings")
 
 	var data: Dictionary = {
 		"volume_settings":{
-			"Master_Volume_Setting" = Settings_Data.Master_Volume_Setting,
-			"Music_Volume_Setting" = Settings_Data.Music_Volume_Setting,
-			"SFX_Volume_Setting" = Settings_Data.SFX_Volume_Setting
+			"Master_Volume_Setting" = Settings_Data_Instance.Master_Volume_Setting,
+			"Music_Volume_Setting" = Settings_Data_Instance.Music_Volume_Setting,
+			"SFX_Volume_Setting" = Settings_Data_Instance.SFX_Volume_Setting
 		}
 	}
 	Settings_Dictionary.merge(data, true)
 
 func save_general_settings():
-	print_debug("Saving general settings")
+	#print_debug("Saving general settings")
 
 	var data: Dictionary = {
 		"general_settings": {
-			"Mouse_Sensitivity": Settings_Data.Mouse_Sensitivity,
-			"Is_Overlay_Effect_Enabled": Settings_Data.Is_Overlay_Effect_Enabled,
-			"Selected_Resolution_Index": Settings_Data.Selected_Resolution_Index
+			"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
+			"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
+			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
 		}
 	}
 	Settings_Dictionary.merge(data, true)
@@ -189,37 +218,37 @@ func on_save_settings_data():
 
 func set_window_resolution(index: int):
 	if index == 0:
-		Global.Settings_Data.Current_Window_Size = Vector2i(1920,1080)
-		Global.Settings_Data.Selected_Resolution_Index = 0
-		get_window().size = Global.Settings_Data.Current_Window_Size
+		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1920,1080)
+		Global.Settings_Data_Instance.Selected_Resolution_Index = 0
+		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
 
 	if index == 1:
-		Global.Settings_Data.Current_Window_Size = Vector2i(1600,900)
-		Global.Settings_Data.Selected_Resolution_Index = 1
-		get_window().size = Global.Settings_Data.Current_Window_Size
+		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1600,900)
+		Global.Settings_Data_Instance.Selected_Resolution_Index = 1
+		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
 
 	if index == 2:
-		Global.Settings_Data.Current_Window_Size = Vector2i(1280,720)
-		Global.Settings_Data.Selected_Resolution_Index = 2
-		get_window().size = Global.Settings_Data.Current_Window_Size
+		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1280,720)
+		Global.Settings_Data_Instance.Selected_Resolution_Index = 2
+		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
 
 func load_settings_data(parsed_data: Dictionary):
-	Settings_Data.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
-	Settings_Data.Is_Overlay_Effect_Enabled = parsed_data.general_settings.Is_Overlay_Effect_Enabled
-	Settings_Data.Selected_Resolution_Index = parsed_data.general_settings.Selected_Resolution_Index
+	Settings_Data_Instance.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
+	Settings_Data_Instance.Is_Overlay_Effect_Enabled = parsed_data.general_settings.Is_Overlay_Effect_Enabled
+	Settings_Data_Instance.Selected_Resolution_Index = parsed_data.general_settings.Selected_Resolution_Index
 
-	Settings_Data.Master_Volume_Setting = parsed_data.volume_settings.Master_Volume_Setting
-	Settings_Data.Music_Volume_Setting = parsed_data.volume_settings.Music_Volume_Setting
-	Settings_Data.SFX_Volume_Setting = parsed_data.volume_settings.SFX_Volume_Setting
+	Settings_Data_Instance.Master_Volume_Setting = parsed_data.volume_settings.Master_Volume_Setting
+	Settings_Data_Instance.Music_Volume_Setting = parsed_data.volume_settings.Music_Volume_Setting
+	Settings_Data_Instance.SFX_Volume_Setting = parsed_data.volume_settings.SFX_Volume_Setting
 
-	Settings_Data.Is_Monster_Info_Visible = parsed_data.developer_settings.Is_Monster_Info_Visible
-	Settings_Data.Is_Fps_Counter_Visible = parsed_data.developer_settings.Is_Fps_Counter_Visible
-	Settings_Data.Is_Player_Info_Visible = parsed_data.developer_settings.Is_Player_Info_Visible
-	Settings_Data.Is_Hovering_Block_Visible = parsed_data.developer_settings.Is_Hovering_Block_Visible
-	Settings_Data.Is_Current_Active_Block_Visible = parsed_data.developer_settings.Is_Current_Active_Block_Visible
-	Settings_Data.Is_Current_Active_Event_Visible = parsed_data.developer_settings.Is_Current_Active_Event_Visible
-	Settings_Data.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
-	Settings_Data.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
+	Settings_Data_Instance.Is_Monster_Info_Visible = parsed_data.developer_settings.Is_Monster_Info_Visible
+	Settings_Data_Instance.Is_Fps_Counter_Visible = parsed_data.developer_settings.Is_Fps_Counter_Visible
+	Settings_Data_Instance.Is_Player_Info_Visible = parsed_data.developer_settings.Is_Player_Info_Visible
+	Settings_Data_Instance.Is_Hovering_Block_Visible = parsed_data.developer_settings.Is_Hovering_Block_Visible
+	Settings_Data_Instance.Is_Current_Active_Block_Visible = parsed_data.developer_settings.Is_Current_Active_Block_Visible
+	Settings_Data_Instance.Is_Current_Active_Event_Visible = parsed_data.developer_settings.Is_Current_Active_Event_Visible
+	Settings_Data_Instance.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
+	Settings_Data_Instance.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
 
 func on_delete_settings_data():
 	if FileAccess.file_exists(Settings_File_Path) == true:
@@ -236,31 +265,32 @@ var Game_Dictionary: Dictionary = {}
 
 func verify_game_file_directory(path: String):
 	if FileAccess.file_exists(path):
-		Game_Data = GameData.new()
+		Game_Data_Instance = GameData.new()
 		SignalManager.load_game_data.emit()
 		return
 	else:
-		Global.Game_Data = GameData.new()
+		Global.Game_Data_Instance = GameData.new()
 		var file = FileAccess.open(path, FileAccess.WRITE)
 
 		var default_data = {
 			"time": {
-				"Time_String" = Game_Data.Time_String,
-				"Time_Hour" = Game_Data.Time_Hour,
-				"Time_Minute" = Game_Data.Time_Minute,
+				"Time_String" = Game_Data_Instance.Time_String,
+				"Time_Hour" = Game_Data_Instance.Time_Hour,
+				"Time_Minute" = Game_Data_Instance.Time_Minute,
 			},
 			"monster": {
-				"Is_Monster_Active" = Game_Data.Is_Monster_Active,
-				"Monster_Current_Room" = Game_Data.Monster_Current_Room,
-				"Monster_Current_Stage" = Game_Data.Monster_Current_Stage,
-				"Monster_Room_Number" = Game_Data.Monster_Room_Number,
+				"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active,
+				"Monster_Current_Room" = Game_Data_Instance.Monster_Current_Room,
+				"Monster_Current_Stage" = Game_Data_Instance.Monster_Current_Stage,
+				"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
 			},
 			"player": {
-				"Current_Active_Block" = Game_Data.Current_Active_Block,
-				"Current_Block_Name" = Game_Data.Current_Block_Name,
-				"Current_Event" = Game_Data.Current_Event,
-				"Current_Room" = Game_Data.Current_Room,
-				"Current_Room_Number" = Game_Data.Current_Room_Number
+				"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
+				"Current_Task" = Game_Data_Instance.Current_Task,
+				"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
+				"Current_Event" = Game_Data_Instance.Current_Event,
+				"Current_Room" = Game_Data_Instance.Current_Room,
+				"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
 			}
 		}
 
@@ -271,46 +301,48 @@ func verify_game_file_directory(path: String):
 		return
 
 func save_time_game_data():
-	print_debug("Saving time data")
+	#print_debug("Saving time data")
 
 	var data: Dictionary = {
 		"time": {
-			"Time_String" = Game_Data.Time_String,
-			"Time_Hour" = Game_Data.Time_Hour,
-			"Time_Minute" = Game_Data.Time_Minute,
+			"Time_String" = Game_Data_Instance.Time_String,
+			"Time_Hour" = Game_Data_Instance.Time_Hour,
+			"Time_Minute" = Game_Data_Instance.Time_Minute,
 		}
 	}
 	Game_Dictionary.merge(data, true)
 
 func save_monster_game_data():
-	print_debug("Saving monster data")
+	#print_debug("Saving monster data")
 
 	var data: Dictionary = {
 		"monster": {
-			"Is_Monster_Active" = Game_Data.Is_Monster_Active,
-			"Monster_Current_Room" = Game_Data.Monster_Current_Room,
-			"Monster_Current_Stage" = Game_Data.Monster_Current_Stage,
-			"Monster_Room_Number" = Game_Data.Monster_Room_Number,
+			"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active,
+			"Monster_Current_Room" = Game_Data_Instance.Monster_Current_Room,
+			"Monster_Current_Stage" = Game_Data_Instance.Monster_Current_Stage,
+			"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
 		}
 	}
 	Game_Dictionary.merge(data, true)
 
 func save_player_game_data():
-	print_debug("Saving player data")
+	#print_debug("Saving player data")
 
 	var data: Dictionary = {
 		"player": {
-			"Current_Active_Block" = Game_Data.Current_Active_Block,
-			"Current_Block_Name" = Game_Data.Current_Block_Name,
-			"Current_Event" = Game_Data.Current_Event,
-			"Current_Room" = Game_Data.Current_Room,
-			"Current_Room_Number" = Game_Data.Current_Room_Number
+			"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
+			"Current_Task" = Game_Data_Instance.Current_Task,
+			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
+			"Current_Event" = Game_Data_Instance.Current_Event,
+			"Current_Room" = Game_Data_Instance.Current_Room,
+			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number,
+			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On
 		}
 	}
 	Game_Dictionary.merge(data, true)
 
 func on_save_game_data():
-	print_debug("Saving game data")
+	#print_debug("Saving game data")
 	var file = FileAccess.open(Game_File_Path, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
@@ -338,29 +370,32 @@ func search_for_room(node: Node, identifier: int):
 	for child in node.get_children(true):
 		if child is RoomBlock and child.RoomNumber == identifier:
 			print_debug(child)
-			Game_Data.Monster_Current_Room = child
+			Game_Data_Instance.Monster_Current_Room = child
 		elif child is RoomBlock and child.RoomNumber != identifier:
 			pass
 		search_for_room(child, identifier)
 
 func load_game_data(parsed_data: Dictionary):
-	Game_Data.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
-	Game_Data.Current_Block_Name = parsed_data.player.Current_Block_Name
-	Game_Data.Current_Event = parsed_data.player.Current_Event
-	Game_Data.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
-	Game_Data.Current_Room_Number = parsed_data.player.Current_Room_Number
+	Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
+	Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
+	Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
+	Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
+	Game_Data_Instance.Current_Room_Number = parsed_data.player.Current_Room_Number
+	Game_Data_Instance.Is_Flashlight_On = parsed_data.player.Is_Flashlight_On
 
-	Game_Data.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
+	Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
 	search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
-	Game_Data.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
-	Game_Data.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
+	Game_Data_Instance.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
+	Game_Data_Instance.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
 
-	Game_Data.Time_String = parsed_data.time.Time_String
-	Game_Data.Time_Hour = parsed_data.time.Time_Hour
-	Game_Data.Time_Minute = parsed_data.time.Time_Minute
+	Game_Data_Instance.Time_String = parsed_data.time.Time_String
+	Game_Data_Instance.Time_Hour = parsed_data.time.Time_Hour
+	Game_Data_Instance.Time_Minute = parsed_data.time.Time_Minute
+
+	Game_Data_Instance.Current_Task = parsed_data.player.Current_Task
 
 func load_data(path: String, type: String):
-	print_debug("Loading %s-data from %s." % [type, path])
+	#print_debug("Loading %s-data from %s." % [type, path])
 
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path, FileAccess.READ)
@@ -385,12 +420,14 @@ func load_data(path: String, type: String):
 
 func on_delete_game_data():
 	if FileAccess.file_exists(Game_File_Path) == true:
-		print_debug("Deleting file %s" % [Game_File_Path])
+		#print_debug("Deleting file %s" % [Game_File_Path])
 		DirAccess.remove_absolute(Game_File_Path)
 		return
 	else:
-		print_debug("File %s does not exist." % [Game_File_Path])
+		push_warning("File %s does not exist and cannot be deleted." % [Game_File_Path])
 		return
+
+
 
 func manage_signals():
 	SignalManager.load_settings_data.connect(Callable(load_data).bind(Settings_File_Path, "settings"))
@@ -401,12 +438,12 @@ func manage_signals():
 	SignalManager.save_game_data.connect(on_save_game_data)
 	SignalManager.delete_game_data.connect(on_delete_game_data)
 
-func stringify_json(json_file: JSON):
+func stringify_json(json_file: JSON) -> Dictionary:
 	var path = json_file.resource_path
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
-		return
+		return {}
 
 	var raw_data = file.get_as_text()
 	file.close()
@@ -414,17 +451,48 @@ func stringify_json(json_file: JSON):
 	var parsed_data = JSON.parse_string(raw_data)
 	if parsed_data == null:
 		push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
-		return
+		return {}
 	return parsed_data
 
+func set_task(next: task):
+	Game_Data_Instance.Current_Task = next
+	match Game_Data_Instance.Current_Task:
+		task.TURN_OFF_TV:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
+		task.EXPLORE:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
+		task.SURVIVE:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			pass
+
+func task_check(node) -> Dictionary:
+	var task_error_dialogue = preload(Path.task_error_dialogue)
+
+	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
+		if node.name == "TVTable":
+			return {}
+		else:
+			return Global.stringify_json(task_error_dialogue)
+	else:
+		return {}
+
+func load_mp3(path):
+	var file = FileAccess.open(path, FileAccess.READ)
+	var sound = AudioStreamMP3.new()
+	sound.data = file.get_buffer(file.get_length())
+	return sound
 
 func _ready():
-	Settings_Data = SettingsData.new()
-	Game_Data = GameData.new()
+	Settings_Data_Instance = SettingsData.new()
+	Game_Data_Instance = GameData.new()
 
 	manage_signals()
 	verify_settings_file_directory(Settings_File_Path)
-	set_window_resolution(Settings_Data.Selected_Resolution_Index)
+	set_window_resolution(Settings_Data_Instance.Selected_Resolution_Index)
 
 func _process(_delta):
 	manage_mouse_cursor()

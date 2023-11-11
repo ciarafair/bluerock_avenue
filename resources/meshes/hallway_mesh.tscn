@@ -1,10 +1,10 @@
 [gd_scene load_steps=21 format=3 uid="uid://b7icyimnbgjyj"]
 
 [ext_resource type="Script" path="res://Resources/scripts/hallway_mesh.gd" id="1_w6gf5"]
-[ext_resource type="Texture2D" uid="uid://d1iyobleqeren" path="res://resources/textures/Carpet/Color.jpg" id="2_20u0c"]
-[ext_resource type="Texture2D" uid="uid://o8t51q6i5pk5" path="res://resources/textures/Carpet/AmbientOcclusion.jpg" id="3_r21nb"]
-[ext_resource type="Texture2D" uid="uid://dv5qh7pdnamxr" path="res://resources/textures/Carpet/Height.png" id="4_m0ohr"]
-[ext_resource type="Texture2D" uid="uid://bjg6ovnb4bisx" path="res://resources/textures/Carpet/Roughness.jpg" id="5_lgigd"]
+[ext_resource type="Texture2D" uid="uid://d1iyobleqeren" path="res://resources/textures/carpet/color.jpg" id="2_20u0c"]
+[ext_resource type="Texture2D" uid="uid://o8t51q6i5pk5" path="res://resources/textures/carpet/occlusion.jpg" id="3_r21nb"]
+[ext_resource type="Texture2D" uid="uid://dv5qh7pdnamxr" path="res://resources/textures/carpet/height.png" id="4_m0ohr"]
+[ext_resource type="Texture2D" uid="uid://bjg6ovnb4bisx" path="res://resources/textures/carpet/Roughness.jpg" id="5_lgigd"]
 [ext_resource type="Material" uid="uid://so47yjkt0171" path="res://resources/materials/hallway_wall.tres" id="6_sgn78"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_2fdap"]

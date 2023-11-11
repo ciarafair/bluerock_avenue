@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/pause_menu.gd" id="1_u25ih"]
 [ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_qnnea"]
-[ext_resource type="Theme" uid="uid://ctf2sqighxluy" path="res://resources/themes/main_menu.tres" id="3_23pmw"]
+[ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_cbvhb"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Overlay.gdshader" id="4_q4tin"]
 [ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_w2gbb"]
 
@@ -20,143 +20,106 @@ shader_parameter/brightness = 1.4
 process_mode = 3
 script = ExtResource("1_u25ih")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_qnnea")
+ratio = 1.8
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_left = -120.0
-offset_right = 2040.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Panel" type="Panel" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_qnnea")
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 75
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
 layout_mode = 2
+theme = ExtResource("2_qnnea")
 
-[node name="Title" type="MarginContainer" parent="MarginContainer/VBoxContainer2"]
+[node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/VBoxContainer2/Title"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
 layout_mode = 2
-theme = ExtResource("3_23pmw")
-bbcode_enabled = true
-text = "[center][font_size=75][outline_size=25][outline_color=black][color=#C81D25][i]Paused[/i]"
-fit_content = true
-autowrap_mode = 0
+theme = ExtResource("2_qnnea")
+text = "Paused"
+label_settings = ExtResource("4_cbvhb")
+horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 500
 theme_override_constants/margin_top = 150
 theme_override_constants/margin_right = 500
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("3_23pmw")
+theme = ExtResource("2_qnnea")
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 0
 
-[node name="ResumeGame" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="ResumeGame" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("3_23pmw")
-text = " "
+theme = ExtResource("2_qnnea")
+text = " Resume"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("3_23pmw")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Resume"
-fit_content = true
-scroll_active = false
-
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 0
 
-[node name="Options" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="Options" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2"]
 layout_mode = 2
-theme = ExtResource("3_23pmw")
-text = " "
+theme = ExtResource("2_qnnea")
+text = " Options"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2/Options"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("3_23pmw")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Options"
-fit_content = true
-
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 250
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 0
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3"]
+[node name="Quit" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3"]
 layout_mode = 2
-theme = ExtResource("3_23pmw")
-text = " "
+theme = ExtResource("2_qnnea")
+text = " Quit To Menu"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3/Quit"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("3_23pmw")
-bbcode_enabled = true
-text = "[center][font_size=50][outline_size=25][outline_color=black]Quit To Menu"
-fit_content = true
-
-[node name="Overlay" type="Panel" parent="."]
+[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
 material = SubResource("ShaderMaterial_8ewku")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
+theme = ExtResource("2_qnnea")
 script = ExtResource("5_w2gbb")
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame" to="." method="_on_resume_game_button_up"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3/Quit" to="." method="_on_quit_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame" to="." method="_on_resume_game_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer2/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer3/Quit" to="." method="_on_quit_button_up"]

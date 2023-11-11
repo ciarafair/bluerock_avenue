@@ -35,51 +35,51 @@ func fps_counter_info():
 	var fps = Engine.get_frames_per_second()
 	fps_counter_label.text = "FPS: %s" %[str(fps)]
 
-	if Global.Settings_Data.Is_Fps_Counter_Visible == true:
+	if Global.Settings_Data_Instance.Is_Fps_Counter_Visible == true:
 		fps_counter_label.set_visible(true)
 		return
 
-	if Global.Settings_Data.Is_Fps_Counter_Visible == false:
+	if Global.Settings_Data_Instance.Is_Fps_Counter_Visible == false:
 		fps_counter_label.set_visible(false)
 		return
 
 func current_time_info():
-	current_time_label.text = Global.Game_Data.Time_String
-	if Global.Settings_Data.Is_Current_Time_Info_Visible == true:
+	current_time_label.text = Global.Game_Data_Instance.Time_String
+	if Global.Settings_Data_Instance.Is_Current_Time_Info_Visible == true:
 		current_time_label.set_visible(true)
 
-	if Global.Settings_Data.Is_Current_Time_Info_Visible == false:
+	if Global.Settings_Data_Instance.Is_Current_Time_Info_Visible == false:
 		current_time_label.set_visible(false)
 
 func player_current_room_info():
-	if Global.Game_Data.Current_Room != null:
-		player_current_room_label.text = "Current room: %s" %[Global.Game_Data.Current_Room.name]
+	if Global.Game_Data_Instance.Current_Room != null:
+		player_current_room_label.text = "Current room: %s" %[Global.Game_Data_Instance.Current_Room.name]
 
-	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == true:
+	if Global.Settings_Data_Instance.Is_Player_Current_Room_Info_Visible == true:
 		player_current_room_label.set_visible(true)
 
-	if Global.Settings_Data.Is_Player_Current_Room_Info_Visible == false:
+	if Global.Settings_Data_Instance.Is_Player_Current_Room_Info_Visible == false:
 		player_current_room_label.set_visible(false)
 
 func monster_current_stage_info():
-	monster_current_stage_label.text = "Monster's current stage: %s" %[Global.Game_Data.Monster_Current_Stage - 1]
+	monster_current_stage_label.text = "Monster's current stage: %s" %[Global.Game_Data_Instance.Monster_Current_Stage - 1]
 
-	if Global.Settings_Data.Is_Monster_Info_Visible == true:
+	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == true:
 		monster_current_stage_label.set_visible(true)
 
-	if Global.Settings_Data.Is_Monster_Info_Visible == false:
+	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == false:
 		monster_current_stage_label.set_visible(false)
 
 func monster_current_room_info():
-	if Global.Game_Data.Monster_Current_Room != null:
-		monster_current_room_label.text = "Monster's current room: %s" %[Global.Game_Data.Monster_Current_Room.name]
+	if Global.Game_Data_Instance.Monster_Current_Room != null:
+		monster_current_room_label.text = "Monster's current room: %s" %[Global.Game_Data_Instance.Monster_Current_Room.name]
 	else:
 		monster_current_room_label.text = "Monster's current room: null"
 
-	if Global.Settings_Data.Is_Monster_Info_Visible == true:
+	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == true:
 		monster_current_room_label.set_visible(true)
 
-	if Global.Settings_Data.Is_Monster_Info_Visible == false:
+	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == false:
 		monster_current_room_label.set_visible(false)
 
 func player_info():
@@ -100,7 +100,7 @@ func player_info():
 		var truncatedRotationY = truncateString(originalRotationY)
 		var truncatedRotationZ = truncateString(originalRotationZ)
 
-		if Global.Settings_Data.Is_Player_Info_Visible == true:
+		if Global.Settings_Data_Instance.Is_Player_Info_Visible == true:
 			position_collection.set_visible(true)
 			rotation_collection.set_visible(true)
 
@@ -113,7 +113,7 @@ func player_info():
 				y_rotation_label.text = truncatedRotationY
 				z_rotation_label.text = truncatedRotationZ
 
-		if Global.Settings_Data.Is_Player_Info_Visible == false:
+		if Global.Settings_Data_Instance.Is_Player_Info_Visible == false:
 			rotation_collection.set_visible(false)
 			position_collection.set_visible(false)
 		else:
@@ -121,7 +121,7 @@ func player_info():
 			position_collection.set_visible(true)
 
 func hovering_block_info():
-	if Global.Settings_Data.Is_Hovering_Block_Visible == true:
+	if Global.Settings_Data_Instance.Is_Hovering_Block_Visible == true:
 		hovering_block_label.set_visible(true)
 
 		if Global.Hovering_Block != null:
@@ -130,7 +130,7 @@ func hovering_block_info():
 		if Global.Hovering_Block == null:
 			hovering_block_label.text = "Hovering: Null"
 
-	if Global.Settings_Data.Is_Hovering_Block_Visible == false:
+	if Global.Settings_Data_Instance.Is_Hovering_Block_Visible == false:
 		hovering_block_label.set_visible(false)
 	else:
 		hovering_block_label.set_visible(true)
@@ -151,31 +151,31 @@ func v_seperator_manager():
 		vseperator_one.set_visible(false)
 
 func current_active_block_info():
-	if Global.Settings_Data.Is_Current_Active_Block_Visible == true:
+	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == true:
 		current_active_block_label.set_visible(true)
 
-		if Global.Game_Data.Current_Active_Block != null:
-			current_active_block_label.text = "Current block: %s" %[Global.Game_Data.Current_Active_Block.name]
+		if Global.Game_Data_Instance.Current_Active_Block != null:
+			current_active_block_label.text = "Current block: %s" %[Global.Game_Data_Instance.Current_Active_Block.name]
 
-		if Global.Game_Data.Current_Active_Block == null:
+		if Global.Game_Data_Instance.Current_Active_Block == null:
 			current_active_block_label.text = "Current block: Null"
 
-	if Global.Settings_Data.Is_Current_Active_Block_Visible == false:
+	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == false:
 		current_active_block_label.set_visible(false)
 	else:
 		current_active_block_label.set_visible(true)
 
 func current_active_event_info():
-	if Global.Settings_Data.Is_Current_Active_Event_Visible == true:
+	if Global.Settings_Data_Instance.Is_Current_Active_Event_Visible == true:
 		current_active_event_label.set_visible(true)
 
-		if Global.Game_Data.Current_Event != "":
-			current_active_event_label.text = "Current event: %s" %[str(Global.Game_Data.Current_Event)]
+		if Global.Game_Data_Instance.Current_Event != "":
+			current_active_event_label.text = "Current event: %s" %[str(Global.Game_Data_Instance.Current_Event)]
 
-		if Global.Game_Data.Current_Event == "":
+		if Global.Game_Data_Instance.Current_Event == "":
 			current_active_event_label.text = "Current event: Null"
 
-	if Global.Settings_Data.Is_Current_Active_Event_Visible == false:
+	if Global.Settings_Data_Instance.Is_Current_Active_Event_Visible == false:
 		current_active_event_label.set_visible(false)
 	else:
 		current_active_event_label.set_visible(true)
