@@ -5,20 +5,6 @@ extends Node3D
 @onready var ListenPosition = %ListenPosition
 var TweenInstance: Tween
 
-var camera_target_rotation = Vector2()
-var camera_current_rotation = Vector2()
-var minPitch = -360 * 2
-var maxPitch = 360 * 2
-
-func on_camera_follow_mouse(mouse):
-	var sensitivity = Vector2(Global.Settings_Data_Instance.Mouse_Sensitivity, Global.Settings_Data_Instance.Mouse_Sensitivity)
-
-	camera_target_rotation.y += -mouse.x * sensitivity.x
-	camera_target_rotation.x += -mouse.y * sensitivity.y
-
-	camera_target_rotation.x = clamp(camera_target_rotation.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
-	camera_target_rotation.y = clamp(camera_target_rotation.y, deg_to_rad(minPitch), deg_to_rad(maxPitch))
-
 func on_turn_180_degrees():
 	#print_debug("Turning around 180 degrees.")
 	Global.Is_In_Animation = true
@@ -115,10 +101,23 @@ func search_for_block(node: Node, identifier: String):
 			pass
 		search_for_block(child, identifier)
 
+var camera_target_rotation = Vector2()
+var camera_current_rotation = Vector2()
+var minPitch: float = -45
+var maxPitch: float = 45
+
+func on_camera_follow_mouse(mouse):
+	var sensitivity: float = Global.Settings_Data_Instance.Mouse_Sensitivity
+	var screen: Vector2 = get_window().size / 2
+	var distance = screen.x - mouse.x
+
+	camera_target_rotation.y = (maxPitch / screen.x) * distance
+	#print_debug(camera_target_rotation.y)
+	camera_target_rotation.x = clamp(Camera.rotation_degrees.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
+
 func _process(_delta):
 	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
-		camera_current_rotation = camera_current_rotation.lerp(camera_target_rotation, Global.Settings_Data_Instance.Mouse_Sensitivity)
-		Camera.set_rotation_degrees(Vector3(camera_current_rotation.x, camera_current_rotation.y, Camera.rotation_degrees.z))
+		Camera.set_rotation_degrees(Vector3(camera_target_rotation.x, camera_target_rotation.y, Camera.rotation_degrees.z))
 		automatic_rounded_rotation()
 
 	if Global.Game_Data_Instance.Current_Room == null:

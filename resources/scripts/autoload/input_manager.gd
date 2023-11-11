@@ -23,7 +23,6 @@ func manage_normal_input():
 						SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
 						return
 
-
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block)
 		return
@@ -48,7 +47,6 @@ func manage_normal_input():
 			if Input.is_action_just_released("mouse_button_1"):
 				SignalManager.turn_negative_90_degrees.emit() # Player.gd
 				return
-
 
 func manage_window_input():
 	if Input.is_action_just_released("dev_open_window"):
@@ -118,7 +116,7 @@ func manage_door_input():
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion and Global.Is_Window_Focused == true:
-		SignalManager.mouse_movement.emit(event.relative)
+		SignalManager.mouse_movement.emit(event.position)
 
 	if Global.Is_Game_Active == true:
 		if Input.is_action_just_released("flashlight"):
