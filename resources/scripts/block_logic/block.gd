@@ -50,6 +50,14 @@ func on_tween_finished():
 	TweenInstance.kill()
 	SignalManager.animation_finished.emit()
 
+func lerp_angle(from, to, weight):
+	return from + short_angle_dist(from, to) * weight
+
+func short_angle_dist(from, to):
+	var max_angle = PI * 2
+	var difference = fmod(to - from, max_angle)
+	return fmod(2 * difference, max_angle) - difference
+
 func move_to_camera_position(node, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:
 		#print_debug("Moving to " + str(_node))
@@ -68,7 +76,14 @@ func move_to_camera_position(node, enable_position: bool, enable_rotation: bool)
 				var target_position = node.BlockCameraPosition.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position , TweenDuration).from_current()
 				var target_rotation = node.BlockCameraPosition.rotation_degrees
-				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration).from_current().as_relative()
+
+				if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
+					Global.PlayerInstance.rotation_degrees.y += 360 - target_rotation.y
+
+				if target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
+					Global.PlayerInstance.rotation_degrees.y -= 360 - target_rotation.y
+
+				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration).from_current()
 				return
 
 			if node is LocationBlock:
@@ -76,10 +91,15 @@ func move_to_camera_position(node, enable_position: bool, enable_rotation: bool)
 				Global.Is_In_Animation = true
 				var target_position = node.BlockCameraPosition.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + Global.Game_Data_Instance.Current_Room.position, TweenDuration).from_current()
-				var target_rotation: Vector3 = node.BlockCameraPosition.rotation_degrees
-				if target_rotation.y < 0:
-					target_rotation.y += 360
-				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration).from_current()
+				var target_rotation = node.BlockCameraPosition.rotation_degrees
+
+				if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
+					Global.PlayerInstance.rotation_degrees.y += 360
+
+				if target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
+					Global.PlayerInstance.rotation_degrees.y -= 360
+
+				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
 				return
 
 			if node is RoomBlock:

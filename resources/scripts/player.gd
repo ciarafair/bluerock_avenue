@@ -41,16 +41,6 @@ func on_turn_negative_90_degrees():
 	TweenInstance.tween_property(self, "rotation_degrees:y", -90, 0.5).as_relative()
 	return
 
-func automatic_rounded_rotation():
-	#print_debug("Rounding to nearest 90 degrees.")
-	if self.rotation_degrees.y >= 360:
-		self.rotation_degrees.y - 360
-		return
-
-	if self.rotation_degrees.y < 0:
-		self.rotation_degrees.y += 360
-		return
-
 func on_reset_player_camera():
 	if TweenInstance:
 		TweenInstance.kill()
@@ -114,7 +104,20 @@ func on_camera_follow_mouse(mouse):
 	camera_target_rotation.x = (maxYaw / screen.y) * distance.y
 
 func _process(_delta):
-	automatic_rounded_rotation()
+
+	if self.rotation_degrees.y > 360:
+		self.rotation_degrees.y -= 360
+		return
+
+	if self.rotation_degrees.y == 360:
+		self.rotation_degrees.y = 0
+
+	if self.rotation_degrees.y < -360:
+		self.rotation_degrees.y += 360
+		return
+
+	if self.rotation_degrees.y == -360:
+		self.rotation_degrees.y = 0
 
 	if Global.PlayerInstance == null:
 		Global.PlayerInstance = self

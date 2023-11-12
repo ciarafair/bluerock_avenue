@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqvx3jp8xn376"]
+[gd_scene load_steps=6 format=3 uid="uid://cqvx3jp8xn376"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/game_over_screen.gd" id="1_55fx1"]
 [ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_r475x"]
+[ext_resource type="FontFile" uid="uid://dnqhdn5457o5y" path="res://resources/fonts/playfair_display/playfair_bolditalic.ttf" id="3_30xk2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bsnf"]
+font = ExtResource("3_30xk2")
+font_size = 50
+font_color = Color(0.784314, 0.113725, 0.145098, 1)
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u5pyt"]
+font_size = 45
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)
 
 [node name="GameOver" type="CanvasLayer"]
 layer = 2
@@ -37,13 +50,13 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Title"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Title"]
 layout_mode = 2
 theme = ExtResource("2_r475x")
-bbcode_enabled = true
-text = "[center][font_size=75][color=#C81D25][i]Game Over.[/i]"
-fit_content = true
-autowrap_mode = 0
+text = "Game Over"
+label_settings = SubResource("LabelSettings_1bsnf")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Time" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -52,14 +65,14 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="ScoreLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Time"]
+[node name="ScoreLabel" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/Time"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_r475x")
-bbcode_enabled = true
-text = "[center][font_size=45][i]Score: 0[/i]"
-fit_content = true
-autowrap_mode = 0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_u5pyt")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ButtonMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -81,22 +94,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="NewGame" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin"]
 layout_mode = 2
-text = " "
-
-[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin/NewGame"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("2_r475x")
-bbcode_enabled = true
-text = "[center][font_size=5
-0]New Game"
-fit_content = true
-scroll_active = false
+text = " New Game"
 
 [node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer"]
 layout_mode = 2
@@ -107,22 +105,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="QuitToMenu" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer"]
 layout_mode = 2
-text = " "
-
-[node name="RichTextLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer/QuitToMenu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("2_r475x")
-bbcode_enabled = true
-text = "[center][font_size=5
-0]Quit To Menu"
-fit_content = true
-scroll_active = false
+text = "Quit To Menu"
 
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer/QuitToMenu" to="." method="_on_quit_to_menu_button_up"]

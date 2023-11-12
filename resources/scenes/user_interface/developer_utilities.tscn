@@ -26,6 +26,7 @@ theme = ExtResource("2_yrnnv")
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("2_yrnnv")
+alignment = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
