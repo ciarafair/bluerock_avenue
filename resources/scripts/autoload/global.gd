@@ -6,15 +6,28 @@ var Game_Data_Instance: GameData
 # Meta Data - Stays in this script as it does not need to be saved
 const CharacterReadRate: float = 0.025
 
-var Loaded_Player: Node3D = null
+var Object_Loader: Node = null
+
+var PlayerInstance: Node3D = null
+var MonsterInstance: Node3D = null
+var PauseMenuInstance: CanvasLayer = null
+var MovementInterfaceInstance: CanvasLayer = null
+var GameOverScreenInstance: CanvasLayer = null
+var TaskListInstance: CanvasLayer = null
+var DialogueBoxInstance: CanvasLayer = null
+
 var Loaded_Game_World: Node3D = null
+var Loaded_User_Interface: Control = null
 var Loaded_Options_Menu: CanvasLayer = null
 var Loaded_Main_Menu: CanvasLayer = null
 var Loaded_Pause_Menu: CanvasLayer = null
 
-var Is_Window_Focused := true
+var Loaded_Overlay_Effect: CanvasLayer = null
+
+var Is_Window_Focused: bool = true
 var Current_Track: String = ""
 
+var Is_Door_Open: bool = false
 var Is_Music_Playing: bool = false
 var Is_Game_Active: bool = false
 var Is_Pause_Menu_Open: bool = false
@@ -23,7 +36,6 @@ var Is_In_Animation: bool = false
 var Is_Timed_Out: bool = false
 var Is_Window_Being_Opened: bool = false
 var Is_Window_Open: bool = false
-var Is_Door_Opened: bool = false
 var Is_Window_Being_Closed: bool = false
 var Is_Able_To_Turn: bool = false
 
@@ -43,9 +55,9 @@ var CurrentMouseState: MouseState
 var MousePosition2D: Vector2
 
 enum MouseState {
-	MOVEMENT,
-	DIALOGUE,
-	ROTATION
+	MOVEMENT = 1,
+	DIALOGUE = 2,
+	ROTATION = 3
 }
 
 enum task {
@@ -117,16 +129,14 @@ func set_mouse_state(next: MouseState):
 			#print_debug("Changing mouse state to %s" %[new_state])
 			pass
 
-const Settings_File_Path: String = "res://settings.json"
 var Settings_Dictionary: Dictionary = {}
-
-func verify_settings_file_directory(path: String):
-	if FileAccess.file_exists(path):
+func verify_settings_file_directory():
+	if FileAccess.file_exists(Path.SettingsJSONFilePath):
 		SignalManager.load_settings_data.emit()
 		return
 	else:
 		Global.Settings_Data_Instance = SettingsData.new()
-		var file = FileAccess.open(path, FileAccess.WRITE)
+		var file = FileAccess.open(Path.SettingsJSONFilePath, FileAccess.WRITE)
 
 		var default_data = {
 			"developer_settings": {
@@ -202,7 +212,7 @@ func save_general_settings():
 
 func on_save_settings_data():
 	print_debug("Saving settings data")
-	var file = FileAccess.open(Settings_File_Path, FileAccess.WRITE)
+	var file = FileAccess.open(Path.SettingsJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
 		return
@@ -251,26 +261,25 @@ func load_settings_data(parsed_data: Dictionary):
 	Settings_Data_Instance.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
 
 func on_delete_settings_data():
-	if FileAccess.file_exists(Settings_File_Path) == true:
-		print_debug("Deleting file %s" % [Settings_File_Path])
-		DirAccess.remove_absolute(Settings_File_Path)
+	if FileAccess.file_exists(Path.SettingsJSONFilePath) == true:
+		print_debug("Deleting file %s" % [Path.SettingsJSONFilePath])
+		DirAccess.remove_absolute(Path.SettingsJSONFilePath)
 		return
 	else:
-		print_debug("File %s does not exist." % [Settings_File_Path])
+		print_debug("File %s does not exist." % [Path.SettingsJSONFilePath])
 		return
 
 
-const Game_File_Path: String = "res://game.json"
 var Game_Dictionary: Dictionary = {}
 
-func verify_game_file_directory(path: String):
-	if FileAccess.file_exists(path):
+func verify_game_file_directory():
+	if FileAccess.file_exists(Path.GameJSONFilePath):
 		Game_Data_Instance = GameData.new()
 		SignalManager.load_game_data.emit()
 		return
 	else:
 		Global.Game_Data_Instance = GameData.new()
-		var file = FileAccess.open(path, FileAccess.WRITE)
+		var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
 
 		var default_data = {
 			"time": {
@@ -285,12 +294,21 @@ func verify_game_file_directory(path: String):
 				"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
 			},
 			"player": {
+				"XRotation" = 0,
+				"YRotation" = 0,
+				"ZRotation" = 0,
+				"XPosition" = 0,
+				"YPosition" = 1.75,
+				"ZPosition" = 0,
 				"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
-				"Current_Task" = Game_Data_Instance.Current_Task,
 				"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
 				"Current_Event" = Game_Data_Instance.Current_Event,
 				"Current_Room" = Game_Data_Instance.Current_Room,
 				"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
+			},
+			"world": {
+				"Current_Task" = Game_Data_Instance.Current_Task,
+				"Television_State" = Game_Data_Instance.Television_State
 			}
 		}
 
@@ -330,8 +348,15 @@ func save_player_game_data():
 
 	var data: Dictionary = {
 		"player": {
+			"XRotation" = PlayerInstance.rotation_degrees.x,
+			"YRotation" = PlayerInstance.rotation_degrees.y,
+			"ZRotation" = PlayerInstance.rotation_degrees.z,
+
+			"XPosition" = PlayerInstance.position.x,
+			"YPosition" = PlayerInstance.position.y,
+			"ZPosition" = PlayerInstance.position.z,
+
 			"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
-			"Current_Task" = Game_Data_Instance.Current_Task,
 			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
 			"Current_Event" = Game_Data_Instance.Current_Event,
 			"Current_Room" = Game_Data_Instance.Current_Room,
@@ -341,14 +366,26 @@ func save_player_game_data():
 	}
 	Game_Dictionary.merge(data, true)
 
+func save_world_game_data():
+	#print_debug("Saving player data")
+
+	var data: Dictionary = {
+		"world": {
+			"Current_Task" = Game_Data_Instance.Current_Task,
+			"Television_State" = Game_Data_Instance.Television_State
+		}
+	}
+	Game_Dictionary.merge(data, true)
+
 func on_save_game_data():
 	#print_debug("Saving game data")
-	var file = FileAccess.open(Game_File_Path, FileAccess.WRITE)
+	var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
 		return
 
 	save_monster_game_data()
+	save_world_game_data()
 	save_player_game_data()
 	save_time_game_data()
 
@@ -357,14 +394,13 @@ func on_save_game_data():
 	file.close()
 	return
 
-func search_for_block(node: Node, identifier: String):
+func search_for_block(node: Node, identifier: String) -> Block:
 	for child in node.get_children(true):
 		if child is Block and child.name == identifier:
 			print_debug(child)
 			return child
-		elif child is Block and child.name != identifier:
-			pass
 		search_for_block(child, identifier)
+	return null
 
 func search_for_room(node: Node, identifier: int):
 	for child in node.get_children(true):
@@ -376,12 +412,21 @@ func search_for_room(node: Node, identifier: int):
 		search_for_room(child, identifier)
 
 func load_game_data(parsed_data: Dictionary):
-	Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
+	PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
+	PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
+	PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
+
+	PlayerInstance.position.x  = parsed_data.player.XPosition
+	PlayerInstance.position.y  = parsed_data.player.YPosition
+	PlayerInstance.position.z  = parsed_data.player.ZPosition
+
+	if Game_Data_Instance.Current_Active_Block != null:
+		Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
 	Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
 	Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
-	Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
+	if Game_Data_Instance.Current_Room != null:
+		Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
 	Game_Data_Instance.Current_Room_Number = parsed_data.player.Current_Room_Number
-	Game_Data_Instance.Is_Flashlight_On = parsed_data.player.Is_Flashlight_On
 
 	Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
 	search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
@@ -392,7 +437,8 @@ func load_game_data(parsed_data: Dictionary):
 	Game_Data_Instance.Time_Hour = parsed_data.time.Time_Hour
 	Game_Data_Instance.Time_Minute = parsed_data.time.Time_Minute
 
-	Game_Data_Instance.Current_Task = parsed_data.player.Current_Task
+	Game_Data_Instance.Current_Task = parsed_data.world.Current_Task
+	Game_Data_Instance.Television_State = parsed_data.world.Television_State
 
 func load_data(path: String, type: String):
 	#print_debug("Loading %s-data from %s." % [type, path])
@@ -408,7 +454,7 @@ func load_data(path: String, type: String):
 
 		var parsed_data = JSON.parse_string(raw_data)
 		if parsed_data == null:
-			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+			printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
 			return
 
 		if type == "settings":
@@ -419,22 +465,20 @@ func load_data(path: String, type: String):
 			return
 
 func on_delete_game_data():
-	if FileAccess.file_exists(Game_File_Path) == true:
+	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
 		#print_debug("Deleting file %s" % [Game_File_Path])
-		DirAccess.remove_absolute(Game_File_Path)
+		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:
-		push_warning("File %s does not exist and cannot be deleted." % [Game_File_Path])
+		printerr("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
 		return
 
-
-
 func manage_signals():
-	SignalManager.load_settings_data.connect(Callable(load_data).bind(Settings_File_Path, "settings"))
+	SignalManager.load_settings_data.connect(Callable(load_data).bind(Path.SettingsJSONFilePath, "settings"))
 	SignalManager.save_settings_data.connect(on_save_settings_data)
 	SignalManager.delete_settings_data.connect(on_delete_settings_data)
 
-	SignalManager.load_game_data.connect(Callable(load_data).bind(Game_File_Path, "game"))
+	SignalManager.load_game_data.connect(Callable(load_data).bind(Path.GameJSONFilePath, "game"))
 	SignalManager.save_game_data.connect(on_save_game_data)
 	SignalManager.delete_game_data.connect(on_delete_game_data)
 
@@ -450,7 +494,7 @@ func stringify_json(json_file: JSON) -> Dictionary:
 
 	var parsed_data = JSON.parse_string(raw_data)
 	if parsed_data == null:
-		push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+		printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
 		return {}
 	return parsed_data
 
@@ -470,13 +514,13 @@ func set_task(next: task):
 			pass
 
 func task_check(node) -> Dictionary:
-	var task_error_dialogue = preload(Path.task_error_dialogue)
+	var TaskErrorDialoguePath = preload(Path.TaskErrorDialoguePath)
 
 	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
 		if node.name == "TVTable":
 			return {}
 		else:
-			return Global.stringify_json(task_error_dialogue)
+			return Global.stringify_json(TaskErrorDialoguePath)
 	else:
 		return {}
 
@@ -491,7 +535,7 @@ func _ready():
 	Game_Data_Instance = GameData.new()
 
 	manage_signals()
-	verify_settings_file_directory(Settings_File_Path)
+	verify_settings_file_directory()
 	set_window_resolution(Settings_Data_Instance.Selected_Resolution_Index)
 
 func _process(_delta):

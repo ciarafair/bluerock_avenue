@@ -18,8 +18,9 @@ func _on_options_button_up():
 func _on_quit_button_up():
 	#print_debug("Quit button was pressed.")
 	Global.Is_Pause_Menu_Open = false
+	get_tree().paused = false
 	SignalManager.save_game_data.emit()
-	SignalManager.load_main_menu.emit()
+	LoadManager.load_scene(Path.MainMenuPath)
 	return
 
 func check_pause_menu():
@@ -42,6 +43,10 @@ func _on_tree_exiting():
 	Global.Loaded_Main_Menu = null
 
 func _process(_delta):
+	if Global.PauseMenuInstance == null:
+		SignalManager.pause_menu_loaded.emit()
+		Global.PauseMenuInstance = self
+
 	check_pause_menu()
 
 func manage_signals():
@@ -50,6 +55,7 @@ func manage_signals():
 	SignalManager.hide_pause_menu.connect(Callable(self.set_visible).bind(false))
 
 func _ready():
+	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	self.set_visible(false)
 	manage_signals()
 	Global.Loaded_Pause_Menu = self

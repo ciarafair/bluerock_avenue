@@ -44,13 +44,12 @@ func on_turn_negative_90_degrees():
 func automatic_rounded_rotation():
 	#print_debug("Rounding to nearest 90 degrees.")
 	if self.rotation_degrees.y >= 360:
-		self.rotation_degrees.y = 0
+		self.rotation_degrees.y - 360
+		return
 
-	if self.rotation_degrees.y <= -360:
-		self.rotation_degrees.y = 0
-
-	if self.rotation_degrees.y == -90 and Global.Game_Data_Instance.Current_Active_Block is RoomBlock:
-		self.rotation_degrees.y = 270
+	if self.rotation_degrees.y < 0:
+		self.rotation_degrees.y += 360
+		return
 
 func on_reset_player_camera():
 	if TweenInstance:
@@ -103,22 +102,26 @@ func search_for_block(node: Node, identifier: String):
 
 var camera_target_rotation = Vector2()
 var camera_current_rotation = Vector2()
-var minPitch: float = -45
-var maxPitch: float = 45
+var maxPitch: float = 30
+var maxYaw: float = 5.625
 
 func on_camera_follow_mouse(mouse):
-	var sensitivity: float = Global.Settings_Data_Instance.Mouse_Sensitivity
 	var screen: Vector2 = get_window().size / 2
-	var distance = screen.x - mouse.x
+	var distance = screen - mouse
 
-	camera_target_rotation.y = (maxPitch / screen.x) * distance
+	camera_target_rotation.y = (maxPitch / screen.x) * distance.x
 	#print_debug(camera_target_rotation.y)
-	camera_target_rotation.x = clamp(Camera.rotation_degrees.x, deg_to_rad(minPitch), deg_to_rad(maxPitch))
+	camera_target_rotation.x = (maxYaw / screen.y) * distance.y
 
 func _process(_delta):
+	automatic_rounded_rotation()
+
+	if Global.PlayerInstance == null:
+		Global.PlayerInstance = self
+		SignalManager.player_loaded.emit()
+
 	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
 		Camera.set_rotation_degrees(Vector3(camera_target_rotation.x, camera_target_rotation.y, Camera.rotation_degrees.z))
-		automatic_rounded_rotation()
 
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
@@ -132,8 +135,5 @@ func _process(_delta):
 		return
 
 func _ready():
+	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
 	manage_signals()
-	Global.Loaded_Player = self
-	Flashlight.set_visible(false)
-	if Global.Loaded_Player == null:
-		push_error(str(self.name) + " was not loaded to Global.")

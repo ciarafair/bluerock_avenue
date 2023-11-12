@@ -8,6 +8,11 @@ func on_game_over():
 	get_tree().paused = true
 	Global.Is_Game_Active = false
 
+func _process(_delta):
+	if Global.GameOverScreenInstance == null:
+		SignalManager.game_over_screen_loaded.emit()
+		Global.GameOverScreenInstance = self
+
 func _ready():
 	self.set_visible(false)
 	SignalManager.game_over.connect(on_game_over)
@@ -25,4 +30,4 @@ func _on_new_game_button_up():
 	SignalManager.delete_game_data.emit()
 	Global.Game_Data_Instance = GameData.new()
 	SignalManager.load_game_world.emit()
-	Global.verify_game_file_directory(Global.Game_File_Path)
+	Global.verify_game_file_directory()

@@ -1,17 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://bc8i83tnnfque"]
+[gd_scene load_steps=7 format=3 uid="uid://bc8i83tnnfque"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/options_menu.gd" id="1_43ylw"]
 [ext_resource type="Theme" uid="uid://hbrnjcb723c6" path="res://resources/themes/options_menu.theme" id="2_dq3bs"]
 [ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="3_5ifbh"]
-[ext_resource type="Material" uid="uid://b3p41gn5f3cwo" path="res://resources/materials/overlay_material.material" id="4_1lfxa"]
 [ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_g8lgn"]
-[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_m4v5n"]
 [ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="5_w2ofv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7ls5"]
 bg_color = Color(0.101961, 0.101961, 0.101961, 0.0941176)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx8jv"]
 
 [node name="OptionsMenu" type="CanvasLayer"]
 script = ExtResource("1_43ylw")
@@ -939,14 +935,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
-
-[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
-material = ExtResource("4_1lfxa")
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_dq3bs")
-theme_override_styles/panel = SubResource("StyleBoxFlat_hx8jv")
-script = ExtResource("5_m4v5n")
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/BackToMenuMargin/MainMenu" to="." method="_on_main_menu_button_up"]

@@ -25,6 +25,7 @@ Global="*res://resources/scripts/autoload/global.gd"
 InputManager="*res://resources/scripts/autoload/input_manager.gd"
 Path="*res://resources/scripts/autoload/path_manager.gd"
 SignalManager="*res://resources/scripts/autoload/signal_manager.gd"
+LoadManager="*res://resources/scripts/autoload/load_manager.gd"
 
 [display]
 

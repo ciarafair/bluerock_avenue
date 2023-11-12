@@ -15,7 +15,6 @@ func manage_monster_room():
 		manage_monster_position()
 		return
 
-
 func find_room_with_window():
 	if RoomPool.size() > 0:
 		var random_room_number = get_random_number_from_window_pool()
@@ -145,16 +144,22 @@ func find_window_node(node):
 		elif not child is WindowEvent:
 			find_window_node(child)
 
-func _ready():
-	if Global.Game_Data_Instance.Is_Monster_Active == true:
-		RoomPool.append_array(DefaultRoomPool)
-		SignalManager.random_tick.connect(on_random_tick)
-		SignalManager.reset_monster.connect(on_monster_reset)
-		self.add_child(WindowTimer)
-		WindowTimer.timeout.connect(on_window_timer_timeout)
-		manage_window_timer()
+func manage_signals():
+	SignalManager.random_tick.connect(on_random_tick)
+	SignalManager.reset_monster.connect(on_monster_reset)
 
-		self.position = Vector3(0, -10, 0)
-	else:
-		self.set_visible(false)
+func _process(_delta):
+	if Global.MonsterInstance == null:
+		SignalManager.monster_loaded.emit()
+		Global.MonsterInstance =self
+
+func _ready():
+	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
+	manage_signals()
+	SignalManager.monster_loaded.emit()
+	RoomPool.append_array(DefaultRoomPool)
+	self.add_child(WindowTimer)
+	WindowTimer.timeout.connect(on_window_timer_timeout)
+	manage_window_timer()
+	self.position = Vector3(0, -10, 0)
 

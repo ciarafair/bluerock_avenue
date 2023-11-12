@@ -1,18 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqvx3jp8xn376"]
+[gd_scene load_steps=3 format=3 uid="uid://cqvx3jp8xn376"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/game_over_screen.gd" id="1_55fx1"]
 [ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_r475x"]
-[ext_resource type="Shader" path="res://resources/shaders/overlay.gdshader" id="3_qpks3"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tf81l"]
-shader = ExtResource("3_qpks3")
-shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.4
-shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.3
-shader_parameter/resolution = Vector2(720, 576)
-shader_parameter/pixelate = true
-shader_parameter/brightness = 1.4
 
 [node name="GameOver" type="CanvasLayer"]
 layer = 2
@@ -134,11 +123,6 @@ text = "[center][font_size=5
 0]Quit To Menu"
 fit_content = true
 scroll_active = false
-
-[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
-material = SubResource("ShaderMaterial_tf81l")
-layout_mode = 2
-mouse_filter = 2
 
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/ButtonMargin/VBoxContainer/MarginContainer/QuitToMenu" to="." method="_on_quit_to_menu_button_up"]

@@ -1,11 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://g7gc87d1nati"]
+[gd_scene load_steps=13 format=3 uid="uid://g7gc87d1nati"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/main_menu.gd" id="1_5gjp7"]
 [ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_faofq"]
 [ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_7t242"]
 [ext_resource type="Texture2D" uid="uid://pjiy5yvrmvw5" path="res://resources/textures/github.png" id="4_asntc"]
-[ext_resource type="Shader" path="res://resources/shaders/overlay.gdshader" id="6_uom6b"]
-[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="6_x42fu"]
 [ext_resource type="Texture2D" uid="uid://d14tug4xww8u6" path="res://resources/textures/discord.png" id="9_nebx5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fp78c"]
@@ -32,16 +30,6 @@ modulate_color = Color(1, 1, 1, 0.396078)
 texture = ExtResource("9_nebx5")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_65jk8"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0viog"]
-shader = ExtResource("6_uom6b")
-shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.4
-shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.3
-shader_parameter/resolution = Vector2(720, 576)
-shader_parameter/pixelate = true
-shader_parameter/brightness = 1.4
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_5gjp7")
@@ -267,13 +255,6 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("2_faofq")
 text = "Quit To Desktop"
-
-[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
-material = SubResource("ShaderMaterial_0viog")
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_faofq")
-script = ExtResource("6_x42fu")
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links/GithubMargin/GithubButton" to="." method="_on_github_button_button_up"]

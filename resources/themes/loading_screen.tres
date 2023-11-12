@@ -1,0 +1,50 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://o43ayitplu0x"]
+
+[ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="1_b3o7c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vudjq"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mpjw"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ey8cu"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0.4)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[resource]
+Panel/styles/panel = SubResource("StyleBoxFlat_vudjq")
+ProgressBar/colors/font_color = Color(0.95, 0.95, 0.95, 1)
+ProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
+ProgressBar/colors/font_shadow_color = Color(0, 0, 0, 1)
+ProgressBar/constants/outline_size = 25
+ProgressBar/font_sizes/font_size = 50
+ProgressBar/fonts/font = ExtResource("1_b3o7c")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_0mpjw")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_ey8cu")

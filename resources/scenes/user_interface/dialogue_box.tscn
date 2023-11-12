@@ -1,8 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://caaobudb0a2yl"]
+[gd_scene load_steps=7 format=3 uid="uid://caaobudb0a2yl"]
 
-[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="1_1y1oj"]
 [ext_resource type="Script" path="res://resources/scripts/dialogue_box.gd" id="1_b0eu1"]
-[ext_resource type="Material" uid="uid://b3p41gn5f3cwo" path="res://resources/materials/overlay_material.material" id="1_li3cv"]
 [ext_resource type="Theme" uid="uid://n3mp2oj5tq0h" path="res://resources/themes/dialogue_box.theme" id="2_634ts"]
 [ext_resource type="LabelSettings" uid="uid://itip0wke1rlr" path="res://resources/label_settings/name.tres" id="3_8sdh8"]
 [ext_resource type="FontFile" uid="uid://bn56vqhwywgjo" path="res://resources/fonts/merriweather/merriweather_regular.ttf" id="4_7tuuq"]
@@ -118,13 +116,6 @@ text = "Test"
 label_settings = SubResource("LabelSettings_3cy1d")
 visible_characters = 0
 visible_ratio = 0.0
-
-[node name="OverlayEffect" type="Panel" parent="AspectRatioContainer/MarginContainer"]
-material = ExtResource("1_li3cv")
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_634ts")
-script = ExtResource("1_1y1oj")
 
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer/Skip" to="." method="_on_skip_button_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer/Close" to="." method="_on_close_button_up"]

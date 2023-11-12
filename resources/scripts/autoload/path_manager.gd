@@ -6,6 +6,8 @@ const GameWorldPath: String = "res://resources/scenes/game_world/game_world.tscn
 const PlayerPath: String = "res://resources/scenes/game_world/player.tscn"
 const MonsterPath: String = "res://resources/scenes/game_world/monster.tscn"
 
+const OverlayEffectPath: String = "res://resources/scenes/user_interface/overlay_effect.tscn"
+const LoadingScreenPath: String = "res://resources/scenes/user_interface/loading_screen.tscn"
 const PauseMenuPath: String = "res://resources/scenes/user_interface/pause_menu.tscn"
 const OptionsMenuPath: String = "res://resources/scenes/user_interface/options_menu.tscn"
 const GameOverScreenPath: String = "res://resources/scenes/user_interface/game_over_screen.tscn"
@@ -22,6 +24,9 @@ const ScreenOffVideoPath: String = "res://resources/video/tv_off.ogv"
 const StockCartoonAudioPath: String = "res://resources/audio/sound_effects/stock_cartoon.mp3"
 const ScreenOffAudioPath: String = "res://resources/audio/sound_effects/tv_off.mp3"
 
-const task_error_dialogue: String = "res://resources/dialogue/task_error.json"
+const TaskErrorDialoguePath: String = "res://resources/dialogue/task_error.json"
 
 const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"
+
+const SettingsJSONFilePath: String = "res://settings.json"
+const GameJSONFilePath: String = "res://game.json"

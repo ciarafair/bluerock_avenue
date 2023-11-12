@@ -30,7 +30,7 @@ func block_raycast():
 		var CollisionMask: int = 2
 		var AreaBool: bool = false
 		var BodyBool: bool = true
-		var BlockResult = mouse_position(CollisionMask, Global.Loaded_Player.Camera, AreaBool, BodyBool)
+		var BlockResult = mouse_position(CollisionMask, Global.PlayerInstance.Camera, AreaBool, BodyBool)
 
 		if BlockResult == null:
 			Global.Hovering_Block = null
@@ -47,7 +47,7 @@ func flashlight_raycast():
 	var CollisionMask: int = 3
 	var AreaBool: bool = false
 	var BodyBool: bool = true
-	var FlashlightResult = mouse_position(CollisionMask, Global.Loaded_Player.Camera, AreaBool, BodyBool)
+	var FlashlightResult = mouse_position(CollisionMask, Global.PlayerInstance.Camera, AreaBool, BodyBool)
 
 	if FlashlightResult == null:
 		Global.FLASHLIGHT_RAY_ARRAY = []
@@ -59,13 +59,13 @@ func flashlight_raycast():
 
 func manage_flashlight_raycast():
 	if Global.Game_Data_Instance.Is_Flashlight_On == true:
-		Global.Loaded_Player.Flashlight.visible = true
+		Global.PlayerInstance.Flashlight.visible = true
 		flashlight_raycast()
 		if Global.FLASHLIGHT_RAY_ARRAY != []:
-			Global.Loaded_Player.Flashlight.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
+			Global.PlayerInstance.Flashlight.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
 		return
 	else:
-		Global.Loaded_Player.Flashlight.visible = false
+		Global.PlayerInstance.Flashlight.visible = false
 		return
 
 func on_enable_door_view(node, number):
@@ -97,8 +97,8 @@ func tween_to_room(node):
 	TweenInstance.finished.connect(Global.on_tween_finished)
 	TweenInstance.bind_node(node)
 	Global.Is_In_Animation = true
-	TweenInstance.tween_property(Global.Loaded_Player, "position", node.BlockCameraPosition.position + node.position, TweenDuration).from_current()
-	#TweenInstance.tween_property(Global.Loaded_Player, "rotation", node.BlockCameraPosition.rotation, TweenDuration).from_current()
+	TweenInstance.tween_property(Global.PlayerInstance, "position", node.BlockCameraPosition.position + node.position, TweenDuration).from_current()
+	#TweenInstance.tween_property(Global.PlayerInstance, "rotation", node.BlockCameraPosition.rotation, TweenDuration).from_current()
 	return
 
 func on_move_to_room(node, number):
@@ -114,34 +114,57 @@ func on_move_to_room(node, number):
 			SignalManager.move_to_room.emit(child, number)
 			pass
 
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
-	Global.Loaded_Game_World = self
-	SignalManager.game_world_loaded.emit()
-	SignalManager.stop_track.emit()
+func manage_signals():
 	SignalManager.enable_other_side_of_door.connect(on_enable_door_view)
 	SignalManager.disable_other_side_of_door.connect(on_disable_door_view)
 	SignalManager.move_to_room.connect(on_move_to_room)
 
+func load_children():
+	print_debug("Begining to load.")
+	SignalManager.load_player.emit()
+	await SignalManager.player_loaded
+	print_debug("Player loaded.")
+
+	SignalManager.load_monster.emit()
+	await SignalManager.monster_loaded
+	print_debug("Monster loaded.")
+
+	SignalManager.load_pause_menu.emit()
+	await SignalManager.pause_menu_loaded
+	print_debug("Pause menu loaded.")
+
+	SignalManager.load_movement_interface.emit()
+	await SignalManager.movement_interface_loaded
+	print_debug("Movement interface loaded.")
+
+	SignalManager.load_game_over_screen.emit()
+	await SignalManager.game_over_screen_loaded
+	print_debug("Game over screen loaded.")
+
+	SignalManager.load_task_list.emit()
+	await SignalManager.task_list_loaded
+	print_debug("Task list has loaded.")
+
+	SignalManager.load_dialogue_box.emit()
+	await SignalManager.dialogue_box_loaded
+	print_debug("Dialogue box has loaded.")
+
+	SignalManager.game_world_loaded.emit()
+	Global.load_data(Path.GameJSONFilePath, "game")
+
+func _ready():
+	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
+	manage_signals()
+	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
-
-func _on_tree_entered():
-	#print_debug(str(self.name) + " has entered the tree.")
-	pass
-
-func _on_tree_exited():
-	#print_debug(str(self.name) + " has exited the tree.")
-	pass
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	load_children()
+	return
 
 func _process(_delta):
-	if Global.Loaded_Player != null:
-		Global.SpaceState = Global.Loaded_Player.get_world_3d().direct_space_state
+	if Global.PlayerInstance != null:
+		manage_flashlight_raycast()
+		block_raycast()
+		Global.SpaceState = Global.PlayerInstance.get_world_3d().direct_space_state
 	Global.ScreenCentre = get_window().size / 2
 	Global.MousePosition2D = get_viewport().get_mouse_position()
-
-	# Flashlight Raycasting
-	if Global.Loaded_Game_World == null:
-		Global.Loaded_Game_World = self
-
-	manage_flashlight_raycast()
-	block_raycast()

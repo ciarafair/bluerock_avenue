@@ -59,16 +59,16 @@ func on_tween_finished():
 func find_task_text():
 	if Global.Game_Data_Instance.Current_Task != self.CurrentTask:
 		CurrentTask = Global.Game_Data_Instance.Current_Task
-		print_debug("Recieved signal")
+		#print_debug("Recieved signal")
 		var text: String
 		if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
 			text = "Turn off television"
-			print_debug("Setting text to %s" %[text])
+			#print_debug("Setting text to %s" %[text])
 			set_task_label_text(text)
 			return
 		elif Global.Game_Data_Instance.Current_Task == Global.task.EXPLORE:
 			text = "Investigate sound coming from the office"
-			print_debug("Setting text to %s" %[text])
+			#print_debug("Setting text to %s" %[text])
 			reset()
 			await TweenInstance.finished
 			set_task_label_text(text)
@@ -112,6 +112,10 @@ func _ready():
 	manage_signals()
 
 func _process(_delta):
+	if Global.TaskListInstance == null:
+		SignalManager.task_list_loaded.emit()
+		Global.TaskListInstance = self
+
 	manage_visibility()
 	find_task_text()
 

@@ -557,6 +557,3 @@ visible = false
 size = Vector3(38.5119, 10, 20)
 camera_attributes = ExtResource("4_mgfog")
 data = ExtResource("11_pw5yy")
-
-[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
-[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]

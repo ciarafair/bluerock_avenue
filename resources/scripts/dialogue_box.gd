@@ -92,12 +92,9 @@ func _on_close_button_up():
 
 func manage_signals():
 	SignalManager.click_dialogue.connect(Callable(on_click_dialogue))
+	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
-func _ready():
-	reset()
-	manage_signals()
-
-func _process(_delta):
+func manage_buttons():
 	if CurrentState == state.READY:
 		SkipButton.set_visible(false)
 		CloseButton.set_visible(false)
@@ -111,3 +108,15 @@ func _process(_delta):
 		CloseButton.set_visible(true)
 		return
 	pass
+
+func _ready():
+	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
+	reset()
+	manage_signals()
+
+func _process(_delta):
+	manage_buttons()
+
+	if Global.DialogueBoxInstance == null:
+		Global.DialogueBoxInstance = self
+		SignalManager.dialogue_box_loaded.emit()

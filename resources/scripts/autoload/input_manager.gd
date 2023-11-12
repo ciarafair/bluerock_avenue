@@ -63,56 +63,46 @@ func manage_window_input():
 			return
 
 func manage_door_input():
-	if IsHoldingShift == false:
-		if Input.is_action_pressed("manage_door_status"):
-			if IsHoldingSpace == true && Global.Is_In_Animation == false:
-				IsHoldingSpace = false
-				SignalManager.close_door.emit()
+	if Input.is_action_just_pressed("manage_door_status") && IsHoldingShift == false:
+		if Global.Is_In_Animation == false:
+			SignalManager.toggle_door.emit()
 
-		if Input.is_action_just_released("manage_door_status"):
-			if IsHoldingSpace == false:
-				IsHoldingSpace = true
-				SignalManager.open_door.emit()
-	else:
-		SignalManager.close_door.emit()
-
-	if IsHoldingSpace == false:
+	if Global.Is_Door_Open == false:
 		if Input.is_action_pressed("manage_door_listening"):
-				if IsHoldingShift == false && Global.Is_In_Animation == false:
+			if Global.Is_In_Animation == false:
+				if IsHoldingShift == false:
 					IsHoldingShift = true
 					SignalManager.player_camera_listen.emit()
+					return
 
 		if Input.is_action_just_released("manage_door_listening"):
 			if IsHoldingShift == true:
-				IsHoldingShift = false
-				SignalManager.reset_player_camera.emit()
-	else:
-			SignalManager.reset_player_camera.emit()
+					IsHoldingShift = false
+					SignalManager.reset_player_camera.emit()
 
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block) # EventManager.gd
 		return
 
-	if Global.Is_Door_Opened == true:
-		if Input.is_action_just_released("mouse_button_1"):
-			#print_debug("Left mouse button pressed.")
-			SignalManager.stop_event.emit()
-			IsHoldingSpace = false
-			if Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne:
-				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
-				Global.Game_Data_Instance.Current_Room.set_visible(false)
-				Global.Game_Data_Instance.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo)
-				return
-			elif Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo:
-				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
-				Global.Game_Data_Instance.Current_Room.set_visible(false)
-				Global.Game_Data_Instance.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne)
-				return
-			else:
-				#print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
-				pass
+	if Input.is_action_just_released("mouse_button_1"):
+		#print_debug("Left mouse button pressed.")
+		SignalManager.stop_event.emit()
+		IsHoldingSpace = false
+		if Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne:
+			#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+			Global.Game_Data_Instance.Current_Room.set_visible(false)
+			Global.Game_Data_Instance.Current_Event = ""
+			SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo)
+			return
+		elif Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo:
+			#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+			Global.Game_Data_Instance.Current_Room.set_visible(false)
+			Global.Game_Data_Instance.Current_Event = ""
+			SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne)
+			return
+		else:
+			#print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
+			return
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion and Global.Is_Window_Focused == true:

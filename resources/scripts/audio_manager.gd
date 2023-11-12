@@ -42,7 +42,7 @@ func on_stop_track():
 		return
 
 	if MusicPlayer == null:
-		printerr("Could not find music player to kill.")
+		push_error("Could not find music player to kill.")
 		return
 
 func on_start_track():

@@ -3,7 +3,7 @@
 [ext_resource type="Environment" uid="uid://83bq1txta8r5" path="res://resources/environments/active_game.tres" id="1_3l7bv"]
 [ext_resource type="Script" path="res://resources/scripts/player.gd" id="1_20bug"]
 [ext_resource type="CameraAttributesPractical" uid="uid://bcmemrh4ia4wg" path="res://resources/camera_attributes/Player.tres" id="2_ofqxa"]
-[ext_resource type="Texture2D" uid="uid://d18b8t1oojxwi" path="res://resources/textures/Flashlight.jpg" id="4_mwbb6"]
+[ext_resource type="Texture2D" uid="uid://d18b8t1oojxwi" path="res://resources/textures/flashlight.jpg" id="4_mwbb6"]
 
 [node name="Player" type="Node3D"]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)

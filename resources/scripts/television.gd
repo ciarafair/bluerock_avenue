@@ -1,17 +1,19 @@
 extends LocationBlock
 
+@onready var ScreenMesh: MeshInstance3D = %Screen
 @onready var VideoContainer: AspectRatioContainer = %AspectRatioContainer
-var TelevisionState: bool = true
+@onready var ScreenTexture = load("res://resources/textures/television_viewport_texture.tres")
+
 var VideoPlayerInstance: VideoStreamPlayer
 var AudioPlayerInstance: AudioStreamPlayer3D
 var VideoCurrentTime: float = 0
 
 func on_toggle_tv():
 	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
-		Global.Game_Data_Instance.Current_Task += 1
-		print_debug(Global.Game_Data_Instance.Current_Task)
-	TelevisionState = !TelevisionState
-	print_debug("Toggling the television to %s" %[TelevisionState])
+		Global.Game_Data_Instance.Current_Task = Global.task.EXPLORE
+		#print_debug(Global.Game_Data_Instance.Current_Task)
+	Global.Game_Data_Instance.Television_State = !Global.Game_Data_Instance.Television_State
+	#print_debug("Toggling the television to %s" %[Global.Game_Data_Instance.Television_State])
 
 func setup_video_player():
 	var video = preload(Path.StockCartoonVideoPath)
@@ -24,7 +26,7 @@ func setup_video_player():
 	video_player.set_expand(true)
 	video_player.set_paused(false)
 	video_player.set_volume_db(-80)
-	print_debug("Adding video player")
+	#print_debug("Adding video player")
 	VideoPlayerInstance = video_player
 	return VideoPlayerInstance
 
@@ -38,45 +40,45 @@ func setup_audio_player():
 	audio_player.set_autoplay(false)
 	audio_player.set_stream_paused(false)
 	audio_player.set_max_distance(20)
-	print_debug("Adding audio player")
+	#print_debug("Adding audio player")
 	AudioPlayerInstance = audio_player
 	return AudioPlayerInstance
 
 func manage_televison():
 	if AudioPlayerInstance != null:
-		if TelevisionState == false:
+		if Global.Game_Data_Instance.Television_State == false:
 			if AudioPlayerInstance.is_playing():
-				print_debug("Stopping audio.")
+				#print_debug("Stopping audio.")
 				AudioPlayerInstance.queue_free()
 				return
 
-		if TelevisionState == true:
+		if Global.Game_Data_Instance.Television_State == true:
 			if !AudioPlayerInstance.is_playing():
-				print_debug("Playing audio.")
+				#print_debug("Playing audio.")
 				AudioPlayerInstance.play()
 				return
 
 	if VideoPlayerInstance != null:
-		if TelevisionState == false:
+		if Global.Game_Data_Instance.Television_State == false:
 			if VideoPlayerInstance.is_playing():
-				print_debug("Stopping video.")
+				#print_debug("Stopping video.")
 				VideoPlayerInstance.queue_free()
 				return
 
-		if TelevisionState == true:
+		if Global.Game_Data_Instance.Television_State == true:
 			if !VideoPlayerInstance.is_playing():
-				print_debug("Playing video.")
+				#print_debug("Playing video.")
 				VideoPlayerInstance.play()
 				return
 
 	if AudioPlayerInstance == null:
-		if TelevisionState == true:
+		if Global.Game_Data_Instance.Television_State == true:
 			VideoContainer.add_child(setup_audio_player())
 			AudioPlayerInstance.play()
 			return
 
 	if VideoPlayerInstance == null:
-		if TelevisionState == true:
+		if Global.Game_Data_Instance.Television_State == true:
 			VideoContainer.add_child(setup_video_player())
 			#VideoPlayerInstance.set_stream_position(VideoCurrentTime)
 			VideoPlayerInstance.play()

@@ -1,10 +1,15 @@
 extends LocationBlock
 class_name DoorEvent
 
-@export var Is_Door_Open: bool
 @export var ConnectedRoomOne: int
 @export var ConnectedRoomTwo: int
 
+enum door_state {
+	OPENED = 0,
+	CLOSED = 1
+}
+
+var CurrentStatus: door_state = door_state.CLOSED
 var DoorTweenInstance: Tween
 
 var PivotPoint: Node3D
@@ -34,8 +39,39 @@ func find_door_handle(node: Node3D):
 		else:
 			find_door_handle(child)
 
-func on_open_door():
+func set_door_state(next: door_state):
+	CurrentStatus = next
+	#print_debug("Changing door state to %s" %[CurrentStatus])
+	match CurrentStatus:
+		door_state.OPENED:
+			open_door()
+			return
+
+		door_state.CLOSED:
+			close_door()
+			return
+
+func twist_doorhandle():
+	if self.DoorHandle != null:
+		DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
+		pass
+
+	elif self.DoorHandle == null:
+		push_warning("Door handle returned null. Could not animate.")
+		pass
+
+func reset_doorhandle():
+	if self.DoorHandle != null:
+		DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, handle_turning_time).from_current()
+		return
+
+	elif self.DoorHandle == null:
+		push_warning("Door handle returned null. Could not animate.")
+		return
+
+func open_door():
 	SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
+	Global.Is_Door_Open = true
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
 			DoorTweenInstance.kill()
@@ -43,28 +79,20 @@ func on_open_door():
 		DoorTweenInstance = get_tree().create_tween().chain()
 		DoorTweenInstance.bind_node(self)
 
-		if Is_Door_Open == true:
+		if self.PivotPoint != null:
+			twist_doorhandle()
+			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current().finished.connect(Callable(on_door_opened))
 			return
 
-		if Is_Door_Open == false:
-#			if self.DoorHandle != null:
-#				DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
-#				#SignalManager.door_open_sound.emit(self)
-#				pass
-#
-#			elif self.DoorHandle == null:
-#				push_warning("Door handle returned null. Could not animate.")
-#				pass
+		elif self.PivotPoint == null:
+			push_warning("Pivot point returned null. Could not animate.")
+			return
 
-			if self.PivotPoint != null:
-				DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current()
-				return
+func on_door_opened():
+	await DoorTweenInstance.finished
+	pass
 
-			elif self.PivotPoint == null:
-				push_warning("Pivot point returned null. Could not animate.")
-				return
-
-func on_close_door():
+func close_door():
 	if self.Is_Enabled == true:
 		if DoorTweenInstance:
 			DoorTweenInstance.kill()
@@ -73,25 +101,29 @@ func on_close_door():
 		DoorTweenInstance.bind_node(self)
 
 		if self.PivotPoint != null:
-			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(door_close_finished)
+			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(Callable(on_door_closed))
+			reset_doorhandle()
 			pass
 
 		elif self.PivotPoint == null:
 			push_warning("Pivot point returned null. Could not animate.")
 			pass
 
-#		if self.DoorHandle != null:
-#			DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, 0.5).from_current()
-#			return
-#
-#		elif self.DoorHandle == null:
-#			push_warning("Door handle returned null. Could not animate.")
-#			return
 
-func door_close_finished():
-	#SignalManager.door_close_sound.emit(self)
+func on_door_closed():
 	await DoorTweenInstance.finished
+	Global.Is_Door_Open = false
 	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
+
+func on_toggle_door():
+	if Global.Game_Data_Instance.Current_Active_Block == self:
+		if self.CurrentStatus == door_state.CLOSED:
+			set_door_state(door_state.OPENED)
+			return
+
+		if self.CurrentStatus == door_state.OPENED:
+			set_door_state(door_state.CLOSED)
+			return
 
 func find_current_room():
 	# If the current room number is one of the two options move to the other one.
@@ -106,75 +138,55 @@ func find_current_room():
 
 func start_event():
 	if Global.Is_In_Animation == false:
-		# Game world
+		# Signal in game_world.gd
 		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 		Global.Game_Data_Instance.Current_Event = "door"
-		# Self
-		if SignalManager.open_door.is_connected(on_open_door):
-			pass
-		elif !SignalManager.open_door.is_connected(on_open_door):
-			# Self
-			SignalManager.open_door.connect(on_open_door)
 
-		# Self
-		if SignalManager.close_door.is_connected(on_close_door):
+		if SignalManager.open_door.is_connected(Callable(set_door_state)):
 			pass
-		elif !SignalManager.close_door.is_connected(on_close_door):
-			# Self
-			SignalManager.close_door.connect(on_close_door)
+		elif !SignalManager.open_door.is_connected(Callable(set_door_state)):
+			SignalManager.open_door.connect(Callable(set_door_state).bind(door_state.OPENED))
+
+		if SignalManager.close_door.is_connected(Callable(set_door_state)):
+			pass
+		elif !SignalManager.close_door.is_connected(Callable(set_door_state)):
+			SignalManager.close_door.connect(Callable(set_door_state).bind(door_state.CLOSED))
 
 func on_stop_event():
 	#print_debug("Stopping door event.")
 	# Game world
-	if self.Is_Door_Open == true:
-		SignalManager.close_door.emit()
+	SignalManager.close_door.emit()
 	Global.Game_Data_Instance.Current_Event = ""
 
 func manage_signals():
 	if Global.Game_Data_Instance.Current_Active_Block == self:
-		# Self
-		if !SignalManager.stop_event.is_connected(on_stop_event):
-			SignalManager.stop_event.connect(on_stop_event)
+		if !SignalManager.toggle_door.is_connected(Callable(on_toggle_door)):
+			SignalManager.toggle_door.connect(Callable(on_toggle_door))
 
-		# Self
-		if !SignalManager.activate_block.is_connected(on_activate_block):
-			SignalManager.activate_block.connect(on_activate_block)
+		if !SignalManager.stop_event.is_connected(Callable(on_stop_event)):
+			SignalManager.stop_event.connect(Callable(on_stop_event))
 
-		# Self
-		if !SignalManager.deactivate_block.is_connected(on_deactivate_block):
-			SignalManager.deactivate_block.connect(on_deactivate_block)
+		if !SignalManager.activate_block.is_connected(Callable(on_activate_block)):
+			SignalManager.activate_block.connect(Callable(on_activate_block))
+
+		if !SignalManager.deactivate_block.is_connected(Callable(on_deactivate_block)):
+			SignalManager.deactivate_block.connect(Callable(on_deactivate_block))
 	else:
-		# Self
-		if SignalManager.stop_event.is_connected(on_stop_event):
-			SignalManager.stop_event.disconnect(on_stop_event)
+		if !SignalManager.toggle_door.is_connected(Callable(on_toggle_door)):
+			SignalManager.toggle_door.connect(Callable(on_toggle_door))
 
-		# Self
-		if SignalManager.activate_block.is_connected(on_activate_block):
-			SignalManager.activate_block.disconnect(on_activate_block)
+		if SignalManager.stop_event.is_connected(Callable(on_stop_event)):
+			SignalManager.stop_event.disconnect(Callable(on_stop_event))
 
-		# Self
-		if SignalManager.deactivate_block.is_connected(on_deactivate_block):
-			SignalManager.deactivate_block.disconnect(on_deactivate_block)
+		if SignalManager.activate_block.is_connected(Callable(on_activate_block)):
+			SignalManager.activate_block.disconnect(Callable(on_activate_block))
+
+		if SignalManager.deactivate_block.is_connected(Callable(on_deactivate_block)):
+			SignalManager.deactivate_block.disconnect(Callable(on_deactivate_block))
 
 		if Global.Hovering_Block == self:
-			# Self
-			if !SignalManager.activate_block.is_connected(on_activate_block):
-				SignalManager.activate_block.connect(on_activate_block)
-
-func manage_global_door_variable():
-	if self.Is_Enabled == true:
-		if self.PivotPoint != null:
-			if self.PivotPoint.rotation_degrees.y >= PivotPointOriginalYRotation + 90:
-				#print_debug("Door is open.")
-				self.Is_Door_Open = true
-				Global.Is_Door_Opened = true
-			elif self.PivotPoint.rotation_degrees.y < PivotPointOriginalYRotation + 90:
-				#print_debug("Door is closed.")
-				self.Is_Door_Open = false
-				Global.Is_Door_Opened = false
-		elif self.PivotPoint == null:
-			#print_debug("Pivot point returned null.")
-			pass
+			if !SignalManager.activate_block.is_connected(Callable(on_activate_block)):
+				SignalManager.activate_block.connect(Callable(on_activate_block))
 
 func _ready():
 	search_for_parent_block(self)
@@ -193,7 +205,6 @@ func _ready():
 func _process(_delta):
 	set_rotation_ability()
 	manage_signals()
-	manage_global_door_variable()
 
 	if DoorTweenInstance != null:
 		door_closing_time = DoorTweenInstance.get_total_elapsed_time()

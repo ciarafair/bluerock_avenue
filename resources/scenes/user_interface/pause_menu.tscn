@@ -1,20 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cxd0ayaq5s7qt"]
+[gd_scene load_steps=4 format=3 uid="uid://cxd0ayaq5s7qt"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/pause_menu.gd" id="1_u25ih"]
 [ext_resource type="Theme" uid="uid://dmg5015od7xq4" path="res://resources/themes/pause_menu.theme" id="2_qnnea"]
 [ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_cbvhb"]
-[ext_resource type="Shader" path="res://Resources/Shaders/Overlay.gdshader" id="4_q4tin"]
-[ext_resource type="Script" path="res://resources/scripts/overlay_effect.gd" id="5_w2gbb"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ewku"]
-shader = ExtResource("4_q4tin")
-shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.4
-shader_parameter/scanlines_width = 0.25
-shader_parameter/grille_opacity = 0.3
-shader_parameter/resolution = Vector2(720, 576)
-shader_parameter/pixelate = true
-shader_parameter/brightness = 1.4
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -111,13 +99,6 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("2_qnnea")
 text = " Quit To Menu"
-
-[node name="Overlay" type="Panel" parent="AspectRatioContainer"]
-material = SubResource("ShaderMaterial_8ewku")
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_qnnea")
-script = ExtResource("5_w2gbb")
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame" to="." method="_on_resume_game_button_up"]

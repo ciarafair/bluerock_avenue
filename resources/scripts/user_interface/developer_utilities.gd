@@ -83,18 +83,18 @@ func monster_current_room_info():
 		monster_current_room_label.set_visible(false)
 
 func player_info():
-	if Global.Loaded_Player != null:
-		var originalPositionX = str(Global.Loaded_Player.position.x)
-		var originalPositionY = str(Global.Loaded_Player.position.y)
-		var originalPositionZ = str(Global.Loaded_Player.position.z)
+	if Global.PlayerInstance != null:
+		var originalPositionX = str(Global.PlayerInstance.position.x)
+		var originalPositionY = str(Global.PlayerInstance.position.y)
+		var originalPositionZ = str(Global.PlayerInstance.position.z)
 
 		var truncatedPositionX = truncateString(originalPositionX)
 		var truncatedPositionY = truncateString(originalPositionY)
 		var truncatedPositionZ = truncateString(originalPositionZ)
 
-		var originalRotationX = str(Global.Loaded_Player.rotation_degrees.x)
-		var originalRotationY = str(Global.Loaded_Player.rotation_degrees.y)
-		var originalRotationZ = str(Global.Loaded_Player.rotation_degrees.z)
+		var originalRotationX = str(Global.PlayerInstance.rotation_degrees.x)
+		var originalRotationY = str(Global.PlayerInstance.rotation_degrees.y)
+		var originalRotationZ = str(Global.PlayerInstance.rotation_degrees.z)
 
 		var truncatedRotationX = truncateString(originalRotationX)
 		var truncatedRotationY = truncateString(originalRotationY)
@@ -104,7 +104,7 @@ func player_info():
 			position_collection.set_visible(true)
 			rotation_collection.set_visible(true)
 
-			if Global.Loaded_Player != null:
+			if Global.PlayerInstance != null:
 				x_position_label.text = truncatedPositionX
 				y_position_label.text = truncatedPositionY
 				z_position_label.text = truncatedPositionZ

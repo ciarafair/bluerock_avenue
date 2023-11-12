@@ -162,14 +162,14 @@ func visibility_check():
 
 func _on_main_menu_button_up():
 	self.set_visible(false)
-	SignalManager.save_game_data.emit()
+	SignalManager.save_settings_data.emit()
 	SignalManager.exit_options_menu.emit()
 
 func _on_save_changes_button_up():
 	SignalManager.save_settings_data.emit()
 
 func _on_tree_exiting():
-	Global.Loaded_Main_Menu = null
+	Global.Loaded_Options_Menu = null
 
 func _process(_delta):
 	manage_volume_sliders()
