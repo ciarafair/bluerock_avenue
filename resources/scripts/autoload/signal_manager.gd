@@ -28,8 +28,11 @@ signal game_over
 
 # Monster
 signal set_monster_position
+signal monster_found_position
 signal reset_monster
 signal find_monster_room
+signal monster_found_room
+signal spawn_monster
 
 # Game World
 signal move_to_room

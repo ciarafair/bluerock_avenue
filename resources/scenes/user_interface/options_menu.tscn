@@ -180,7 +180,7 @@ theme = ExtResource("2_dq3bs")
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Label2" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
 layout_mode = 2
 theme = ExtResource("3_5ifbh")
 text = "Options"

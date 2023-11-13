@@ -28,7 +28,7 @@ func add_object(node_path: String, node_instance: Node, parent_instance: Node) -
 		print_debug("%s's parent was null. Aborting." %[node_path])
 		return null
 	parent_instance.add_child(node_instance)
-	print_debug(node_instance)
+	#print_debug(node_instance)
 	return node_instance
 
 func on_room_loaded(node):
@@ -90,36 +90,51 @@ func _process(_delta):
 	else:
 		pass
 
-func on_game_world_exiting():
-	Game_World_Instance.tree_exiting.disconnect(on_game_world_exiting)
-	SignalManager.load_dialogue_box.disconnect(Callable(add_object))
-	SignalManager.load_pause_menu.disconnect(Callable(add_object))
-	SignalManager.load_options_menu.disconnect(Callable(add_object))
-	SignalManager.load_movement_interface.disconnect(Callable(add_object))
-	SignalManager.load_game_over_screen.disconnect(Callable(add_object))
-	SignalManager.load_task_list.disconnect(Callable(add_object))
-	SignalManager.load_player.disconnect(Callable(add_object))
-	SignalManager.load_monster.disconnect(Callable(add_object))
+func manage_game_world_signals():
+		if SignalManager.load_pause_menu.is_connected(Callable(add_object)):
+			SignalManager.load_pause_menu.disconnect(Callable(add_object))
+		SignalManager.load_pause_menu.connect(Callable(add_object).bind(Path.PauseMenuPath, Pause_Menu_Instance, User_Interface_Instance))
 
+		if SignalManager.load_options_menu.is_connected(Callable(add_object)):
+			SignalManager.load_options_menu.disconnect(Callable(add_object))
+		SignalManager.load_options_menu.connect(Callable(add_object).bind(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance))
+
+		if SignalManager.load_movement_interface.is_connected(Callable(add_object)):
+			SignalManager.load_movement_interface.disconnect(Callable(add_object))
+		SignalManager.load_movement_interface.connect(Callable(add_object).bind(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance))
+
+		if SignalManager.load_game_over_screen.is_connected(Callable(add_object)):
+			SignalManager.load_game_over_screen.disconnect(Callable(add_object))
+
+		if SignalManager.load_game_over_screen.is_connected(Callable(add_object)):
+			SignalManager.load_game_over_screen.disconnect(Callable(add_object))
+		SignalManager.load_game_over_screen.connect(Callable(add_object).bind(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance))
+
+		if SignalManager.load_task_list.is_connected(Callable(add_object)):
+			SignalManager.load_task_list.disconnect(Callable(add_object))
+		SignalManager.load_task_list.connect(Callable(add_object).bind(Path.TaskListPath, Task_List_Instance, User_Interface_Instance))
+
+		if SignalManager.load_dialogue_box.is_connected(Callable(add_object)):
+			SignalManager.load_dialogue_box.disconnect(Callable(add_object))
+		SignalManager.load_dialogue_box.connect(Callable(add_object).bind(Path.DialogueBoxPath, Dialogue_Box_Instance, User_Interface_Instance))
+
+		if SignalManager.load_player.is_connected(Callable(add_object)):
+			SignalManager.load_player.disconnect(Callable(add_object))
+		SignalManager.load_player.connect(Callable(add_object).bind(Path.PlayerPath, Local_Player_Instance, Game_World_Instance))
+
+		if SignalManager.load_monster.is_connected(Callable(add_object)):
+			SignalManager.load_monster.disconnect(Callable(add_object))
+		SignalManager.load_monster.connect(Callable(add_object).bind(Path.MonsterPath, Local_Monster_Instance, Game_World_Instance))
 
 func on_scene_loaded(resource: PackedScene):
 	var InstancedResource = resource.instantiate()
 	if resource == load(Path.GameWorldPath):
 		Game_World_Instance = InstancedResource
-		Game_World_Instance.tree_exiting.connect(on_game_world_exiting)
-
-		SignalManager.load_pause_menu.connect(Callable(add_object).bind(Path.PauseMenuPath, Pause_Menu_Instance, User_Interface_Instance))
-		SignalManager.load_options_menu.connect(Callable(add_object).bind(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance))
-		SignalManager.load_movement_interface.connect(Callable(add_object).bind(Path.MovementInterfacePath, Movement_Interface_Instance, User_Interface_Instance))
-		SignalManager.load_game_over_screen.connect(Callable(add_object).bind(Path.GameOverScreenPath, Game_Over_Screen_Instance, User_Interface_Instance))
-		SignalManager.load_task_list.connect(Callable(add_object).bind(Path.TaskListPath, Task_List_Instance, User_Interface_Instance))
-		SignalManager.load_dialogue_box.connect(Callable(add_object).bind(Path.DialogueBoxPath, Dialogue_Box_Instance, User_Interface_Instance))
-
-		SignalManager.load_player.connect(Callable(add_object).bind(Path.PlayerPath, Local_Player_Instance, Game_World_Instance))
-		SignalManager.load_monster.connect(Callable(add_object).bind(Path.MonsterPath, Local_Monster_Instance, Game_World_Instance))
-
+		manage_game_world_signals()
+		self.add_child(Game_World_Instance)
+		if Global.Loaded_Game_World != null:
+			Global.Loaded_Game_World.queue_free()
 		Global.Loaded_Game_World = Game_World_Instance
-		self.add_child(InstancedResource)
 		SignalManager.load_game_world.emit()
 		return
 
@@ -134,11 +149,8 @@ func manage_signals():
 	SignalManager.scene_loaded.connect(Callable(on_scene_loaded))
 	SignalManager.load_audio_manager.connect(Callable(add_object).bind(Path.AudioManagerPath, Audio_Manager_Instance, self))
 	SignalManager.main_menu_loaded.connect(Callable(on_main_menu_loaded))
-
 	SignalManager.add_overlay_effect.connect(Callable(add_object).bind(Path.OverlayEffectPath, OverlayEffectInstance, User_Interface_Instance))
-
 	SignalManager.game_world_loaded.connect(Callable(on_game_world_loaded))
-
 	SignalManager.exit_options_menu.connect(Callable(on_exit_options_menu))
 	SignalManager.room_loaded.connect(Callable(on_room_loaded))
 

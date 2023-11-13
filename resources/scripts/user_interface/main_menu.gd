@@ -19,12 +19,15 @@ func version_number():
 	VersionLabel.text = version
 	return
 
+func manage_signals():
+	SignalManager.exit_options_menu.connect(Callable(self.set_visible).bind(true))
+
 func _ready():
+	manage_signals()
 	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	Global.Loaded_Main_Menu = self
 	Global.Is_Game_Active = false
 	version_number()
-	SignalManager.show_main_menu.connect(Callable(self.set_visible).bind(true))
 	SignalManager.main_menu_loaded.emit()
 	SignalManager.play_track.emit()
 	ContinueMargin.set_visible(false)

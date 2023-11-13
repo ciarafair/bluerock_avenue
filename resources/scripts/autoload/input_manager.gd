@@ -27,10 +27,11 @@ func manage_normal_input():
 		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block)
 		return
 
-	if Global.Game_Data_Instance.Current_Active_Block.name == "TVTable":
-		if Input.is_action_just_released("toggle_tv"):
-			SignalManager.toggle_tv.emit()
-			return
+	if Global.Game_Data_Instance.Current_Active_Block != null:
+		if Global.Game_Data_Instance.Current_Active_Block.name == "TVTable":
+			if Input.is_action_just_released("toggle_tv"):
+				SignalManager.toggle_tv.emit()
+				return
 
 	if Global.Current_Movement_Panel != null:
 		if Global.Current_Movement_Panel.name == "Bottom":
@@ -104,11 +105,30 @@ func manage_door_input():
 			#print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
 			return
 
+func manage_dev_input():
+		if Input.is_action_just_released("spawn_monster"):
+			SignalManager.spawn_monster.emit()
+
+		if Input.is_action_just_released("game_over"):
+			SignalManager.game_over.emit()
+
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion and Global.Is_Window_Focused == true:
 		SignalManager.mouse_movement.emit(event.position)
 
 	if Global.Is_Game_Active == true:
+		manage_dev_input()
+
+		if Global.Game_Data_Instance.Current_Event == "":
+			if Global.Is_In_Animation != true:
+				manage_normal_input()
+
+		if Global.Game_Data_Instance.Current_Event == "door":
+			manage_door_input()
+
+		if Global.Game_Data_Instance.Current_Event == "window":
+			manage_window_input()
+
 		if Input.is_action_just_released("flashlight"):
 			if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:
 				Global.Game_Data_Instance.Is_Flashlight_On = !Global.Game_Data_Instance.Is_Flashlight_On
@@ -124,14 +144,3 @@ func _unhandled_input(event: InputEvent):
 
 			if Input.is_action_just_released("select_dialogue"):
 				Global.set_mouse_state(Global.MouseState.MOVEMENT)
-
-		if Global.Game_Data_Instance.Current_Event == "":
-			if Global.Is_In_Animation != true:
-				manage_normal_input()
-
-		if Global.Game_Data_Instance.Current_Event == "door":
-			manage_door_input()
-
-		if Global.Game_Data_Instance.Current_Event == "window":
-			manage_window_input()
-

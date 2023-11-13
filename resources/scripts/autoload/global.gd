@@ -2,7 +2,7 @@ extends Node
 
 const MajorBuildNum: int = 1
 const MinorBuildNum: int = 0
-const RevisionNum: int = 2
+const RevisionNum: int = 3
 
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData
@@ -69,6 +69,24 @@ enum task {
 	EXPLORE = 2,
 	SURVIVE = 3
 }
+
+func spawn_monster():
+	if Global.MonsterInstance == null:
+		SignalManager.load_monster.emit()
+		await SignalManager.monster_loaded
+		print_debug("Monster loaded in room %s at position %s. " %[Game_Data_Instance.Monster_Current_Room.name, Game_Data_Instance.Monster_Current_Stage])
+		return
+	else:
+		print_debug("Monster already instantiated.")
+		if Game_Data_Instance.Monster_Current_Room == null:
+			SignalManager.find_monster_room.emit()
+			print_debug(Game_Data_Instance.Monster_Current_Room)
+			await SignalManager.monster_found_room
+
+		print_debug(Game_Data_Instance.Monster_Current_Stage)
+		SignalManager.set_monster_position.emit()
+		await SignalManager.monster_found_position
+		print_debug(Game_Data_Instance.Monster_Current_Stage)
 
 @onready var EyeCursor = preload("res://resources/textures/mouse_cursors/eye.png")
 @onready var DialogueCursor = preload("res://resources/textures/mouse_cursors/speech_bubble.png")
@@ -416,6 +434,7 @@ func search_for_room(node: Node, identifier: int):
 		search_for_room(child, identifier)
 
 func load_game_data(parsed_data: Dictionary):
+	print_debug("Loading game data.")
 	PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
 	PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
 	PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
@@ -465,6 +484,7 @@ func load_data(path: String, type: String):
 			load_settings_data(parsed_data)
 			return
 		elif type == "game":
+			await SignalManager.game_world_loaded
 			load_game_data(parsed_data)
 			return
 
@@ -478,6 +498,8 @@ func on_delete_game_data():
 		return
 
 func manage_signals():
+	SignalManager.spawn_monster.connect(Callable(spawn_monster))
+
 	SignalManager.load_settings_data.connect(Callable(load_data).bind(Path.SettingsJSONFilePath, "settings"))
 	SignalManager.save_settings_data.connect(on_save_settings_data)
 	SignalManager.delete_settings_data.connect(on_delete_settings_data)

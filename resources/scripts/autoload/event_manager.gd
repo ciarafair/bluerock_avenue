@@ -1,6 +1,6 @@
 extends Node
 
-const random_tick_interval: float = 10
+const random_tick_interval: float = 1
 const clock_tick_interval: float = 15
 
 var IS_FLASHLIGHT_TOGGLEABLE = true
@@ -14,6 +14,8 @@ var meridiem: String
 
 var target_number: int
 var number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+var RandomTickInt: int = 0
 
 func manage_time():
 	if Global.Game_Data_Instance.Time_Minute >= 60:
@@ -44,20 +46,7 @@ func get_random_number_from_pool():
 	return number_pool[index]
 
 func on_random_timeout():
-	while number_pool.size() > 0:
-		var guess = get_random_number_from_pool()
-		if guess == target_number:
-			#print_debug("Match. " + str(guess) + " == " + str(target_number))
-			SignalManager.random_tick.emit()
-			number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-			#print_debug("Reset number pool: " + str(number_pool))
-			return
-		else:
-			#print_debug("No match. " + str(guess) + " != " + str(target_number))
-			number_pool.erase(guess)
-			#print_debug("Updated number pool: " + str(number_pool))
-			return
-	print("No more numbers in the pool.")
+	RandomTickInt += 1
 
 func start_random_timer():
 	RandomTimer.one_shot = false
@@ -69,7 +58,30 @@ func start_clock_timer():
 	ClockTimer.start(clock_tick_interval)
 	Is_Clock_Timer_Running = true
 
-func _process(_delta):
+func random_tick(_delta):
+	while number_pool.size() > 0:
+		var guess = get_random_number_from_pool()
+		if guess == target_number:
+			#print_debug("Match at %s: %s == %s" %[delta, guess, target_number])
+
+			if Global.Game_Data_Instance.Monster_Current_Room != null:
+				SignalManager.set_monster_position.emit()
+			else:
+				SignalManager.find_monster_room.emit()
+				SignalManager.set_monster_position.emit()
+
+			number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+			#print_debug("Reset number pool: %s" %[number_pool])
+			return
+		else:
+			#print_debug("Skip at %s: %s == %s" %[delta, guess, target_number])
+			number_pool.erase(guess)
+			#print_debug("Updated number pool: %s" %[number_pool])
+			return
+	printerr("No more numbers in the pool.")
+
+
+func _process(delta):
 	if !ClockTimer:
 		ClockTimer = Timer.new()
 		ClockTimer.timeout.connect(on_clock_timeout)
@@ -77,8 +89,12 @@ func _process(_delta):
 
 	if !RandomTimer:
 		RandomTimer = Timer.new()
-		RandomTimer.timeout.connect(on_random_timeout)
+		RandomTimer.timeout.connect(Callable(on_random_timeout))
 		self.add_child(RandomTimer)
+
+	if RandomTickInt == 1:
+		random_tick(delta)
+		RandomTickInt -=1
 
 	if Global.Is_Game_Active == true && get_tree().paused == false:
 		manage_time()

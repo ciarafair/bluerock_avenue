@@ -123,31 +123,27 @@ func load_children():
 	print_debug("Begining to load.")
 	SignalManager.load_player.emit()
 	await SignalManager.player_loaded
-	print_debug("Player loaded.")
-
-	SignalManager.load_monster.emit()
-	await SignalManager.monster_loaded
-	print_debug("Monster loaded.")
+	#print_debug("Player loaded.")
 
 	SignalManager.load_pause_menu.emit()
 	await SignalManager.pause_menu_loaded
-	print_debug("Pause menu loaded.")
+	#print_debug("Pause menu loaded.")
 
 	SignalManager.load_movement_interface.emit()
 	await SignalManager.movement_interface_loaded
-	print_debug("Movement interface loaded.")
+	#print_debug("Movement interface loaded.")
 
 	SignalManager.load_game_over_screen.emit()
 	await SignalManager.game_over_screen_loaded
-	print_debug("Game over screen loaded.")
+	#print_debug("Game over screen loaded.")
 
 	SignalManager.load_task_list.emit()
 	await SignalManager.task_list_loaded
-	print_debug("Task list has loaded.")
+	#print_debug("Task list has loaded.")
 
 	SignalManager.load_dialogue_box.emit()
 	await SignalManager.dialogue_box_loaded
-	print_debug("Dialogue box has loaded.")
+	#print_debug("Dialogue box has loaded.")
 
 	SignalManager.game_world_loaded.emit()
 	Global.load_data(Path.GameJSONFilePath, "game")
@@ -155,13 +151,13 @@ func load_children():
 func _ready():
 	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
 	manage_signals()
-	Global.Loaded_Game_World = self
 	Global.Is_Game_Active = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	load_children()
 	return
 
 func _process(_delta):
+
 	if Global.PlayerInstance != null:
 		manage_flashlight_raycast()
 		block_raycast()

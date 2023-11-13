@@ -104,11 +104,14 @@ func manage_visibility():
 func manage_signals():
 	SignalManager.show_pause_menu.connect(Callable(self.set_visible).bind(false))
 	SignalManager.hide_pause_menu.connect(Callable(self.set_visible).bind(true))
+	SignalManager.game_over.connect(Callable(self.queue_free))
 	SignalManager.set_task.connect(Callable(find_task_text))
 	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 	return
 
 func _ready():
+	self.set_visible(true)
+	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	manage_signals()
 
 func _process(_delta):

@@ -30,7 +30,6 @@ func _on_save_button_up():
 	SignalManager.save_game_data.emit()
 	return
 
-
 func check_pause_menu():
 	if Global.Is_Pause_Menu_Open == true && Global.Loaded_Options_Menu.visible == false:
 			if Global.Is_In_Animation == true:
