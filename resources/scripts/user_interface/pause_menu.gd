@@ -28,8 +28,7 @@ func _on_quit_button_up():
 func _on_save_button_up():
 	AnimationPlayerInstance.play("saved_popup")
 	SignalManager.save_game_data.emit()
-
-	pass # Replace with function body.
+	return
 
 
 func check_pause_menu():

@@ -2,7 +2,7 @@ extends Node
 
 const MajorBuildNum: int = 1
 const MinorBuildNum: int = 0
-const RevisionNum: int = 1
+const RevisionNum: int = 2
 
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData

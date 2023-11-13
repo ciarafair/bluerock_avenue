@@ -164,11 +164,13 @@ func _on_main_menu_button_up():
 	self.set_visible(false)
 	SignalManager.save_settings_data.emit()
 	SignalManager.exit_options_menu.emit()
+	return
 
 @onready var AnimationPlayerInstance = %AnimationPlayer
 func _on_save_changes_button_up():
 	AnimationPlayerInstance.play("saved_popup")
 	SignalManager.save_settings_data.emit()
+	return
 
 func _on_tree_exiting():
 	Global.Loaded_Options_Menu = null
@@ -183,3 +185,4 @@ func _ready():
 	self.set_visible(false)
 	Global.Loaded_Options_Menu = self
 	SignalManager.show_options_menu.connect(Callable(self.set_visible).bind(true))
+	return

@@ -110,6 +110,42 @@ _data = {
 process_mode = 3
 script = ExtResource("1_u25ih")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_f88k4")
+}
+
+[node name="Popup" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("4_4h5rd")
+
+[node name="CenterContainer" type="CenterContainer" parent="Popup"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.106019
+anchor_right = 1.0
+anchor_bottom = 0.168056
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Popup/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Popup/CenterContainer/MarginContainer"]
+layout_mode = 2
+text = "Game File Saved"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
@@ -226,42 +262,6 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 theme = ExtResource("2_qnnea")
 text = " Save Game "
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
-libraries = {
-"": SubResource("AnimationLibrary_f88k4")
-}
-
-[node name="Popup" type="Control" parent="."]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("4_4h5rd")
-
-[node name="CenterContainer" type="CenterContainer" parent="Popup"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.106019
-anchor_right = 1.0
-anchor_bottom = 0.168056
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="MarginContainer" type="MarginContainer" parent="Popup/CenterContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Popup/CenterContainer/MarginContainer"]
-layout_mode = 2
-text = "Game File Saved"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/MarginContainer/VBoxContainer/MarginContainer/ResumeGame" to="." method="_on_resume_game_button_up"]
