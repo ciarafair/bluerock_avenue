@@ -13,7 +13,7 @@ func _on_quit_button_up():
 
 func version_number():
 	var version: String
-	version = "Version " + str(Global.MajorBuildNum) + "." + str(Global.MinorBuildNum) + "." + str(Global.RevisionNum) + "." + str(Global.PackageNum)
+	version = "Version " + str(Global.MajorBuildNum) + "." + str(Global.MinorBuildNum) + "." + str(Global.RevisionNum)
 	VersionLabel.text = version
 
 func _ready():
@@ -26,7 +26,7 @@ func _ready():
 	SignalManager.play_track.emit()
 	ContinueMargin.set_visible(false)
 
-func _on_github_button_button_up():
+func _on_github_button_up():
 	OS.shell_open("https://github.com/ciarafair/bluerock_avenue")
 
 func _on_new_game_button_up():
@@ -52,5 +52,5 @@ func _process(_delta):
 func _on_tree_exiting():
 	Global.Loaded_Main_Menu = null
 
-func _on_discord_button_button_up():
+func _on_discord_button_up():
 	pass # Replace with function body.

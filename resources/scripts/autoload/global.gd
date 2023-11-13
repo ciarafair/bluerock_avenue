@@ -2,8 +2,7 @@ extends Node
 
 const MajorBuildNum: int = 1
 const MinorBuildNum: int = 0
-const RevisionNum: int = 0
-const PackageNum: int = 0
+const RevisionNum: int = 1
 
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData
@@ -528,12 +527,6 @@ func task_check(node) -> Dictionary:
 			return Global.stringify_json(TaskErrorDialoguePath)
 	else:
 		return {}
-
-func load_mp3(path):
-	var file = FileAccess.open(path, FileAccess.READ)
-	var sound = AudioStreamMP3.new()
-	sound.data = file.get_buffer(file.get_length())
-	return sound
 
 func _ready():
 	Settings_Data_Instance = SettingsData.new()

@@ -6,18 +6,18 @@ var MusicPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
 var AudioBusLayoutOne: AudioBusLayout = preload(Audio_Bus_Layout)
 
 const Opening_Track_One_Path: String = "res://resources/audio/music/it_is_dark_tonight.mp3"
-var Opening_Track_One_Instance: AudioStreamMP3 = Global.load_mp3(Opening_Track_One_Path)
+var Opening_Track_One_Instance: AudioStreamMP3 = load(Opening_Track_One_Path)
 
 const Door_Opening_SFX_Path: String = "res://resources/audio/sound_effects/open_door.mp3"
-var Door_Opening_SFX_Instance: AudioStreamMP3 = Global.load_mp3(Door_Opening_SFX_Path)
+var Door_Opening_SFX_Instance: AudioStreamMP3 = load(Door_Opening_SFX_Path)
 const Door_Closing_SFX_Path: String = "res://resources/audio/sound_effects/close_door.mp3"
-var Door_Closing_SFX_Instance: AudioStreamMP3 = Global.load_mp3(Door_Closing_SFX_Path)
+var Door_Closing_SFX_Instance: AudioStreamMP3 = load(Door_Closing_SFX_Path)
 const Window_Opening_SFX_Path: String = "res://resources/audio/sound_effects/open_window.mp3"
-var Window_Opening_SFX_Instance: AudioStreamMP3 = Global.load_mp3(Window_Opening_SFX_Path)
+var Window_Opening_SFX_Instance: AudioStreamMP3 = load(Window_Opening_SFX_Path)
 const Window_Closing_SFX_Path: String = "res://resources/audio/sound_effects/close_window.mp3"
-var Window_Closing_SFX_Instance: AudioStreamMP3 = Global.load_mp3(Window_Closing_SFX_Path)
+var Window_Closing_SFX_Instance: AudioStreamMP3 = load(Window_Closing_SFX_Path)
 const Clock_Ticking_SFX_Path: String = "res://resources/audio/sound_effects/clock_ticking.mp3"
-var Clock_Ticking_SFX_Instance: AudioStreamMP3 = Global.load_mp3(Clock_Ticking_SFX_Path)
+var Clock_Ticking_SFX_Instance: AudioStreamMP3 = load(Clock_Ticking_SFX_Path)
 
 @onready var MUSIC_BUS_ID = AudioServer.get_bus_index("Music")
 

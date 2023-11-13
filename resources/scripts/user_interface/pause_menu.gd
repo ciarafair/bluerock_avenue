@@ -7,6 +7,7 @@ func _on_resume_game_button_up():
 	Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
 	get_tree().paused = false
 	SignalManager.hide_pause_menu.emit()
+	return
 
 func _on_options_button_up():
 	#print_debug("Options button was pressed.")
@@ -14,14 +15,22 @@ func _on_options_button_up():
 	SignalManager.load_settings_data.emit()
 	SignalManager.show_options_menu.emit()
 	IsOptionsMenuOpen = true
+	return
 
 func _on_quit_button_up():
 	#print_debug("Quit button was pressed.")
 	Global.Is_Pause_Menu_Open = false
 	get_tree().paused = false
-	SignalManager.save_game_data.emit()
 	LoadManager.load_scene(Path.MainMenuPath)
 	return
+
+@onready var AnimationPlayerInstance = %AnimationPlayer
+func _on_save_button_up():
+	AnimationPlayerInstance.play("saved_popup")
+	SignalManager.save_game_data.emit()
+
+	pass # Replace with function body.
+
 
 func check_pause_menu():
 	if Global.Is_Pause_Menu_Open == true && Global.Loaded_Options_Menu.visible == false:

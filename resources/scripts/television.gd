@@ -31,7 +31,7 @@ func setup_video_player():
 	return VideoPlayerInstance
 
 func setup_audio_player():
-	var audio: AudioStreamMP3 = Global.load_mp3(Path.StockCartoonAudioPath)
+	var audio: AudioStreamMP3 = load(Path.StockCartoonAudioPath)
 	var audio_player: AudioStreamPlayer3D
 	audio_player = AudioStreamPlayer3D.new()
 	audio_player.set_name("CartoonAudio")

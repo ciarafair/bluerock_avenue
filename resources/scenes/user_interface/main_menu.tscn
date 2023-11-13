@@ -1,35 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://g7gc87d1nati"]
+[gd_scene load_steps=6 format=3 uid="uid://g7gc87d1nati"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/main_menu.gd" id="1_5gjp7"]
 [ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_faofq"]
 [ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_7t242"]
 [ext_resource type="Texture2D" uid="uid://pjiy5yvrmvw5" path="res://resources/textures/github.png" id="4_asntc"]
 [ext_resource type="Texture2D" uid="uid://d14tug4xww8u6" path="res://resources/textures/discord.png" id="9_nebx5"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fp78c"]
-texture = ExtResource("4_asntc")
-expand_margin_top = 5.0
-expand_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_726pp"]
-texture = ExtResource("4_asntc")
-expand_margin_top = 5.0
-expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.396078)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0nn4b"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxutn"]
-texture = ExtResource("9_nebx5")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6t580"]
-texture = ExtResource("9_nebx5")
-modulate_color = Color(1, 1, 1, 0.396078)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uoemq"]
-texture = ExtResource("9_nebx5")
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_65jk8"]
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_5gjp7")
@@ -47,11 +22,26 @@ ratio = 1.8
 layout_mode = 2
 theme = ExtResource("2_faofq")
 
+[node name="VersionMargin" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 1010
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Version" type="Label" parent="AspectRatioContainer/VersionMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_font_sizes/font_size = 25
+text = "Version  0.0.0"
+
 [node name="RootMargin" type="MarginContainer" parent="AspectRatioContainer"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 75
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
@@ -75,132 +65,57 @@ label_settings = ExtResource("4_7t242")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContentMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 1000
+
+[node name="Links" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Discord" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+icon = ExtResource("9_nebx5")
+flat = true
+icon_alignment = 1
+
+[node name="Github" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+icon = ExtResource("4_asntc")
+flat = true
+icon_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+
+[node name="StartGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_faofq")
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_top = 550
+theme_override_constants/margin_right = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-alignment = 1
-
-[node name="LinksAndVersionMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 650
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-alignment = 1
-
-[node name="VersionMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="Version" type="Label" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/VersionMargin"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("2_faofq")
-theme_override_font_sizes/font_size = 40
-text = "Version  0.0.0.0"
-
-[node name="LinksMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 500
-theme_override_constants/margin_bottom = 0
-
-[node name="Links" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/separation = 25
-alignment = 1
-
-[node name="GithubMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="GithubButton" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links/GithubMargin"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-theme_override_styles/normal = SubResource("StyleBoxTexture_fp78c")
-theme_override_styles/hover = SubResource("StyleBoxTexture_726pp")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_fp78c")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_0nn4b")
-
-[node name="DiscordMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="DiscordButton" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links/DiscordMargin"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-theme_override_styles/normal = SubResource("StyleBoxTexture_nxutn")
-theme_override_styles/hover = SubResource("StyleBoxTexture_6t580")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_uoemq")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_0nn4b")
-
-[node name="Empty2" type="PanelContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_faofq")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_65jk8")
-
-[node name="ButtonsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_left = -450
-theme_override_constants/margin_top = 500
-theme_override_constants/margin_right = -450
-theme_override_constants/margin_bottom = 50
-
-[node name="Buttons" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin"]
-layout_mode = 2
-theme = ExtResource("2_faofq")
-alignment = 1
-
-[node name="StartGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons"]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("2_faofq")
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 
-[node name="ContinueMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer"]
+[node name="ContinueMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -210,13 +125,13 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="Continue" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer/ContinueMargin"]
+[node name="Continue" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/ContinueMargin"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 theme_type_variation = &"MainMenu"
 text = "Continue"
 
-[node name="NewGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer"]
+[node name="NewGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -226,40 +141,53 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="NewGame" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer/NewGameMargin"]
+[node name="NewGame" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/NewGameMargin"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 theme_type_variation = &"MainMenu"
 text = "New Game"
 
-[node name="OptionsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons"]
+[node name="OptionsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_faofq")
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
 
-[node name="Options" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/OptionsMargin"]
+[node name="Options" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/OptionsMargin"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 text = "Options"
 
-[node name="QuitMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons"]
+[node name="CreditsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_faofq")
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
 
-[node name="Quit" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/QuitMargin"]
+[node name="Options" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/CreditsMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+text = "Credits"
+
+[node name="QuitMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
+
+[node name="Quit" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/QuitMargin"]
 layout_mode = 2
 theme = ExtResource("2_faofq")
 text = "Quit To Desktop"
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links/GithubMargin/GithubButton" to="." method="_on_github_button_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/LinksAndVersionMargin/VBoxContainer/LinksMargin/Links/DiscordMargin/DiscordButton" to="." method="_on_discord_button_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer/ContinueMargin/Continue" to="." method="_on_continue_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/StartGameMargin/HBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/OptionsMargin/Options" to="." method="_on_options_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/ContentMargin/HBoxContainer/ButtonsMargin/Buttons/QuitMargin/Quit" to="." method="_on_quit_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links/Discord" to="." method="_on_discord_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links/Github" to="." method="_on_github_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/ContinueMargin/Continue" to="." method="_on_continue_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/OptionsMargin/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/CreditsMargin/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/QuitMargin/Quit" to="." method="_on_quit_button_up"]

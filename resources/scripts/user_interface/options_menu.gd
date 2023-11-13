@@ -165,7 +165,9 @@ func _on_main_menu_button_up():
 	SignalManager.save_settings_data.emit()
 	SignalManager.exit_options_menu.emit()
 
+@onready var AnimationPlayerInstance = %AnimationPlayer
 func _on_save_changes_button_up():
+	AnimationPlayerInstance.play("saved_popup")
 	SignalManager.save_settings_data.emit()
 
 func _on_tree_exiting():
