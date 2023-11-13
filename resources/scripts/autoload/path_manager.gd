@@ -28,5 +28,5 @@ const TaskErrorDialoguePath: String = "res://resources/dialogue/task_error.json"
 
 const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"
 
-const SettingsJSONFilePath: String = "res://settings.json"
-const GameJSONFilePath: String = "res://game.json"
+const SettingsJSONFilePath: String = "user://settings.json"
+const GameJSONFilePath: String = "user://game.json"

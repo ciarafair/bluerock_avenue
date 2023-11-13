@@ -10,9 +10,13 @@ config_version=5
 
 [application]
 
-config/name="Bluerock Avenue"
+config/name="The House on Bluerock Avenue"
+config/name_localized={
+"en_AU": "The House on Bluerock Avenue"
+}
 run/main_scene="res://resources/scenes/object_loader.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+config/icon="res://icon.svg"
 
 [audio]
 
