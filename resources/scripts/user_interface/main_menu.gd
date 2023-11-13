@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+@onready var VersionLabel = %Version
 @onready var NewGameMargin = %NewGameMargin
 @onready var ContinueMargin = %ContinueMargin
 
@@ -10,10 +11,16 @@ func _on_options_button_up():
 func _on_quit_button_up():
 	get_tree().quit()
 
+func version_number():
+	var version: String
+	version = "Version " + str(Global.MajorBuildNum) + "." + str(Global.MinorBuildNum) + "." + str(Global.RevisionNum) + "." + str(Global.PackageNum)
+	VersionLabel.text = version
+
 func _ready():
 	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	Global.Loaded_Main_Menu = self
 	Global.Is_Game_Active = false
+	version_number()
 	SignalManager.show_main_menu.connect(Callable(self.set_visible).bind(true))
 	SignalManager.main_menu_loaded.emit()
 	SignalManager.play_track.emit()
