@@ -2,7 +2,7 @@ extends Node
 
 const MajorBuildNum: int = 1
 const MinorBuildNum: int = 0
-const RevisionNum: int = 3
+const RevisionNum: int = 4
 
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData
@@ -517,7 +517,7 @@ func load_data(path: String, type: String):
 
 func on_delete_game_data():
 	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
-		#print_debug("Deleting file %s" % [Game_File_Path])
+		print_debug("Deleting file %s" % [Path.GameJSONFilePath])
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:
