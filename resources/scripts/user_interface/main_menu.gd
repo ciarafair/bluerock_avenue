@@ -29,7 +29,7 @@ func _ready():
 	Global.Is_Game_Active = false
 	version_number()
 	SignalManager.main_menu_loaded.emit()
-	SignalManager.play_track.emit()
+	SignalManager.play_track.emit(Global.WereMyRemainsEverFoundTrack)
 	ContinueMargin.set_visible(false)
 	return
 
@@ -42,23 +42,28 @@ func _on_discord_button_up():
 	return
 
 func _on_new_game_button_up():
-	self.queue_free()
 	SignalManager.stop_track.emit()
 	SignalManager.delete_game_data.emit()
-	#SignalManager.load_game_world.emit()
 	LoadManager.load_scene(Path.GameWorldPath)
-	if Global.Loaded_Game_World != null:
+	await SignalManager.game_world_loaded
+	if Global.Loaded_Game_World:
 		Global.verify_game_file_directory()
+		self.queue_free()
 		return
+	push_error("Loaded game world was not found.")
+	self.queue_free()
 	return
 
 func _on_continue_button_up():
-	self.queue_free()
 	SignalManager.stop_track.emit()
+	Global.load_data(Path.GameJSONFilePath, "game")
 	LoadManager.load_scene(Path.GameWorldPath)
-	if Global.Loaded_Game_World != null:
+	if Global.Loaded_Game_World:
 		Global.verify_game_file_directory()
+		self.queue_free()
 		return
+	printerr("Loaded game world was not found.")
+	self.queue_free()
 	return
 
 func _process(_delta):

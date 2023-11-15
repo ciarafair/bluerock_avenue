@@ -7,6 +7,9 @@ const RevisionNum: int = 3
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData
 
+var ItIsADarkNightTrack: AudioStreamMP3 = load(Path.ItIsDarkTonightTrackPath)
+var WereMyRemainsEverFoundTrack: AudioStreamMP3 = load(Path.WereMyRemainsEverFoundTrackPath)
+
 # Meta Data - Stays in this script as it does not need to be saved
 const CharacterReadRate: float = 0.025
 
@@ -157,38 +160,8 @@ func verify_settings_file_directory():
 		SignalManager.load_settings_data.emit()
 		return
 	else:
-		Global.Settings_Data_Instance = SettingsData.new()
-		var file = FileAccess.open(Path.SettingsJSONFilePath, FileAccess.WRITE)
-
-		var default_data = {
-			"developer_settings": {
-				"Is_Current_Active_Block_Visible": Settings_Data_Instance.Is_Current_Active_Block_Visible,
-				"Is_Current_Active_Event_Visible": Settings_Data_Instance.Is_Current_Active_Event_Visible,
-				"Is_Current_Time_Info_Visible": Settings_Data_Instance.Is_Current_Time_Info_Visible,
-				"Is_Fps_Counter_Visible": Settings_Data_Instance.Is_Fps_Counter_Visible,
-				"Is_Hovering_Block_Visible": Settings_Data_Instance.Is_Hovering_Block_Visible,
-				"Is_Monster_Info_Visible": Settings_Data_Instance.Is_Monster_Info_Visible,
-				"Is_Player_Current_Room_Info_Visible": Settings_Data_Instance.Is_Player_Current_Room_Info_Visible,
-				"Is_Player_Info_Visible": Settings_Data_Instance.Is_Player_Info_Visible,
-				"Is_Monster_Active": Game_Data_Instance.Is_Monster_Active
-			},
-			"volume_settings": {
-				"Master_Volume_Setting": Settings_Data_Instance.Master_Volume_Setting,
-				"Music_Volume_Setting": Settings_Data_Instance.Music_Volume_Setting,
-				"SFX_Volume_Setting": Settings_Data_Instance.SFX_Volume_Setting
-			},
-			"general_settings": {
-				"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
-				"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
-				"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
-			}
-		}
-
-		Settings_Dictionary.merge(default_data, true)
-		var json_string = JSON.stringify(Settings_Dictionary, "\t")
-		file.store_string(json_string)
-		file.close()
-		return
+		print_debug("Settings JSON file does not exist.")
+		return null
 
 func save_developer_settings():
 	#print_debug("Saving developer settings.")
@@ -233,10 +206,11 @@ func save_general_settings():
 	Settings_Dictionary.merge(data, true)
 
 func on_save_settings_data():
-	print_debug("Saving settings data")
+	#print_debug("Saving settings data")
 	var file = FileAccess.open(Path.SettingsJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
+		save_default_settings_data(file)
 		return
 
 	save_developer_settings()
@@ -282,13 +256,46 @@ func load_settings_data(parsed_data: Dictionary):
 	Settings_Data_Instance.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
 	Settings_Data_Instance.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
 
+func save_default_settings_data(file: FileAccess):
+	Global.Settings_Data_Instance = SettingsData.new()
+
+	var default_data = {
+		"developer_settings": {
+			"Is_Current_Active_Block_Visible": Settings_Data_Instance.Is_Current_Active_Block_Visible,
+			"Is_Current_Active_Event_Visible": Settings_Data_Instance.Is_Current_Active_Event_Visible,
+			"Is_Current_Time_Info_Visible": Settings_Data_Instance.Is_Current_Time_Info_Visible,
+			"Is_Fps_Counter_Visible": Settings_Data_Instance.Is_Fps_Counter_Visible,
+			"Is_Hovering_Block_Visible": Settings_Data_Instance.Is_Hovering_Block_Visible,
+			"Is_Monster_Info_Visible": Settings_Data_Instance.Is_Monster_Info_Visible,
+			"Is_Player_Current_Room_Info_Visible": Settings_Data_Instance.Is_Player_Current_Room_Info_Visible,
+			"Is_Player_Info_Visible": Settings_Data_Instance.Is_Player_Info_Visible,
+			"Is_Monster_Active": Game_Data_Instance.Is_Monster_Active
+		},
+		"volume_settings": {
+			"Master_Volume_Setting": Settings_Data_Instance.Master_Volume_Setting,
+			"Music_Volume_Setting": Settings_Data_Instance.Music_Volume_Setting,
+			"SFX_Volume_Setting": Settings_Data_Instance.SFX_Volume_Setting
+		},
+		"general_settings": {
+			"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
+			"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
+			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
+		}
+	}
+
+	Settings_Dictionary.merge(default_data, true)
+	var json_string = JSON.stringify(Settings_Dictionary, "\t")
+	file.store_string(json_string)
+	file.close()
+	return
+
 func on_delete_settings_data():
 	if FileAccess.file_exists(Path.SettingsJSONFilePath) == true:
 		print_debug("Deleting file %s" % [Path.SettingsJSONFilePath])
 		DirAccess.remove_absolute(Path.SettingsJSONFilePath)
 		return
 	else:
-		print_debug("File %s does not exist." % [Path.SettingsJSONFilePath])
+		push_warning("File %s does not exist." % [Path.SettingsJSONFilePath])
 		return
 
 
@@ -300,48 +307,11 @@ func verify_game_file_directory():
 		SignalManager.load_game_data.emit()
 		return
 	else:
-		Global.Game_Data_Instance = GameData.new()
-		var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
-
-		var default_data = {
-			"time": {
-				"Time_String" = Game_Data_Instance.Time_String,
-				"Time_Hour" = Game_Data_Instance.Time_Hour,
-				"Time_Minute" = Game_Data_Instance.Time_Minute,
-			},
-			"monster": {
-				"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active,
-				"Monster_Current_Room" = Game_Data_Instance.Monster_Current_Room,
-				"Monster_Current_Stage" = Game_Data_Instance.Monster_Current_Stage,
-				"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
-			},
-			"player": {
-				"XRotation" = 0,
-				"YRotation" = 0,
-				"ZRotation" = 0,
-				"XPosition" = 0,
-				"YPosition" = 1.75,
-				"ZPosition" = 0,
-				"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
-				"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
-				"Current_Event" = Game_Data_Instance.Current_Event,
-				"Current_Room" = Game_Data_Instance.Current_Room,
-				"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
-			},
-			"world": {
-				"Current_Task" = Game_Data_Instance.Current_Task,
-				"Television_State" = Game_Data_Instance.Television_State
-			}
-		}
-
-		Game_Dictionary.merge(default_data, true)
-		var json_string = JSON.stringify(Game_Dictionary, "\t")
-		file.store_string(json_string)
-		file.close()
-		return
+		print_debug("Game JSON file does not exist.")
+		return null
 
 func save_time_game_data():
-	#print_debug("Saving time data")
+	print_debug("Saving time data")
 
 	var data: Dictionary = {
 		"time": {
@@ -353,7 +323,7 @@ func save_time_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_monster_game_data():
-	#print_debug("Saving monster data")
+	print_debug("Saving monster data")
 
 	var data: Dictionary = {
 		"monster": {
@@ -366,7 +336,7 @@ func save_monster_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_player_game_data():
-	#print_debug("Saving player data")
+	print_debug("Saving player data")
 
 	var data: Dictionary = {
 		"player": {
@@ -389,7 +359,7 @@ func save_player_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_world_game_data():
-	#print_debug("Saving player data")
+	print_debug("Saving world data")
 
 	var data: Dictionary = {
 		"world": {
@@ -399,11 +369,53 @@ func save_world_game_data():
 	}
 	Game_Dictionary.merge(data, true)
 
+func save_default_game_data(file: FileAccess):
+	Global.Game_Data_Instance = GameData.new()
+	print_debug("Using default data.")
+
+	var default_data = {
+		"time": {
+			"Time_String" = Game_Data_Instance.Time_String,
+			"Time_Hour" = Game_Data_Instance.Time_Hour,
+			"Time_Minute" = Game_Data_Instance.Time_Minute,
+		},
+		"monster": {
+			"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active,
+			"Monster_Current_Room" = Game_Data_Instance.Monster_Current_Room,
+			"Monster_Current_Stage" = Game_Data_Instance.Monster_Current_Stage,
+			"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
+		},
+		"player": {
+			"XRotation" = 0,
+			"YRotation" = 0,
+			"ZRotation" = 0,
+			"XPosition" = 0,
+			"YPosition" = 1.75,
+			"ZPosition" = 0,
+			"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
+			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
+			"Current_Event" = Game_Data_Instance.Current_Event,
+			"Current_Room" = Game_Data_Instance.Current_Room,
+			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
+		},
+		"world": {
+			"Current_Task" = Game_Data_Instance.Current_Task,
+			"Television_State" = Game_Data_Instance.Television_State
+		}
+	}
+
+	Game_Dictionary.merge(default_data, true)
+	var json_string = JSON.stringify(Game_Dictionary, "\t")
+	file.store_string(json_string)
+	file.close()
+	return
+
 func on_save_game_data():
-	#print_debug("Saving game data")
+	print_debug("Saving game data")
 	var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
+		save_default_game_data(file)
 		return
 
 	save_monster_game_data()
@@ -433,35 +445,50 @@ func search_for_room(node: Node, identifier: int):
 			pass
 		search_for_room(child, identifier)
 
+func load_player_data(parsed_data):
+	await SignalManager.player_loaded
+	if PlayerInstance != null:
+		PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
+		PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
+		PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
+
+		PlayerInstance.position.x  = parsed_data.player.XPosition
+		PlayerInstance.position.y  = parsed_data.player.YPosition
+		PlayerInstance.position.z  = parsed_data.player.ZPosition
+		return
+	push_error("Player instance returned null. Could not load game data.")
+	return
+
+func load_instanced_game_data(parsed_data):
+	if Game_Data_Instance != null:
+		if Game_Data_Instance.Current_Active_Block != null:
+			Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
+		Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
+		Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
+		if Game_Data_Instance.Current_Room != null:
+			Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
+		Game_Data_Instance.Current_Room_Number = parsed_data.player.Current_Room_Number
+
+		Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
+		search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
+		Game_Data_Instance.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
+		Game_Data_Instance.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
+
+		Game_Data_Instance.Time_String = parsed_data.time.Time_String
+		Game_Data_Instance.Time_Hour = parsed_data.time.Time_Hour
+		Game_Data_Instance.Time_Minute = parsed_data.time.Time_Minute
+
+		Game_Data_Instance.Current_Task = parsed_data.world.Current_Task
+		Game_Data_Instance.Television_State = parsed_data.world.Television_State
+		return
+	push_error("Game data instance returned null. Could not load game data.")
+	return
+
 func load_game_data(parsed_data: Dictionary):
 	print_debug("Loading game data.")
-	PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
-	PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
-	PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
-
-	PlayerInstance.position.x  = parsed_data.player.XPosition
-	PlayerInstance.position.y  = parsed_data.player.YPosition
-	PlayerInstance.position.z  = parsed_data.player.ZPosition
-
-	if Game_Data_Instance.Current_Active_Block != null:
-		Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
-	Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
-	Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
-	if Game_Data_Instance.Current_Room != null:
-		Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
-	Game_Data_Instance.Current_Room_Number = parsed_data.player.Current_Room_Number
-
-	Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
-	search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
-	Game_Data_Instance.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
-	Game_Data_Instance.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
-
-	Game_Data_Instance.Time_String = parsed_data.time.Time_String
-	Game_Data_Instance.Time_Hour = parsed_data.time.Time_Hour
-	Game_Data_Instance.Time_Minute = parsed_data.time.Time_Minute
-
-	Game_Data_Instance.Current_Task = parsed_data.world.Current_Task
-	Game_Data_Instance.Television_State = parsed_data.world.Television_State
+	load_player_data(parsed_data)
+	load_instanced_game_data(parsed_data)
+	return
 
 func load_data(path: String, type: String):
 	#print_debug("Loading %s-data from %s." % [type, path])
@@ -477,7 +504,7 @@ func load_data(path: String, type: String):
 
 		var parsed_data = JSON.parse_string(raw_data)
 		if parsed_data == null:
-			printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
+			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
 			return
 
 		if type == "settings":
@@ -494,7 +521,7 @@ func on_delete_game_data():
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:
-		printerr("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
+		push_warning("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
 		return
 
 func manage_signals():
@@ -512,7 +539,7 @@ func stringify_json(json_file: JSON) -> Dictionary:
 	var path = json_file.resource_path
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		push_warning(str(FileAccess.get_open_error()))
+		push_warning("JSON file does not exist. %s" %[str(FileAccess.get_open_error())])
 		return {}
 
 	var raw_data = file.get_as_text()
@@ -520,7 +547,7 @@ func stringify_json(json_file: JSON) -> Dictionary:
 
 	var parsed_data = JSON.parse_string(raw_data)
 	if parsed_data == null:
-		printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
+		push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
 		return {}
 	return parsed_data
 

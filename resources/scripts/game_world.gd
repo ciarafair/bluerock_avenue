@@ -2,6 +2,8 @@ extends Node3D
 
 const TweenDuration: float = 0.5
 
+var has_emitted_loaded: bool = false
+
 # Flashlight Raycasting
 var BLOCK_RAY_ARRAY: Array = []
 var FLASHLIGHT_RAY_ARRAY: Array = []
@@ -145,7 +147,7 @@ func load_children():
 	await SignalManager.dialogue_box_loaded
 	#print_debug("Dialogue box has loaded.")
 
-	SignalManager.game_world_loaded.emit()
+	await Global.Game_Data_Instance.game_data_instance_loaded
 	Global.load_data(Path.GameJSONFilePath, "game")
 
 func _ready():
@@ -157,6 +159,9 @@ func _ready():
 	return
 
 func _process(_delta):
+	if has_emitted_loaded == false:
+		has_emitted_loaded = true
+		SignalManager.game_world_loaded.emit()
 
 	if Global.PlayerInstance != null:
 		manage_flashlight_raycast()

@@ -1,6 +1,9 @@
 extends Node
 class_name GameData
 
+var has_emitted_loaded
+signal game_data_instance_loaded
+
 var Time_Hour: int = 11
 var Time_Minute: int = 30
 var Time_String: String = "11:30am"
@@ -19,3 +22,6 @@ var Current_Room_Number = 1
 
 var Television_State: bool = true
 var Current_Task: Global.task = Global.task.TURN_OFF_TV
+
+func _ready():
+	game_data_instance_loaded.emit()

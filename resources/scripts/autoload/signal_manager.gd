@@ -56,7 +56,6 @@ signal door_close_sound
 signal window_open_sound
 signal window_close_sound
 signal clock_ticking
-signal television_cartoon
 
 # Block
 signal activate_hovering
@@ -82,6 +81,8 @@ signal exit_options_menu
 signal load_game_world
 signal game_world_loaded
 signal free_game_world
+
+signal game_data_instance_loaded
 
 signal load_dialogue_box
 signal dialogue_box_loaded

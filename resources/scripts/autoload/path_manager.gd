@@ -1,6 +1,5 @@
 extends Node
 
-const AudioManagerPath: String = "res://resources/scenes/audio_manager.tscn"
 
 const GameWorldPath: String = "res://resources/scenes/game_world/game_world.tscn"
 const PlayerPath: String = "res://resources/scenes/game_world/player.tscn"
@@ -21,12 +20,22 @@ const DialogueBoxPath: String = "res://resources/scenes/user_interface/dialogue_
 
 const StockCartoonVideoPath: String = "res://resources/video/stock_cartoon.ogv"
 const ScreenOffVideoPath: String = "res://resources/video/tv_off.ogv"
-const StockCartoonAudioPath: String = "res://resources/audio/sound_effects/stock_cartoon.mp3"
-const ScreenOffAudioPath: String = "res://resources/audio/sound_effects/tv_off.mp3"
 
 const TaskErrorDialoguePath: String = "res://resources/dialogue/task_error.json"
 
 const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"
 
+# JSON Files
 const SettingsJSONFilePath: String = "user://settings.json"
 const GameJSONFilePath: String = "user://game.json"
+
+# Audio
+const AudioManagerPath: String = "res://resources/scenes/audio_manager.tscn"
+
+## SFX
+const ScreenOffAudioPath: String = "res://resources/audio/sound_effects/tv_off.mp3"
+const StockCartoonAudioPath: String = "res://resources/audio/sound_effects/stock_cartoon.mp3"
+
+## Music
+const ItIsDarkTonightTrackPath: String = "res://resources/audio/music/it_is_dark_tonight.mp3"
+const WereMyRemainsEverFoundTrackPath: String = "res://resources/audio/music/were_my_remains_ever_found.mp3"

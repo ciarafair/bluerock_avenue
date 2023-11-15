@@ -5,9 +5,6 @@ const Audio_Bus_Layout: String =  "res://resources/audio/default_bus_layout.tres
 var MusicPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
 var AudioBusLayoutOne: AudioBusLayout = preload(Audio_Bus_Layout)
 
-const Opening_Track_One_Path: String = "res://resources/audio/music/it_is_dark_tonight.mp3"
-var Opening_Track_One_Instance: AudioStreamMP3 = load(Opening_Track_One_Path)
-
 const Door_Opening_SFX_Path: String = "res://resources/audio/sound_effects/open_door.mp3"
 var Door_Opening_SFX_Instance: AudioStreamMP3 = load(Door_Opening_SFX_Path)
 const Door_Closing_SFX_Path: String = "res://resources/audio/sound_effects/close_door.mp3"
@@ -27,15 +24,9 @@ func on_music_player_finished():
 		MusicPlayer.stop()
 		return
 
-func get_current_track():
-	if Global.Is_Game_Active == false:
-		Global.Current_Track = "Opening Track One"
-		MusicPlayer.set_stream(Opening_Track_One_Instance)
-		return
-
 func on_stop_track():
 	if MusicPlayer != null and Global.Is_Music_Playing == true:
-		#print_debug("Stopping track: " + str(Global.Current_Track))
+		print_debug("Stopping track: " + str(Global.Current_Track))
 		Global.Is_Music_Playing = false
 		Global.Current_Track = ""
 		MusicPlayer.stop()
@@ -45,14 +36,14 @@ func on_stop_track():
 		push_error("Could not find music player to kill.")
 		return
 
-func on_start_track():
+func on_start_track(track: AudioStreamMP3):
 	if MusicPlayer != null and Global.Is_Music_Playing == false:
 		MusicPlayer.set_bus("Music")
-
+		MusicPlayer.set_stream(track)
 		Global.Is_Music_Playing = true
-		get_current_track()
 
 		if MusicPlayer.stream != null:
+			Global.Current_Track = MusicPlayer.stream.resource_name
 			print_verbose("Playing track: " +  str(Global.Current_Track))
 			MusicPlayer.play()
 			return
@@ -63,7 +54,7 @@ func on_start_track():
 
 	if MusicPlayer == null:
 		push_warning("Could not find music player to use. Trying again.")
-		on_start_track()
+		on_start_track(track)
 		pass
 
 func on_door_open(node):
@@ -124,8 +115,8 @@ func on_clock_ticking(node):
 
 func setup_audio_server():
 	AudioServer.set_bus_layout(AudioBusLayoutOne)
-	SignalManager.play_track.connect(on_start_track)
-	SignalManager.stop_track.connect(on_stop_track)
+	SignalManager.play_track.connect(Callable(on_start_track))
+	SignalManager.stop_track.connect(Callable(on_stop_track))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), Global.Settings_Data_Instance.Master_Volume_Setting)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), Global.Settings_Data_Instance.Music_Volume_Setting)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), Global.Settings_Data_Instance.SFX_Volume_Setting)
