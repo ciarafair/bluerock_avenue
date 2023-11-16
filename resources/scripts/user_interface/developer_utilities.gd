@@ -6,7 +6,7 @@ extends CanvasLayer
 @onready var vseperator_two: VSeparator = %VSeparator2
 @onready var current_time_label: Label = %CurrentTime
 
-@onready var current_active_block_label: Label = %CurrentActiveBlock
+@onready var Current_Block_label: Label = %CurrentActiveBlock
 @onready var current_active_event_label: Label = %CurrentActiveEvent
 @onready var player_current_room_label: Label = %CurrentRoom
 
@@ -150,20 +150,20 @@ func v_seperator_manager():
 	else:
 		vseperator_one.set_visible(false)
 
-func current_active_block_info():
-	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == true:
-		current_active_block_label.set_visible(true)
+func Current_Block_info():
+	if Global.Settings_Data_Instance.Is_Current_Block_Visible == true:
+		Current_Block_label.set_visible(true)
 
-		if Global.Game_Data_Instance.Current_Active_Block != null:
-			current_active_block_label.text = "Current block: %s" %[Global.Game_Data_Instance.Current_Active_Block.name]
+		if Global.Game_Data_Instance.Current_Block != null:
+			Current_Block_label.text = "Current block: %s" %[Global.Game_Data_Instance.Current_Block.name]
 
-		if Global.Game_Data_Instance.Current_Active_Block == null:
-			current_active_block_label.text = "Current block: Null"
+		if Global.Game_Data_Instance.Current_Block == null:
+			Current_Block_label.text = "Current block: Null"
 
-	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == false:
-		current_active_block_label.set_visible(false)
+	if Global.Settings_Data_Instance.Is_Current_Block_Visible == false:
+		Current_Block_label.set_visible(false)
 	else:
-		current_active_block_label.set_visible(true)
+		Current_Block_label.set_visible(true)
 
 func current_active_event_info():
 	if Global.Settings_Data_Instance.Is_Current_Active_Event_Visible == true:
@@ -188,7 +188,7 @@ func _process(_delta):
 		v_seperator_manager()
 		player_info()
 		hovering_block_info()
-		current_active_block_info()
+		Current_Block_info()
 		current_active_event_info()
 		current_time_info()
 		player_current_room_info()
@@ -201,7 +201,7 @@ func _process(_delta):
 		vseperator_one.set_visible(false)
 		vseperator_two.set_visible(false)
 		hovering_block_label.set_visible(false)
-		current_active_block_label.set_visible(false)
+		Current_Block_label.set_visible(false)
 		current_active_event_label.set_visible(false)
 		current_time_label.set_visible(false)
 		player_current_room_label.set_visible(false)

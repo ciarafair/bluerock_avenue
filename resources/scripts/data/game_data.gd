@@ -14,8 +14,11 @@ var Monster_Current_Stage: int = 0
 var Monster_Room_Number: int = 0
 
 var Is_Flashlight_On: bool = false
-var Current_Active_Block: Block = null
+
+var Current_Block: Block = null
 var Current_Block_Name: String = ""
+var Current_Block_Path: String = ""
+
 var Current_Event: String = ""
 var Current_Room: Block = null
 var Current_Room_Number = 1

@@ -122,7 +122,7 @@ func manage_signals():
 	SignalManager.move_to_room.connect(on_move_to_room)
 
 func load_children():
-	print_debug("Begining to load.")
+	#print_debug("Begining to load.")
 	SignalManager.load_player.emit()
 	await SignalManager.player_loaded
 	#print_debug("Player loaded.")

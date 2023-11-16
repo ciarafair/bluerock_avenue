@@ -49,7 +49,7 @@ func manage_television_audio():
 	if Global.Game_Data_Instance.Television_State == true:
 		if AudioPlayerInstance != null:
 			if AudioPlayerInstance.playing == false:
-				print_debug("Playing audio.")
+				#print_debug("Playing audio.")
 				AudioPlayerInstance.set_stream_paused(false)
 				AudioPlayerInstance.play()
 				return
@@ -59,7 +59,7 @@ func manage_television_audio():
 		return
 
 	if AudioPlayerInstance != null:
-		print_debug("Stopping audio.")
+		#print_debug("Stopping audio.")
 		AudioPlayerInstance.queue_free()
 		return
 	return
@@ -69,19 +69,19 @@ func manage_television_video():
 	if Global.Game_Data_Instance.Television_State == true:
 		if VideoPlayerInstance != null:
 			if VideoPlayerInstance.is_playing() == false:
-				print_debug("Playing video.")
+				#print_debug("Playing video.")
 				VideoPlayerInstance.set_paused(false)
 				VideoPlayerInstance.play()
 				return
 
-		print_debug("Creating new video player.")
+		#print_debug("Creating new video player.")
 		AspectRatio.add_child(setup_video_player())
 		#VideoPlayerInstance.set_stream_position(VideoCurrentTime)
 		manage_television_video()
 		return
 
 	if VideoPlayerInstance != null:
-		print_debug("Stopping video.")
+		#print_debug("Stopping video.")
 		VideoPlayerInstance.queue_free()
 		return
 	return

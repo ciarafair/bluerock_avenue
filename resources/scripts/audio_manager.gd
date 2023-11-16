@@ -6,15 +6,15 @@ var MusicPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
 var AudioBusLayoutOne: AudioBusLayout = preload(Audio_Bus_Layout)
 
 const Door_Opening_SFX_Path: String = "res://resources/audio/sound_effects/open_door.mp3"
-var Door_Opening_SFX_Instance: AudioStreamMP3 = load(Door_Opening_SFX_Path)
+var Door_Opening_SFX_Instance: AudioStreamMP3 = preload(Door_Opening_SFX_Path)
 const Door_Closing_SFX_Path: String = "res://resources/audio/sound_effects/close_door.mp3"
-var Door_Closing_SFX_Instance: AudioStreamMP3 = load(Door_Closing_SFX_Path)
+var Door_Closing_SFX_Instance: AudioStreamMP3 = preload(Door_Closing_SFX_Path)
 const Window_Opening_SFX_Path: String = "res://resources/audio/sound_effects/open_window.mp3"
-var Window_Opening_SFX_Instance: AudioStreamMP3 = load(Window_Opening_SFX_Path)
+var Window_Opening_SFX_Instance: AudioStreamMP3 = preload(Window_Opening_SFX_Path)
 const Window_Closing_SFX_Path: String = "res://resources/audio/sound_effects/close_window.mp3"
-var Window_Closing_SFX_Instance: AudioStreamMP3 = load(Window_Closing_SFX_Path)
+var Window_Closing_SFX_Instance: AudioStreamMP3 = preload(Window_Closing_SFX_Path)
 const Clock_Ticking_SFX_Path: String = "res://resources/audio/sound_effects/clock_ticking.mp3"
-var Clock_Ticking_SFX_Instance: AudioStreamMP3 = load(Clock_Ticking_SFX_Path)
+var Clock_Ticking_SFX_Instance: AudioStreamMP3 = preload(Clock_Ticking_SFX_Path)
 
 @onready var MUSIC_BUS_ID = AudioServer.get_bus_index("Music")
 
@@ -26,7 +26,7 @@ func on_music_player_finished():
 
 func on_stop_track():
 	if MusicPlayer != null and Global.Is_Music_Playing == true:
-		print_debug("Stopping track: " + str(Global.Current_Track))
+		#print_debug("Stopping track: " + str(Global.Current_Track))
 		Global.Is_Music_Playing = false
 		Global.Current_Track = ""
 		MusicPlayer.stop()
@@ -44,7 +44,7 @@ func on_start_track(track: AudioStreamMP3):
 
 		if MusicPlayer.stream != null:
 			Global.Current_Track = MusicPlayer.stream.resource_name
-			print_verbose("Playing track: " +  str(Global.Current_Track))
+			#print_debug("Playing track: " +  str(Global.Current_Track))
 			MusicPlayer.play()
 			return
 

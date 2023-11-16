@@ -77,10 +77,10 @@ func spawn_monster():
 	if Global.MonsterInstance == null:
 		SignalManager.load_monster.emit()
 		await SignalManager.monster_loaded
-		print_debug("Monster loaded in room %s at position %s. " %[Game_Data_Instance.Monster_Current_Room.name, Game_Data_Instance.Monster_Current_Stage])
+		#print_debug("Monster loaded in room %s at position %s. " %[Game_Data_Instance.Monster_Current_Room.name, Game_Data_Instance.Monster_Current_Stage])
 		return
 	else:
-		print_debug("Monster already instantiated.")
+		#print_debug("Monster already instantiated.")
 		if Game_Data_Instance.Monster_Current_Room == null:
 			SignalManager.find_monster_room.emit()
 			print_debug(Game_Data_Instance.Monster_Current_Room)
@@ -160,7 +160,7 @@ func verify_settings_file_directory():
 		SignalManager.load_settings_data.emit()
 		return
 	else:
-		print_debug("Settings JSON file does not exist.")
+		push_warning("Settings JSON file does not exist.")
 		return null
 
 func save_developer_settings():
@@ -171,7 +171,7 @@ func save_developer_settings():
 			"Is_Fps_Counter_Visible" = Settings_Data_Instance.Is_Fps_Counter_Visible,
 			"Is_Player_Info_Visible" = Settings_Data_Instance.Is_Player_Info_Visible,
 			"Is_Hovering_Block_Visible" = Settings_Data_Instance.Is_Hovering_Block_Visible,
-			"Is_Current_Active_Block_Visible" = Settings_Data_Instance.Is_Current_Active_Block_Visible,
+			"Is_Current_Block_Visible" = Settings_Data_Instance.Is_Current_Block_Visible,
 			"Is_Current_Active_Event_Visible" = Settings_Data_Instance.Is_Current_Active_Event_Visible,
 			"Is_Current_Time_Info_Visible" = Settings_Data_Instance.Is_Current_Time_Info_Visible,
 			"Is_Player_Current_Room_Info_Visible" = Settings_Data_Instance.Is_Player_Current_Room_Info_Visible,
@@ -251,7 +251,7 @@ func load_settings_data(parsed_data: Dictionary):
 	Settings_Data_Instance.Is_Fps_Counter_Visible = parsed_data.developer_settings.Is_Fps_Counter_Visible
 	Settings_Data_Instance.Is_Player_Info_Visible = parsed_data.developer_settings.Is_Player_Info_Visible
 	Settings_Data_Instance.Is_Hovering_Block_Visible = parsed_data.developer_settings.Is_Hovering_Block_Visible
-	Settings_Data_Instance.Is_Current_Active_Block_Visible = parsed_data.developer_settings.Is_Current_Active_Block_Visible
+	Settings_Data_Instance.Is_Current_Block_Visible = parsed_data.developer_settings.Is_Current_Block_Visible
 	Settings_Data_Instance.Is_Current_Active_Event_Visible = parsed_data.developer_settings.Is_Current_Active_Event_Visible
 	Settings_Data_Instance.Is_Current_Time_Info_Visible = parsed_data.developer_settings.Is_Current_Time_Info_Visible
 	Settings_Data_Instance.Is_Player_Current_Room_Info_Visible = parsed_data.developer_settings.Is_Player_Current_Room_Info_Visible
@@ -261,7 +261,7 @@ func save_default_settings_data(file: FileAccess):
 
 	var default_data = {
 		"developer_settings": {
-			"Is_Current_Active_Block_Visible": Settings_Data_Instance.Is_Current_Active_Block_Visible,
+			"Is_Current_Block_Visible": Settings_Data_Instance.Is_Current_Block_Visible,
 			"Is_Current_Active_Event_Visible": Settings_Data_Instance.Is_Current_Active_Event_Visible,
 			"Is_Current_Time_Info_Visible": Settings_Data_Instance.Is_Current_Time_Info_Visible,
 			"Is_Fps_Counter_Visible": Settings_Data_Instance.Is_Fps_Counter_Visible,
@@ -291,7 +291,7 @@ func save_default_settings_data(file: FileAccess):
 
 func on_delete_settings_data():
 	if FileAccess.file_exists(Path.SettingsJSONFilePath) == true:
-		print_debug("Deleting file %s" % [Path.SettingsJSONFilePath])
+		#print_debug("Deleting file %s" % [Path.SettingsJSONFilePath])
 		DirAccess.remove_absolute(Path.SettingsJSONFilePath)
 		return
 	else:
@@ -311,7 +311,7 @@ func verify_game_file_directory():
 		return null
 
 func save_time_game_data():
-	print_debug("Saving time data")
+	#print_debug("Saving time data")
 
 	var data: Dictionary = {
 		"time": {
@@ -323,7 +323,7 @@ func save_time_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_monster_game_data():
-	print_debug("Saving monster data")
+	#print_debug("Saving monster data")
 
 	var data: Dictionary = {
 		"monster": {
@@ -336,7 +336,7 @@ func save_monster_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_player_game_data():
-	print_debug("Saving player data")
+	#print_debug("Saving player data")
 
 	var data: Dictionary = {
 		"player": {
@@ -348,8 +348,10 @@ func save_player_game_data():
 			"YPosition" = PlayerInstance.position.y,
 			"ZPosition" = PlayerInstance.position.z,
 
-			"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
+			"Current_Block" = Game_Data_Instance.Current_Block,
 			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
+			"Current_Block_Path" = Game_Data_Instance.Current_Block_Path,
+
 			"Current_Event" = Game_Data_Instance.Current_Event,
 			"Current_Room" = Game_Data_Instance.Current_Room,
 			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number,
@@ -359,7 +361,7 @@ func save_player_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_world_game_data():
-	print_debug("Saving world data")
+	#print_debug("Saving world data")
 
 	var data: Dictionary = {
 		"world": {
@@ -371,7 +373,7 @@ func save_world_game_data():
 
 func save_default_game_data(file: FileAccess):
 	Global.Game_Data_Instance = GameData.new()
-	print_debug("Using default data.")
+	#print_debug("Using default data.")
 
 	var default_data = {
 		"time": {
@@ -392,12 +394,17 @@ func save_default_game_data(file: FileAccess):
 			"XPosition" = 0,
 			"YPosition" = 1.75,
 			"ZPosition" = 0,
-			"Current_Active_Block" = Game_Data_Instance.Current_Active_Block,
+
+			"Current_Block" = Game_Data_Instance.Current_Block,
 			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
+			"Current_Block_Path" = Game_Data_Instance.Current_Block_Path,
+
 			"Current_Event" = Game_Data_Instance.Current_Event,
+
 			"Current_Room" = Game_Data_Instance.Current_Room,
 			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
 		},
+
 		"world": {
 			"Current_Task" = Game_Data_Instance.Current_Task,
 			"Television_State" = Game_Data_Instance.Television_State
@@ -411,7 +418,7 @@ func save_default_game_data(file: FileAccess):
 	return
 
 func on_save_game_data():
-	print_debug("Saving game data")
+	#print_debug("Saving game data")
 	var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
@@ -461,9 +468,11 @@ func load_player_data(parsed_data):
 
 func load_instanced_game_data(parsed_data):
 	if Game_Data_Instance != null:
-		if Game_Data_Instance.Current_Active_Block != null:
-			Game_Data_Instance.Current_Active_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Active_Block)
+		if Game_Data_Instance.Current_Block != null:
+			Game_Data_Instance.Current_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Block)
 		Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
+		Game_Data_Instance.Current_Block_Path = parsed_data.player.Current_Block_Path
+
 		Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
 		if Game_Data_Instance.Current_Room != null:
 			Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
@@ -485,7 +494,7 @@ func load_instanced_game_data(parsed_data):
 	return
 
 func load_game_data(parsed_data: Dictionary):
-	print_debug("Loading game data.")
+	#print_debug("Loading game data.")
 	load_player_data(parsed_data)
 	load_instanced_game_data(parsed_data)
 	return
@@ -517,7 +526,7 @@ func load_data(path: String, type: String):
 
 func on_delete_game_data():
 	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
-		print_debug("Deleting file %s" % [Path.GameJSONFilePath])
+		#print_debug("Deleting file %s" % [Path.GameJSONFilePath])
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:

@@ -17,7 +17,7 @@ func _on_hovering_block_toggled(_button_pressed):
 
 @onready var CurrentBlockButton: Button = %CurrentBlock
 func _on_current_block_toggled(_button_pressed):
-	Global.Settings_Data_Instance.Is_Current_Active_Block_Visible = !Global.Settings_Data_Instance.Is_Current_Active_Block_Visible
+	Global.Settings_Data_Instance.Is_Current_Block_Visible = !Global.Settings_Data_Instance.Is_Current_Block_Visible
 
 @onready var CurrentEventButton: Button = %CurrentEvent
 func _on_current_event_toggled(_button_pressed):
@@ -124,10 +124,10 @@ func visibility_check():
 	if Global.Settings_Data_Instance.Is_Hovering_Block_Visible == false:
 		HoveringBlockButton.set_pressed_no_signal(false)
 
-	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == true:
+	if Global.Settings_Data_Instance.Is_Current_Block_Visible == true:
 		CurrentBlockButton.set_pressed_no_signal(true)
 
-	if Global.Settings_Data_Instance.Is_Current_Active_Block_Visible == false:
+	if Global.Settings_Data_Instance.Is_Current_Block_Visible == false:
 		CurrentBlockButton.set_pressed_no_signal(false)
 
 	if Global.Settings_Data_Instance.Is_Current_Active_Event_Visible == true:

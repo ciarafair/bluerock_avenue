@@ -128,7 +128,7 @@ func manage_game_world_signals():
 
 func on_scene_loaded(resource: PackedScene):
 	var InstancedResource = resource.instantiate()
-	if resource == load(Path.GameWorldPath):
+	if resource == preload(Path.GameWorldPath):
 		Game_World_Instance = InstancedResource
 		manage_game_world_signals()
 		self.add_child(Game_World_Instance)
@@ -138,7 +138,7 @@ func on_scene_loaded(resource: PackedScene):
 		SignalManager.load_game_world.emit()
 		return
 
-	if resource == load(Path.MainMenuPath):
+	if resource == preload(Path.MainMenuPath):
 		User_Interface_Instance.add_child(InstancedResource)
 		Main_Menu_Instance = InstancedResource
 		Global.Loaded_Main_Menu = Main_Menu_Instance

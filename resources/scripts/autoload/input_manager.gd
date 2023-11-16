@@ -24,11 +24,11 @@ func manage_normal_input():
 						return
 
 	if Input.is_action_just_released("mouse_button_2"):
-		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block)
+		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block)
 		return
 
-	if Global.Game_Data_Instance.Current_Active_Block != null:
-		if Global.Game_Data_Instance.Current_Active_Block.name == "TVTable":
+	if Global.Game_Data_Instance.Current_Block != null:
+		if Global.Game_Data_Instance.Current_Block.name == "TVTable":
 			if Input.is_action_just_released("toggle_tv"):
 				SignalManager.toggle_tv.emit()
 				return
@@ -52,10 +52,10 @@ func manage_normal_input():
 func manage_window_input():
 	if Input.is_action_just_released("manage_door_status"):
 		if Global.Is_Window_Being_Opened == true && Global.Is_Window_Being_Closed == false or Global.Is_Window_Open == true && Global.Is_Window_Being_Closed == false:
-			SignalManager.close_window.emit(Global.Game_Data_Instance.Current_Active_Block)
+			SignalManager.close_window.emit(Global.Game_Data_Instance.Current_Block)
 
 	if Input.is_action_just_released("mouse_button_2"):
-			SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block) # EventManager.gd
+			SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block) # EventManager.gd
 			Global.Game_Data_Instance.Current_Event = ""
 			return
 
@@ -64,7 +64,7 @@ func manage_door_input():
 		if Global.Is_In_Animation == false:
 			SignalManager.toggle_door.emit()
 
-	if Global.Game_Data_Instance.Current_Active_Block.CurrentStatus == 1:
+	if Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
 		if Input.is_action_pressed("manage_door_listening"):
 			if Global.Is_In_Animation == false:
 				if IsHoldingShift == false:
@@ -77,29 +77,29 @@ func manage_door_input():
 					IsHoldingShift = false
 					SignalManager.reset_player_camera.emit()
 
-	if Global.Game_Data_Instance.Current_Active_Block.CurrentStatus == 0:
+	if Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
 		if Input.is_action_just_released("mouse_button_1"):
 			#print_debug("Left mouse button pressed.")
 			SignalManager.stop_event.emit()
 			IsHoldingSpace = false
-			if Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne:
-				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+			if Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Block.ConnectedRoomOne:
+				#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
 				Global.Game_Data_Instance.Current_Room.set_visible(false)
 				Global.Game_Data_Instance.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo)
+				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo)
 				return
-			elif Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomTwo:
-				#print_debug("Moving to room #" + str(Global.Current_Active_Block.ConnectedRoomTwo))
+			elif Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo:
+				#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
 				Global.Game_Data_Instance.Current_Room.set_visible(false)
 				Global.Game_Data_Instance.Current_Event = ""
-				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Active_Block.ConnectedRoomOne)
+				SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.ConnectedRoomOne)
 				return
 			else:
 				#print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
 				return
 
 	if Input.is_action_just_released("mouse_button_2"):
-		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Active_Block) # EventManager.gd
+		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block) # EventManager.gd
 		return
 
 func manage_dev_input():

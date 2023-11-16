@@ -103,11 +103,11 @@ func manage_event_signals():
 
 func manage_block_signals():
 	if SignalManager.activate_block.is_connected(on_activate_block) and SignalManager.deactivate_block.is_connected(on_deactivate_block):
-		if Global.Game_Data_Instance.Current_Active_Block != self:
+		if Global.Game_Data_Instance.Current_Block != self:
 			SignalManager.activate_block.disconnect(on_activate_block)
 			SignalManager.deactivate_block.disconnect(on_deactivate_block)
 	else:
-		if Global.Game_Data_Instance.Current_Active_Block == self:
+		if Global.Game_Data_Instance.Current_Block == self:
 			SignalManager.activate_block.connect(on_activate_block)
 			SignalManager.deactivate_block.connect(on_deactivate_block)
 
@@ -143,7 +143,7 @@ func _process(_delta):
 	if self.MoveablePaneInstance != null && self.MoveablePaneOriginalXPosition == 0:
 		self.MoveablePaneOriginalXPosition = self.MoveablePaneInstance.position.x
 
-	if Global.Game_Data_Instance.Current_Active_Block == self && Global.Game_Data_Instance.Current_Event != "window":
+	if Global.Game_Data_Instance.Current_Block == self && Global.Game_Data_Instance.Current_Event != "window":
 		search_for_props(self, true)
 		start_event()
 

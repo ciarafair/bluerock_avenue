@@ -83,7 +83,7 @@ func search_for_room(node: Node, identifier: int):
 func search_for_block(node: Node, identifier: String):
 	for child in node.get_children(true):
 		if child is Block and child.name == identifier:
-			Global.Game_Data_Instance.Current_Active_Block = child
+			Global.Game_Data_Instance.Current_Block = child
 			await SignalManager.animation_finished
 			return
 		elif child is Block and child.name != identifier:
@@ -128,13 +128,13 @@ func _process(_delta):
 
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
-		search_for_block(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block_Name)
-		if Global.Game_Data_Instance.Current_Block_Name == "":
+		if Global.Game_Data_Instance.Current_Block_Path == "":
 			print_debug("Block name returned null. Searching for room instead.")
 			SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Room)
 			return
 
-		SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Active_Block)
+		Global.Game_Data_Instance.Current_Block = get_node(Global.Game_Data_Instance.Current_Block_Path)
+		SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Block)
 		return
 
 func _ready():

@@ -116,7 +116,7 @@ func on_door_closed():
 	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 
 func on_toggle_door():
-	if Global.Game_Data_Instance.Current_Active_Block == self:
+	if Global.Game_Data_Instance.Current_Block == self:
 		if self.CurrentStatus == door_state.CLOSED:
 			set_door_state(door_state.OPENED)
 			return
@@ -159,7 +159,7 @@ func on_stop_event():
 	Global.Game_Data_Instance.Current_Event = ""
 
 func manage_signals():
-	if Global.Game_Data_Instance.Current_Active_Block == self:
+	if Global.Game_Data_Instance.Current_Block == self:
 		if !SignalManager.toggle_door.is_connected(Callable(on_toggle_door)):
 			SignalManager.toggle_door.connect(Callable(on_toggle_door))
 
@@ -209,12 +209,12 @@ func _process(_delta):
 	if DoorTweenInstance != null:
 		door_closing_time = DoorTweenInstance.get_total_elapsed_time()
 
-	if Global.Game_Data_Instance.Current_Active_Block == self:
+	if Global.Game_Data_Instance.Current_Block == self:
 		self.Is_Enabled = true
 		if Global.Game_Data_Instance.Current_Event != "door":
 			search_for_props(self, true)
 			start_event()
-	elif Global.Game_Data_Instance.Current_Active_Block != self:
+	elif Global.Game_Data_Instance.Current_Block != self:
 		self.Is_Enabled = false
 		search_for_props(self, false)
 

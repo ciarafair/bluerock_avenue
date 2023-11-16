@@ -44,6 +44,13 @@ func search_for_camera_position(node):
 			BlockCameraPosition = child
 			#print_debug("Found camera for " + str(self.name) + ": " + str(child))
 
+func search_for_prop_parent(node):
+	var parent: Node = node.get_parent()
+	if parent is LocationBlock:
+		print_debug("%s is a location block." %[parent])
+		return parent
+	search_for_prop_parent(parent)
+
 func on_tween_finished():
 	#print_debug("Tween completed")
 	Global.Is_In_Animation = false
@@ -55,7 +62,17 @@ func short_angle_dist(from, to):
 	var difference = fmod(to - from, max_angle)
 	return fmod(2 * difference, max_angle) - difference
 
-func move_to_camera_position(node, enable_position: bool, enable_rotation: bool):
+func set_rotation_direction(target_rotation: Vector3, node: Node):
+	if target_rotation.y > 90 or target_rotation.y < -90:
+		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
+			print_debug("Rotating from %s clockwise." %[node])
+			Global.PlayerInstance.rotation_degrees.y += 360
+		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
+			print_debug("Rotating from %s anti-clockwise." %[node])
+			Global.PlayerInstance.rotation_degrees.y -= 360
+
+
+func move_to_camera_position(node: Node, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:
 		#print_debug("Moving to " + str(_node))
 		if TweenInstance:
@@ -72,15 +89,16 @@ func move_to_camera_position(node, enable_position: bool, enable_rotation: bool)
 				Global.Is_In_Animation = true
 				var target_position = node.BlockCameraPosition.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position , TweenDuration).from_current()
-				var target_rotation = node.BlockCameraPosition.rotation_degrees
+				var node_location: LocationBlock = search_for_prop_parent(node)
+				var target_rotation: Vector3
 
-				if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-					Global.PlayerInstance.rotation_degrees.y += 360 - target_rotation.y
+				if node_location != null:
+					target_rotation = node.BlockCameraPosition.rotation_degrees + node_location.rotation_degrees
+				else:
+					target_rotation = node.BlockCameraPosition.rotation_degrees
 
-				if target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-					Global.PlayerInstance.rotation_degrees.y -= 360 - target_rotation.y
-
-				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration).from_current()
+				set_rotation_direction(target_rotation, node)
+				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
 				return
 
 			if node is LocationBlock:
@@ -90,12 +108,7 @@ func move_to_camera_position(node, enable_position: bool, enable_rotation: bool)
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + Global.Game_Data_Instance.Current_Room.position, TweenDuration).from_current()
 				var target_rotation = node.BlockCameraPosition.rotation_degrees
 
-				if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-					Global.PlayerInstance.rotation_degrees.y += 360
-
-				if target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-					Global.PlayerInstance.rotation_degrees.y -= 360
-
+				set_rotation_direction(target_rotation, node)
 				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
 				return
 
@@ -179,11 +192,13 @@ func search_for_props(node, enable: bool):
 			else:
 				search_for_props(child, false)
 
-func start_activation(node):
-	#print_debug("Activating " + str(Global.Current_Active_Block))
+func start_activation(node: Block):
+	#print_debug("Activating " + str(Global.Current_Block))
 	move_to_camera_position(node, true, true)
-	Global.Game_Data_Instance.Current_Active_Block = node
+	Global.Game_Data_Instance.Current_Block = node
 	Global.Game_Data_Instance.Current_Block_Name = node.name
+	Global.Game_Data_Instance.Current_Block_Path = node.get_path()
+	#print_debug(Global.Game_Data_Instance.Current_Block_Path)
 
 	if node.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
@@ -219,7 +234,7 @@ func on_deactivate_block(node):
 
 func set_rotation_ability():
 	if Global.Game_Data_Instance:
-		if Global.Game_Data_Instance.Current_Active_Block == self:
+		if Global.Game_Data_Instance.Current_Block == self:
 			Global.Is_Able_To_Turn = self.PlayerRotation
 
 func block_ready():
