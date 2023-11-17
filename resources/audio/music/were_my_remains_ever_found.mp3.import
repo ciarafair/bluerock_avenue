@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/were_my_remains_ever_found.mp3-50ed9b6bf3159d
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0.0
 bpm=0.0
 beat_count=0

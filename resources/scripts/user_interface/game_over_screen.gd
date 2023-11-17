@@ -17,7 +17,6 @@ func _process(_delta):
 		Global.GameOverScreenInstance = self
 
 var dialogue_text: String = "Your remains were never recovered."
-
 @onready var DialogueLabel = %Dialogue
 
 func set_dialogue():
@@ -44,12 +43,14 @@ func _ready():
 func _on_new_game_button_up():
 	SignalManager.stop_track.emit()
 	SignalManager.delete_game_data.emit()
-	#SignalManager.load_game_world.emit()
-	self.set_visible(false)
 	LoadManager.load_scene(Path.GameWorldPath)
-	if Global.Loaded_Game_World != null:
+	await SignalManager.game_world_loaded
+	if Global.Loaded_Game_World:
 		Global.verify_game_file_directory()
+		self.queue_free()
 		return
+	push_error("Loaded game world was not found.")
+	self.queue_free()
 	return
 
 func _on_main_menu_button_up():

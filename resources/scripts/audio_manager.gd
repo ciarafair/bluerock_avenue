@@ -39,6 +39,8 @@ func on_stop_track():
 func on_start_track(track: AudioStreamMP3):
 	if MusicPlayer != null and Global.Is_Music_Playing == false:
 		MusicPlayer.set_bus("Music")
+		track.set_loop(true)
+		track.set_loop_offset(0.0)
 		MusicPlayer.set_stream(track)
 		Global.Is_Music_Playing = true
 

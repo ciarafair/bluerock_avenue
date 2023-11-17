@@ -40,7 +40,7 @@ func find_door_handle(node: Node3D):
 			find_door_handle(child)
 
 func set_door_state(next: door_state):
-	CurrentStatus = next
+	self.CurrentStatus = next
 	#print_debug("Changing door state to %s" %[CurrentStatus])
 	match CurrentStatus:
 		door_state.OPENED:
@@ -53,7 +53,7 @@ func set_door_state(next: door_state):
 
 func twist_doorhandle():
 	if self.DoorHandle != null:
-		DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
+		self.DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
 		pass
 
 	elif self.DoorHandle == null:
@@ -62,7 +62,7 @@ func twist_doorhandle():
 
 func reset_doorhandle():
 	if self.DoorHandle != null:
-		DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, handle_turning_time).from_current()
+		self.DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, handle_turning_time).from_current()
 		return
 
 	elif self.DoorHandle == null:
@@ -73,15 +73,15 @@ func open_door():
 	SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 	Global.Is_Door_Open = true
 	if self.Is_Enabled == true:
-		if DoorTweenInstance:
-			DoorTweenInstance.kill()
+		if self.DoorTweenInstance:
+			self.DoorTweenInstance.kill()
 
-		DoorTweenInstance = get_tree().create_tween().chain()
-		DoorTweenInstance.bind_node(self)
+		self.DoorTweenInstance = get_tree().create_tween().chain()
+		self.DoorTweenInstance.bind_node(self)
 
 		if self.PivotPoint != null:
 			twist_doorhandle()
-			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current().finished.connect(Callable(on_door_opened))
+			self.DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current().finished.connect(Callable(on_door_opened))
 			return
 
 		elif self.PivotPoint == null:
@@ -89,19 +89,19 @@ func open_door():
 			return
 
 func on_door_opened():
-	await DoorTweenInstance.finished
+	await self.DoorTweenInstance.finished
 	pass
 
 func close_door():
 	if self.Is_Enabled == true:
-		if DoorTweenInstance:
-			DoorTweenInstance.kill()
+		if self.DoorTweenInstance:
+			self.DoorTweenInstance.kill()
 
-		DoorTweenInstance = get_tree().create_tween()
-		DoorTweenInstance.bind_node(self)
+		self.DoorTweenInstance = get_tree().create_tween()
+		self.DoorTweenInstance.bind_node(self)
 
 		if self.PivotPoint != null:
-			DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(Callable(on_door_closed))
+			self.DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", PivotPointOriginalYRotation, door_closing_time).from_current().finished.connect(Callable(on_door_closed))
 			reset_doorhandle()
 			pass
 
@@ -111,7 +111,7 @@ func close_door():
 
 
 func on_door_closed():
-	await DoorTweenInstance.finished
+	await self.DoorTweenInstance.finished
 	Global.Is_Door_Open = false
 	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
 
@@ -137,6 +137,11 @@ func find_current_room():
 		push_warning("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
 
 func start_event():
+	self.PivotPoint = find_pivot_point(self)
+	self.DoorHandle = find_door_handle(self.PivotPoint)
+
+	self.PivotPointOriginalYRotation = self.PivotPoint.rotation_degrees.y
+
 	if Global.Is_In_Animation == false:
 		# Signal in game_world.gd
 		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
@@ -192,22 +197,18 @@ func _ready():
 	search_for_parent_block(self)
 	search_for_camera_position(self)
 	search_for_collider(self)
-	self.PivotPoint = find_pivot_point(self)
-	self.DoorHandle = find_door_handle(PivotPoint)
 
-	PivotPointOriginalYRotation = self.PivotPoint.rotation_degrees.y
-
-	if BlockCollider != null:
-		BlockCollider.set_disabled(true)
-	elif BlockCollider == null:
+	if self.BlockCollider != null:
+		self.BlockCollider.set_disabled(true)
+	elif self.BlockCollider == null:
 		push_error(str(self.name) + " does not have a collider.")
 
 func _process(_delta):
 	set_rotation_ability()
 	manage_signals()
 
-	if DoorTweenInstance != null:
-		door_closing_time = DoorTweenInstance.get_total_elapsed_time()
+	if self.DoorTweenInstance != null:
+		door_closing_time = self.DoorTweenInstance.get_total_elapsed_time()
 
 	if Global.Game_Data_Instance.Current_Block == self:
 		self.Is_Enabled = true
@@ -218,8 +219,8 @@ func _process(_delta):
 		self.Is_Enabled = false
 		search_for_props(self, false)
 
-	if BlockParent == Global.Game_Data_Instance.Current_Room:
+	if self.BlockParent == Global.Game_Data_Instance.Current_Room:
 		#print_debug(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")
 		self.set_visible(true)
-	elif BlockParent != Global.Game_Data_Instance.Current_Room:
+	elif self.BlockParent != Global.Game_Data_Instance.Current_Room:
 		self.set_visible(false)

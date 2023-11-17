@@ -47,7 +47,7 @@ func search_for_camera_position(node):
 func search_for_prop_parent(node):
 	var parent: Node = node.get_parent()
 	if parent is LocationBlock:
-		print_debug("%s is a location block." %[parent])
+		#print_debug("%s is a location block." %[parent])
 		return parent
 	search_for_prop_parent(parent)
 
@@ -63,14 +63,13 @@ func short_angle_dist(from, to):
 	return fmod(2 * difference, max_angle) - difference
 
 func set_rotation_direction(target_rotation: Vector3, node: Node):
-	if target_rotation.y > 90 or target_rotation.y < -90:
+	if target_rotation.y > node.rotation_degrees.y + 90 or target_rotation.y < node.rotation_degrees.y -90:
 		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-			print_debug("Rotating from %s clockwise." %[node])
+			#print_debug("Rotating from %s clockwise." %[node])
 			Global.PlayerInstance.rotation_degrees.y += 360
 		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-			print_debug("Rotating from %s anti-clockwise." %[node])
+			#print_debug("Rotating from %s anti-clockwise." %[node])
 			Global.PlayerInstance.rotation_degrees.y -= 360
-
 
 func move_to_camera_position(node: Node, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:

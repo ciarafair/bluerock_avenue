@@ -9,6 +9,7 @@ var Time_Minute: int = 30
 var Time_String: String = "11:30am"
 
 var Is_Monster_Active: bool = true
+
 var Monster_Current_Room: RoomBlock = null
 var Monster_Current_Stage: int = 0
 var Monster_Room_Number: int = 0

@@ -1,12 +1,16 @@
 extends StaticBody3D
 
 var WindowTimer: Timer = Timer.new()
-const DefaultRoomPool = [1,3]
+var CurrentRoom: RoomBlock
+var CurrentRoomNumber: int
+var CurrentStage
+
+const DefaultRoomPool = [1,3,4]
 var RoomPool: Array = []
 
 func manage_monster():
 	if Global.Game_Data_Instance.Monster_Room_Number == 0:
-		SignalManager.find_monster_room.emit()
+		SignalManager.find_monster_room.emit(Global.Loaded_Game_World, find_room_with_window())
 		return
 	else:
 		manage_monster_position()
@@ -15,8 +19,14 @@ func manage_monster():
 func get_random_number_from_window_pool() -> int:
 	if RoomPool.size() == 0:
 		return -1
-	var index =  randi_range(0, RoomPool.size() - 1)
+	var index = randi_range(0, RoomPool.size() - 1)
+	if Global.Game_Data_Instance.Monster_Room_Number != null:
+		if RoomPool[index] == Global.Game_Data_Instance.Monster_Room_Number:
+			print_debug("Generated number %s is equal to %s. Generating new number")
+			index = randi_range(0, RoomPool.size() - 1)
+			return RoomPool[index]
 	return RoomPool[index]
+
 
 func find_room_with_window() -> int:
 	if RoomPool.size() > 0:
@@ -29,7 +39,9 @@ func find_room_with_window() -> int:
 		#push_warning("No more numbers in the pool.")
 		RoomPool.append_array(DefaultRoomPool)
 		#print_debug("New pool of possible rooms:  %s" % [RoomPool])
-		var random_room_number: int = get_random_number_from_window_pool()
+		var random_room_number: int
+		random_room_number = get_random_number_from_window_pool()
+
 		#print_debug("Chosen room number: %s" % [RoomPool])
 		RoomPool.erase(random_room_number)
 		#print_debug("New pool of possible rooms: %s" % [RoomPool])
@@ -109,17 +121,18 @@ func set_monster_position(node, number):
 	return
 
 func manage_window_timer():
-	if WindowTimer:
+	if WindowTimer != null:
 		WindowTimer.queue_free()
 	WindowTimer = Timer.new()
 	self.add_child(WindowTimer)
 	return
 
 func on_monster_reset():
+	print_debug("Resetting monster.")
 	Global.Game_Data_Instance.Monster_Current_Stage = 0
-	Global.Game_Data_Instance.Monster_Room_Number = 0
+	Global.Game_Data_Instance.Monster_Room_Number = find_room_with_window()
 	Global.Game_Data_Instance.Monster_Current_Room = null
-	SignalManager.find_monster_room.emit()
+	SignalManager.find_monster_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Monster_Room_Number)
 	manage_monster_position()
 
 func find_window_node(node):
@@ -132,10 +145,10 @@ func find_window_node(node):
 			find_window_node(child)
 
 func manage_signals():
-	SignalManager.find_monster_room.connect(Callable(find_monster_room).bind(Global.Loaded_Game_World, find_room_with_window()))
-	SignalManager.set_monster_position.connect(manage_monster_position)
-	SignalManager.reset_monster.connect(on_monster_reset)
-	SignalManager.game_over.connect(on_monster_reset)
+	SignalManager.find_monster_room.connect(Callable(find_monster_room))
+	SignalManager.set_monster_position.connect(Callable(manage_monster_position))
+	SignalManager.reset_monster.connect(Callable(on_monster_reset))
+	SignalManager.game_over.connect(Callable(on_monster_reset))
 
 func _process(_delta):
 	if Global.MonsterInstance == null:
@@ -149,4 +162,4 @@ func _ready():
 	self.add_child(WindowTimer)
 	manage_window_timer()
 	RoomPool.append_array(DefaultRoomPool)
-	SignalManager.find_monster_room.emit()
+	SignalManager.find_monster_room.emit(Global.Loaded_Game_World, find_room_with_window())

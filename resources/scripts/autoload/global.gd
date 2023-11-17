@@ -82,7 +82,7 @@ func spawn_monster():
 	else:
 		#print_debug("Monster already instantiated.")
 		if Game_Data_Instance.Monster_Current_Room == null:
-			SignalManager.find_monster_room.emit()
+			SignalManager.find_monster_room.emit(Global.Loaded_Game_World, MonsterInstance.find_room_with_window())
 			print_debug(Game_Data_Instance.Monster_Current_Room)
 			await SignalManager.monster_found_room
 
