@@ -1,8 +1,8 @@
 extends Node
 
 const MajorBuildNum: int = 1
-const MinorBuildNum: int = 0
-const RevisionNum: int = 4
+const MinorBuildNum: int = 1
+const RevisionNum: int = 0
 
 var Settings_Data_Instance: SettingsData
 var Game_Data_Instance: GameData
@@ -10,12 +10,16 @@ var Game_Data_Instance: GameData
 var ItIsADarkNightTrack: AudioStreamMP3 = load(Path.ItIsDarkTonightTrackPath)
 var WereMyRemainsEverFoundTrack: AudioStreamMP3 = load(Path.WereMyRemainsEverFoundTrackPath)
 
+var RoomBlocks: Array = []
+var LocationBlocks: Array = []
+var PropBlocks: Array = []
+
 # Meta Data - Stays in this script as it does not need to be saved
 const CharacterReadRate: float = 0.025
 
 var Object_Loader: Node = null
 
-var PlayerInstance: Node3D = null
+var PlayerInstance: Player = null
 var MonsterInstance: Node3D = null
 var PauseMenuInstance: CanvasLayer = null
 var MovementInterfaceInstance: CanvasLayer = null
@@ -58,19 +62,21 @@ func on_tween_finished():
 	Global.Is_In_Animation = false
 	SignalManager.animation_finished.emit()
 
-var CurrentMouseState: MouseState
+var CurrentMouseState: mouse
 var MousePosition2D: Vector2
 
-enum MouseState {
+enum mouse {
+	ERROR = 0,
 	MOVEMENT = 1,
 	DIALOGUE = 2,
 	ROTATION = 3
 }
 
 enum task {
-	TURN_OFF_TV = 1,
-	EXPLORE = 2,
-	SURVIVE = 3
+	ERROR = 0,
+	TASK_ONE = 1,
+	TASK_TWO = 2,
+	TASK_THREE = 3
 }
 
 func spawn_monster():
@@ -99,7 +105,7 @@ func spawn_monster():
 
 func manage_mouse_cursor():
 	if Is_Game_Active == true:
-		if CurrentMouseState == MouseState.MOVEMENT:
+		if CurrentMouseState == mouse.MOVEMENT:
 			if Hovering_Block != null:
 				Input.set_custom_mouse_cursor(EyeCursor)
 				return
@@ -107,7 +113,7 @@ func manage_mouse_cursor():
 				Input.set_custom_mouse_cursor(null)
 				return
 
-		elif CurrentMouseState == MouseState.DIALOGUE:
+		elif CurrentMouseState == mouse.DIALOGUE:
 			if Hovering_Block != null:
 				if Hovering_Block.BlockDialoguePath == null:
 					Input.set_custom_mouse_cursor(null)
@@ -121,7 +127,7 @@ func manage_mouse_cursor():
 		if Is_Game_Active == false:
 			Input.set_custom_mouse_cursor(null)
 
-		elif CurrentMouseState == MouseState.ROTATION:
+		elif CurrentMouseState == mouse.ROTATION:
 			if Current_Movement_Panel != null:
 				if Current_Movement_Panel.name == "Bottom":
 					Input.set_custom_mouse_cursor(DownArrowCursor)
@@ -139,20 +145,23 @@ func manage_mouse_cursor():
 	Input.set_custom_mouse_cursor(null)
 	return
 
-func set_mouse_state(next: MouseState):
-	CurrentMouseState = next
-	match CurrentMouseState:
-		MouseState.MOVEMENT:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+func set_mouse_state(next: mouse) -> mouse:
+	if CurrentMouseState != next:
+		CurrentMouseState = next
+		match CurrentMouseState:
+			mouse.MOVEMENT:
+				#print_debug("Changing mouse state to %s" %[new_state])
+				return mouse.MOVEMENT
 
-		MouseState.DIALOGUE:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+			mouse.DIALOGUE:
+				#print_debug("Changing mouse state to %s" %[new_state])
+				return mouse.DIALOGUE
 
-		MouseState.ROTATION:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+			mouse.ROTATION:
+				#print_debug("Changing mouse state to %s" %[new_state])
+				return mouse.ROTATION
+		return mouse.ERROR
+	return mouse.ERROR
 
 var Settings_Dictionary: Dictionary = {}
 func verify_settings_file_directory():
@@ -227,16 +236,21 @@ func set_window_resolution(index: int):
 		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1920,1080)
 		Global.Settings_Data_Instance.Selected_Resolution_Index = 0
 		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
+		return
 
 	if index == 1:
 		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1600,900)
 		Global.Settings_Data_Instance.Selected_Resolution_Index = 1
 		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
+		return
 
 	if index == 2:
 		Global.Settings_Data_Instance.Current_Window_Size = Vector2i(1280,720)
 		Global.Settings_Data_Instance.Selected_Resolution_Index = 2
 		get_window().size = Global.Settings_Data_Instance.Current_Window_Size
+		return
+	push_error("Could not find index.")
+	return
 
 func load_settings_data(parsed_data: Dictionary):
 	Settings_Data_Instance.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
@@ -328,7 +342,7 @@ func save_monster_game_data():
 	var data: Dictionary = {
 		"monster": {
 			"Is_Monster_Active" = Game_Data_Instance.Is_Monster_Active,
-			"Monster_Current_Room" = Game_Data_Instance.Monster_Current_Room,
+			"Room" = Game_Data_Instance.Monster_Current_Room,
 			"Monster_Current_Stage" = Game_Data_Instance.Monster_Current_Stage,
 			"Monster_Room_Number" = Game_Data_Instance.Monster_Room_Number,
 		}
@@ -337,6 +351,8 @@ func save_monster_game_data():
 
 func save_player_game_data():
 	#print_debug("Saving player data")
+	var RoomPath: String = Game_Data_Instance.Current_Room.get_path()
+	var BlockPath: String = Game_Data_Instance.Current_Block.get_path()
 
 	var data: Dictionary = {
 		"player": {
@@ -348,13 +364,10 @@ func save_player_game_data():
 			"YPosition" = PlayerInstance.position.y,
 			"ZPosition" = PlayerInstance.position.z,
 
-			"Current_Block" = Game_Data_Instance.Current_Block,
-			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
-			"Current_Block_Path" = Game_Data_Instance.Current_Block_Path,
+			"Current_Block" = BlockPath,
+			"Room" = RoomPath,
 
 			"Current_Event" = Game_Data_Instance.Current_Event,
-			"Current_Room" = Game_Data_Instance.Current_Room,
-			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number,
 			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On
 		}
 	}
@@ -395,9 +408,9 @@ func save_default_game_data(file: FileAccess):
 			"YPosition" = 1.75,
 			"ZPosition" = 0,
 
-			"Current_Block" = Game_Data_Instance.Current_Block,
-			"Current_Block_Name" = Game_Data_Instance.Current_Block_Name,
-			"Current_Block_Path" = Game_Data_Instance.Current_Block_Path,
+			"Current_Block" = PlayerInstance.block,
+			"Current_Block_Name" = PlayerInstance.block_Name,
+			"Current_Block_Path" = PlayerInstance.block_Path,
 
 			"Current_Event" = Game_Data_Instance.Current_Event,
 
@@ -443,18 +456,10 @@ func search_for_block(node: Node, identifier: String) -> Block:
 		search_for_block(child, identifier)
 	return null
 
-func search_for_room(node: Node, identifier: int):
-	for child in node.get_children(true):
-		if child is RoomBlock and child.RoomNumber == identifier:
-			print_debug(child)
-			Game_Data_Instance.Monster_Current_Room = child
-		elif child is RoomBlock and child.RoomNumber != identifier:
-			pass
-		search_for_room(child, identifier)
-
-func load_player_data(parsed_data):
+func load_player_data(parsed_data: Dictionary):
 	await SignalManager.player_loaded
 	if PlayerInstance != null:
+
 		PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
 		PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
 		PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
@@ -466,20 +471,14 @@ func load_player_data(parsed_data):
 	push_error("Player instance returned null. Could not load game data.")
 	return
 
-func load_instanced_game_data(parsed_data):
+func load_instanced_game_data(parsed_data: Dictionary):
 	if Game_Data_Instance != null:
-		if Game_Data_Instance.Current_Block != null:
-			Game_Data_Instance.Current_Block = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Block)
-		Game_Data_Instance.Current_Block_Name = parsed_data.player.Current_Block_Name
-		Game_Data_Instance.Current_Block_Path = parsed_data.player.Current_Block_Path
-
+		Game_Data_Instance.Current_Block = get_node(parsed_data.player.Current_Block)
+		Game_Data_Instance.Current_Room = get_node(parsed_data.player.Room)
 		Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
-		if Game_Data_Instance.Current_Room != null:
-			Game_Data_Instance.Current_Room = search_for_block(Global.Loaded_Game_World, parsed_data.player.Current_Room)
-		Game_Data_Instance.Current_Room_Number = parsed_data.player.Current_Room_Number
 
 		Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
-		search_for_room(Global.Loaded_Game_World, parsed_data.monster.Monster_Room_Number)
+		Game_Data_Instance.Monster_Current_Room = parsed_data.monster.Room
 		Game_Data_Instance.Monster_Current_Stage = parsed_data.monster.Monster_Current_Stage
 		Game_Data_Instance.Monster_Room_Number = parsed_data.monster.Monster_Room_Number
 
@@ -560,25 +559,28 @@ func stringify_json(json_file: JSON) -> Dictionary:
 		return {}
 	return parsed_data
 
-func set_task(next: task):
-	Game_Data_Instance.Current_Task = next
-	match Game_Data_Instance.Current_Task:
-		task.TURN_OFF_TV:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+func set_task(next: task) -> task:
+	if Game_Data_Instance.Current_Task != next:
+		Game_Data_Instance.Current_Task = next
+		match Game_Data_Instance.Current_Task:
+			task.TASK_ONE:
+				print_debug("Changing task to %s" %[next])
+				return task.TASK_ONE
 
-		task.EXPLORE:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+			task.TASK_TWO:
+				print_debug("Changing task to %s" %[next])
+				return task.TASK_TWO
 
-		task.SURVIVE:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			pass
+			task.TASK_THREE:
+				print_debug("Changing task to %s" %[next])
+				return task.TASK_THREE
+		return task.ERROR
+	return task.ERROR
 
-func task_check(node) -> Dictionary:
+func task_check(node: Node) -> Dictionary:
 	var TaskErrorDialoguePath = preload(Path.TaskErrorDialoguePath)
 
-	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
+	if Game_Data_Instance.Current_Task == task.TASK_ONE:
 		if node.name == "TVTable":
 			return {}
 		else:

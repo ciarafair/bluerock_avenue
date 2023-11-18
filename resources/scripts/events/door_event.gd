@@ -1,15 +1,15 @@
 extends LocationBlock
-class_name DoorEvent
+class_name DoorBlock
 
 @export var ConnectedRoomOne: int
 @export var ConnectedRoomTwo: int
 
-enum door_state {
+enum state {
 	OPENED = 0,
 	CLOSED = 1
 }
 
-var CurrentStatus: door_state = door_state.CLOSED
+var CurrentStatus: state = state.CLOSED
 var DoorTweenInstance: Tween
 
 var PivotPoint: Node3D
@@ -39,15 +39,15 @@ func find_door_handle(node: Node3D):
 		else:
 			find_door_handle(child)
 
-func set_door_state(next: door_state):
+func set_door_state(next: state):
 	self.CurrentStatus = next
 	#print_debug("Changing door state to %s" %[CurrentStatus])
 	match CurrentStatus:
-		door_state.OPENED:
+		self.state.OPENED:
 			open_door()
 			return
 
-		door_state.CLOSED:
+		self.state.CLOSED:
 			close_door()
 			return
 
@@ -117,12 +117,12 @@ func on_door_closed():
 
 func on_toggle_door():
 	if Global.Game_Data_Instance.Current_Block == self:
-		if self.CurrentStatus == door_state.CLOSED:
-			set_door_state(door_state.OPENED)
+		if self.CurrentStatus == self.state.CLOSED:
+			set_door_state(self.state.OPENED)
 			return
 
-		if self.CurrentStatus == door_state.OPENED:
-			set_door_state(door_state.CLOSED)
+		if self.CurrentStatus == self.state.OPENED:
+			set_door_state(self.state.CLOSED)
 			return
 
 func find_current_room():
@@ -150,12 +150,12 @@ func start_event():
 		if SignalManager.open_door.is_connected(Callable(set_door_state)):
 			pass
 		elif !SignalManager.open_door.is_connected(Callable(set_door_state)):
-			SignalManager.open_door.connect(Callable(set_door_state).bind(door_state.OPENED))
+			SignalManager.open_door.connect(Callable(set_door_state).bind(self.state.OPENED))
 
 		if SignalManager.close_door.is_connected(Callable(set_door_state)):
 			pass
 		elif !SignalManager.close_door.is_connected(Callable(set_door_state)):
-			SignalManager.close_door.connect(Callable(set_door_state).bind(door_state.CLOSED))
+			SignalManager.close_door.connect(Callable(set_door_state).bind(self.state.CLOSED))
 
 func on_stop_event():
 	#print_debug("Stopping door event.")

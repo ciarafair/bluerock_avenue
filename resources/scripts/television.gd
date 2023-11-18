@@ -1,4 +1,5 @@
 extends LocationBlock
+class_name TelevisionBlock
 
 @onready var ScreenMesh: MeshInstance3D = %Screen
 @onready var AspectRatio: AspectRatioContainer = %AspectRatioContainer
@@ -9,9 +10,6 @@ var AudioPlayerInstance: AudioStreamPlayer3D
 var VideoCurrentTime: float = 0
 
 func on_toggle_tv():
-	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
-		Global.Game_Data_Instance.Current_Task = Global.task.EXPLORE
-		#print_debug(Global.Game_Data_Instance.Current_Task)
 	Global.Game_Data_Instance.Television_State = !Global.Game_Data_Instance.Television_State
 	manage_televison()
 	#print_debug("Toggling the television to %s" %[Global.Game_Data_Instance.Television_State])

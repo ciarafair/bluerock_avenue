@@ -74,7 +74,7 @@ func set_rotation_direction(target_rotation: Vector3, node: Node):
 func move_to_camera_position(node: Node, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:
 		#print_debug("Moving to " + str(_node))
-		if TweenInstance:
+		if TweenInstance != null:
 			TweenInstance.kill()
 
 		TweenInstance = get_tree().create_tween()
@@ -103,8 +103,8 @@ func move_to_camera_position(node: Node, enable_position: bool, enable_rotation:
 			if node is LocationBlock:
 				SignalManager.reset_player_camera.emit()
 				Global.Is_In_Animation = true
-				var target_position = node.BlockCameraPosition.position
-				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + Global.Game_Data_Instance.Current_Room.position, TweenDuration).from_current()
+				var target_position = node.BlockCameraPosition.position + node.position + Global.Game_Data_Instance.Current_Room.position
+				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position, TweenDuration).from_current()
 				var target_rotation = node.BlockCameraPosition.rotation_degrees
 
 				set_rotation_direction(target_rotation, node)
@@ -191,12 +191,11 @@ func search_for_props(node, enable: bool):
 			else:
 				search_for_props(child, false)
 
-func start_activation(node: Block):
+
+func on_activate_block(node: Block):
 	#print_debug("Activating " + str(Global.Current_Block))
 	move_to_camera_position(node, true, true)
 	Global.Game_Data_Instance.Current_Block = node
-	Global.Game_Data_Instance.Current_Block_Name = node.name
-	Global.Game_Data_Instance.Current_Block_Path = node.get_path()
 	#print_debug(Global.Game_Data_Instance.Current_Block_Path)
 
 	if node.PlayerRotation == true:
@@ -210,10 +209,6 @@ func start_activation(node: Block):
 	else:
 		disable_collider(node)
 	return
-
-func on_activate_block(node):
-	start_activation(node)
-
 
 func on_deactivate_block(node):
 	if Global.Game_Data_Instance.Current_Event != "":

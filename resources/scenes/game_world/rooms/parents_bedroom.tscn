@@ -561,8 +561,6 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.75, 5)
 collision_layer = 3
 script = ExtResource("8_1i4qr")
-Is_Window_Open = null
-PlayerRotation = null
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Window"]
 transform = Transform3D(-0.963626, -0.00445142, 0.267217, 0, 0.999862, 0.0166561, -0.267254, 0.0160503, -0.963493, 0.803194, -0.234522, -1.8722)

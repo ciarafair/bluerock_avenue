@@ -6,7 +6,7 @@ var IsHoldingShift: bool = false
 func manage_normal_input():
 	if Global.Hovering_Block != null:
 		if Global.Is_Clickable == true:
-			if Global.CurrentMouseState == Global.MouseState.MOVEMENT:
+			if Global.CurrentMouseState == Global.mouse.MOVEMENT:
 				if Input.is_action_just_released("mouse_button_1"):
 					#print_debug("Activating %s"%[Global.Hovering_Block])
 					if Global.task_check(Global.Hovering_Block) == {}:
@@ -16,7 +16,7 @@ func manage_normal_input():
 						SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.task_check(Global.Hovering_Block))
 						return
 
-			if Global.CurrentMouseState == Global.MouseState.DIALOGUE:
+			if Global.CurrentMouseState == Global.mouse.DIALOGUE:
 				if Input.is_action_just_released("mouse_button_1"):
 					if Global.Hovering_Block.BlockDialoguePath != null:
 						#print_debug("Insert dialogue here")
@@ -135,9 +135,9 @@ func _unhandled_input(event: InputEvent):
 		if Input.is_action_just_released("pause_menu_toggle"):
 			Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
 
-		if Global.CurrentMouseState != Global.MouseState.ROTATION:
+		if Global.CurrentMouseState != Global.mouse.ROTATION:
 			if Input.is_action_pressed("select_dialogue") && Global.CurrentMouseState != 1:
-				Global.set_mouse_state(Global.MouseState.DIALOGUE)
+				Global.set_mouse_state(Global.mouse.DIALOGUE)
 
 			if Input.is_action_just_released("select_dialogue"):
-				Global.set_mouse_state(Global.MouseState.MOVEMENT)
+				Global.set_mouse_state(Global.mouse.MOVEMENT)

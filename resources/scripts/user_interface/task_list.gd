@@ -8,9 +8,9 @@ var CurrentState: state = state.READY
 var CurrentTask: Global.task
 
 enum state {
-	READY,
-	READING,
-	FINISHED
+	READY = 1,
+	READING = 2,
+	FINISHED = 3
 }
 
 func set_state(next):
@@ -29,7 +29,7 @@ func set_state(next):
 			pass
 
 func reset():
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -61,13 +61,20 @@ func find_task_text():
 		CurrentTask = Global.Game_Data_Instance.Current_Task
 		#print_debug("Recieved signal")
 		var text: String
-		if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
+		if Global.Game_Data_Instance.Current_Task == Global.task.TASK_ONE:
 			text = "Turn off television"
 			#print_debug("Setting text to %s" %[text])
 			set_task_label_text(text)
 			return
-		elif Global.Game_Data_Instance.Current_Task == Global.task.EXPLORE:
+		elif Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
 			text = "Investigate sound coming from the office"
+			#print_debug("Setting text to %s" %[text])
+			reset()
+			await TweenInstance.finished
+			set_task_label_text(text)
+			return
+		elif Global.Game_Data_Instance.Current_Task == Global.task.TASK_THREE:
+			text = "Survive"
 			#print_debug("Setting text to %s" %[text])
 			reset()
 			await TweenInstance.finished
@@ -79,7 +86,7 @@ func find_task_text():
 		pass
 
 func set_task_label_text(text):
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -114,6 +121,30 @@ func _ready():
 	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	manage_signals()
 
+func manage_tasks():
+	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_ONE:
+		Global.Game_Data_Instance.Is_Monster_Active = false
+
+		await SignalManager.toggle_tv
+		Global.set_task(Global.task.TASK_TWO)
+		return
+
+	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
+		Global.Game_Data_Instance.Is_Monster_Active = false
+		if Global.Game_Data_Instance.Current_Room.RoomNumber == null:
+			return
+
+		if Global.Game_Data_Instance.Current_Room.RoomNumber == 3:
+			Global.set_task(Global.task.TASK_THREE)
+			return
+
+	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_THREE:
+		if Global.Game_Data_Instance.Is_Monster_Active == false:
+			SignalManager.spawn_monster.emit()
+			Global.Game_Data_Instance.Is_Monster_Active = true
+			return
+	return
+
 func _process(_delta):
 	if Global.TaskListInstance == null:
 		SignalManager.task_list_loaded.emit()
@@ -121,10 +152,6 @@ func _process(_delta):
 
 	manage_visibility()
 	find_task_text()
+	manage_tasks()
 
-	if Global.Game_Data_Instance.Current_Task == Global.task.TURN_OFF_TV:
-		Global.Game_Data_Instance.Is_Monster_Active = false
-	if Global.Game_Data_Instance.Current_Task == Global.task.EXPLORE:
-		Global.Game_Data_Instance.Is_Monster_Active = false
-	if Global.Game_Data_Instance.Current_Task == Global.task.SURVIVE:
-		Global.Game_Data_Instance.Is_Monster_Active = true
+

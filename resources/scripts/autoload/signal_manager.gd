@@ -82,8 +82,6 @@ signal load_game_world
 signal game_world_loaded
 signal free_game_world
 
-signal game_data_instance_loaded
-
 signal load_dialogue_box
 signal dialogue_box_loaded
 signal click_dialogue

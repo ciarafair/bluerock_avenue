@@ -47,20 +47,16 @@ func load_user_interface():
 	add_object(Path.DevUtilitiesPath, Dev_Utilities_Instance, User_Interface_Instance)
 	add_object(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance)
 
-func delete_game_world():
-	#print_debug("Game world freed.")
-	Global.Loaded_Game_World.queue_free()
-	return
-
 func on_game_world_loaded():
 	#print_debug("Game world loaded.")
-	if Global.Loaded_Main_Menu:
+	if Global.Loaded_Main_Menu != null:
 		Global.Loaded_Main_Menu.queue_free()
+		return
 
 func on_main_menu_loaded():
 	#print_debug("Main menu was loaded.")
-	if Global.Loaded_Game_World:
-		delete_game_world()
+	if Global.Loaded_Game_World != null:
+		Global.Loaded_Game_World.queue_free()
 	get_tree().paused = false
 
 func on_load_options_menu():

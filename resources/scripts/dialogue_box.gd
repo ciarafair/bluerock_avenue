@@ -40,7 +40,7 @@ func on_tween_finished():
 	set_state(state.FINISHED)
 
 func set_dialogue(text):
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()

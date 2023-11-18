@@ -28,7 +28,7 @@ func mouse_position(mask, camera, area_bool, body_bool):
 		return ray_result
 
 func block_raycast():
-	if Global.CurrentMouseState == Global.MouseState.MOVEMENT or Global.CurrentMouseState == Global.MouseState.DIALOGUE:
+	if Global.CurrentMouseState == Global.mouse.MOVEMENT or Global.CurrentMouseState == Global.mouse.DIALOGUE:
 		var CollisionMask: int = 2
 		var AreaBool: bool = false
 		var BodyBool: bool = true
@@ -147,7 +147,6 @@ func load_children():
 	await SignalManager.dialogue_box_loaded
 	#print_debug("Dialogue box has loaded.")
 
-	await Global.Game_Data_Instance.game_data_instance_loaded
 	Global.load_data(Path.GameJSONFilePath, "game")
 
 func _ready():

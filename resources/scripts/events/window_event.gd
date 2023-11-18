@@ -1,5 +1,5 @@
 extends LocationBlock
-class_name WindowEvent
+class_name WindowBlock
 
 @export var Is_Window_Open: bool
 

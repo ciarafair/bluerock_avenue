@@ -1,14 +1,16 @@
 extends Node3D
+class_name Player
 
 @onready var Camera = %Camera3D
 @onready var Flashlight = %SpotLight3D
 @onready var ListenPosition = %ListenPosition
-var TweenInstance: Tween
+
+var TweenInstance: Tween = null
 
 func on_turn_180_degrees():
 	#print_debug("Turning around 180 degrees.")
 	Global.Is_In_Animation = true
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -20,7 +22,7 @@ func on_turn_180_degrees():
 func on_turn_positive_90_degrees():
 	#print_debug("Turning to the left 90 degrees.")
 	Global.Is_In_Animation = true
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -32,7 +34,7 @@ func on_turn_positive_90_degrees():
 func on_turn_negative_90_degrees():
 	#print_debug("Turning to the right 90 degrees.")
 	Global.Is_In_Animation = true
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -42,7 +44,7 @@ func on_turn_negative_90_degrees():
 	return
 
 func on_reset_player_camera():
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -51,7 +53,7 @@ func on_reset_player_camera():
 	TweenInstance.tween_property(Camera, "position", Vector3(0,0,0), 0.25)
 
 func on_player_camera_listen():
-	if TweenInstance:
+	if TweenInstance != null:
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
@@ -103,8 +105,7 @@ func on_camera_follow_mouse(mouse):
 	#print_debug(camera_target_rotation.y)
 	camera_target_rotation.x = (maxYaw / screen.y) * distance.y
 
-func _process(_delta):
-
+func manage_rotation():
 	if self.rotation_degrees.y > 360:
 		self.rotation_degrees.y -= 360
 		return
@@ -119,21 +120,25 @@ func _process(_delta):
 	if self.rotation_degrees.y == -360:
 		self.rotation_degrees.y = 0
 
+func manage_camera_turning():
+	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
+		Camera.set_rotation_degrees(Vector3(camera_target_rotation.x, camera_target_rotation.y, Camera.rotation_degrees.z))
+
+func _process(_delta):
 	if Global.PlayerInstance == null:
 		Global.PlayerInstance = self
 		SignalManager.player_loaded.emit()
 
-	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
-		Camera.set_rotation_degrees(Vector3(camera_target_rotation.x, camera_target_rotation.y, Camera.rotation_degrees.z))
+	manage_rotation()
+	manage_camera_turning()
 
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
-		if Global.Game_Data_Instance.Current_Block_Path == "":
+		if Global.Game_Data_Instance.Current_Block == null:
 			print_debug("Block name returned null. Searching for room instead.")
 			SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Room)
 			return
 
-		Global.Game_Data_Instance.Current_Block = get_node(Global.Game_Data_Instance.Current_Block_Path)
 		SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Block)
 		return
 

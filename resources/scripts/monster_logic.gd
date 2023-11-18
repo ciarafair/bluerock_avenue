@@ -1,12 +1,10 @@
 extends StaticBody3D
 
 var WindowTimer: Timer = Timer.new()
-var CurrentRoom: RoomBlock
-var CurrentRoomNumber: int
-var CurrentStage
+var Room: RoomBlock = null
 
 const DefaultRoomPool = [1,3,4]
-var RoomPool: Array = []
+var RoomPool: Array = [3]
 
 func manage_monster():
 	if Global.Game_Data_Instance.Monster_Room_Number == 0:
@@ -66,28 +64,28 @@ func find_monster_room(node, number):
 func manage_monster_position():
 	if Global.Game_Data_Instance.Monster_Current_Stage == 0:
 		Global.Game_Data_Instance.Monster_Current_Stage += 1
-		print_debug("Setting monster position to #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
+		#print_debug("Setting monster position to #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
 		self.set_visible(false)
 		self.position = Vector3(0, -10, 0)
 		return
 
 	if Global.Game_Data_Instance.Monster_Current_Stage == 1:
 		Global.Game_Data_Instance.Monster_Current_Stage += 1
-		print_debug("Setting monster position to #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
+		#print_debug("Setting monster position to #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
 		self.set_visible(true)
 		set_monster_position(Global.Game_Data_Instance.Monster_Current_Room, 1)
 		return
 
 	if Global.Game_Data_Instance.Monster_Current_Stage == 2:
 		Global.Game_Data_Instance.Monster_Current_Stage += 1
-		print_debug("Setting monster position #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
+		#print_debug("Setting monster position #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
 		self.set_visible(true)
 		set_monster_position(Global.Game_Data_Instance.Monster_Current_Room, 2)
 		return
 
 	if Global.Game_Data_Instance.Monster_Current_Stage == 3:
 		Global.Game_Data_Instance.Monster_Current_Stage += 1
-		print_debug("Setting monster position #%s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
+		#print_debug("Setting monster position #%s" % [Global.Game_Data_Instance.Monster_Current_Stage])
 		self.set_visible(true)
 		set_monster_position(Global.Game_Data_Instance.Monster_Current_Room, 3)
 		manage_window_timer()
@@ -137,11 +135,11 @@ func on_monster_reset():
 
 func find_window_node(node):
 	for child in node.get_children():
-		if child is WindowEvent:
+		if child is WindowBlock:
 			print_debug("Opening %s from %s" %[child.name, child.BlockParent.name])
 			SignalManager.open_window.emit(child)
 			return
-		elif not child is WindowEvent:
+		elif not child is WindowBlock:
 			find_window_node(child)
 
 func manage_signals():
@@ -162,4 +160,4 @@ func _ready():
 	self.add_child(WindowTimer)
 	manage_window_timer()
 	RoomPool.append_array(DefaultRoomPool)
-	SignalManager.find_monster_room.emit(Global.Loaded_Game_World, find_room_with_window())
+	SignalManager.find_monster_room.emit(Global.Loaded_Game_World, 3)
