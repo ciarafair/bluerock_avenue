@@ -142,6 +142,7 @@ func manage_tasks():
 		if Global.Game_Data_Instance.Is_Monster_Active == false:
 			SignalManager.spawn_monster.emit()
 			Global.Game_Data_Instance.Is_Monster_Active = true
+			Global.Game_Data_Instance.Monster_Current_Stage = 3
 			return
 	return
 

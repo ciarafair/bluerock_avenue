@@ -524,6 +524,10 @@ func load_data(path: String, type: String):
 			return
 
 func on_delete_game_data():
+	if Game_Data_Instance != null:
+		Game_Data_Instance.queue_free()
+	Game_Data_Instance = GameData.new()
+
 	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
 		#print_debug("Deleting file %s" % [Path.GameJSONFilePath])
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
@@ -564,15 +568,15 @@ func set_task(next: task) -> task:
 		Game_Data_Instance.Current_Task = next
 		match Game_Data_Instance.Current_Task:
 			task.TASK_ONE:
-				print_debug("Changing task to %s" %[next])
+				#print_debug("Changing task to %s" %[next])
 				return task.TASK_ONE
 
 			task.TASK_TWO:
-				print_debug("Changing task to %s" %[next])
+				#print_debug("Changing task to %s" %[next])
 				return task.TASK_TWO
 
 			task.TASK_THREE:
-				print_debug("Changing task to %s" %[next])
+				#print_debug("Changing task to %s" %[next])
 				return task.TASK_THREE
 		return task.ERROR
 	return task.ERROR
