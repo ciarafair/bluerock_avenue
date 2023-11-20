@@ -120,16 +120,8 @@ func start_event():
 	Global.Game_Data_Instance.Current_Event = "window"
 
 func _ready():
-	search_for_parent_block(self)
-	search_for_camera_position(self)
-	search_for_collider(self)
+	block_ready()
 	find_movable_pane(self)
-
-	if self.BlockCollider != null:
-		self.BlockCollider.set_disabled(true)
-
-	if self.BlockCollider == null:
-		printerr(str(self.name) + " does not have a collider.")
 
 func _process(_delta):
 	#print_debug(str(self.BlockParent))

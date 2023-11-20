@@ -193,16 +193,6 @@ func manage_signals():
 			if !SignalManager.activate_block.is_connected(Callable(on_activate_block)):
 				SignalManager.activate_block.connect(Callable(on_activate_block))
 
-func _ready():
-	search_for_parent_block(self)
-	search_for_camera_position(self)
-	search_for_collider(self)
-
-	if self.BlockCollider != null:
-		self.BlockCollider.set_disabled(true)
-	elif self.BlockCollider == null:
-		push_error(str(self.name) + " does not have a collider.")
-
 func _process(_delta):
 	set_rotation_ability()
 	manage_signals()

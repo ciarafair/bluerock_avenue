@@ -6,6 +6,8 @@ class_name Player
 @onready var ListenPosition = %ListenPosition
 
 var TweenInstance: Tween = null
+var TweenInstanceTwo: Tween = null
+var TweenInstanceTwoRunning: bool = false
 
 func on_turn_180_degrees():
 	#print_debug("Turning around 180 degrees.")
@@ -92,18 +94,20 @@ func search_for_block(node: Node, identifier: String):
 			pass
 		search_for_block(child, identifier)
 
-var camera_target_rotation = Vector2()
-var camera_current_rotation = Vector2()
+var camera_target_rotation = Vector3()
+var camera_current_rotation = Vector3()
 var maxPitch: float = 30
 var maxYaw: float = 5.625
 
-func on_camera_follow_mouse(mouse):
+func on_camera_follow_mouse(mouse: Vector2):
 	var screen: Vector2 = get_window().size / 2
 	var distance = screen - mouse
+	var target_rotation: Vector3 = Vector3(0,0,0)
 
-	camera_target_rotation.y = (maxPitch / screen.x) * distance.x
-	#print_debug(camera_target_rotation.y)
-	camera_target_rotation.x = (maxYaw / screen.y) * distance.y
+	target_rotation.y = (maxPitch / screen.x) * distance.x
+	target_rotation.x = (maxYaw / screen.y) * distance.y
+	target_rotation.z = Camera.rotation_degrees.z
+	camera_target_rotation = target_rotation
 
 func manage_rotation():
 	if self.rotation_degrees.y > 360:
@@ -120,11 +124,30 @@ func manage_rotation():
 	if self.rotation_degrees.y == -360:
 		self.rotation_degrees.y = 0
 
+func on_camera_tween_finished():
+	print_debug("TEST")
+	TweenInstanceTwoRunning = false
+	TweenInstanceTwo.stop()
+
 func manage_camera_turning():
-	if Global.Is_Able_To_Turn == true and Global.Is_In_Animation == false:
-		Camera.set_rotation_degrees(Vector3(camera_target_rotation.x, camera_target_rotation.y, Camera.rotation_degrees.z))
+	if TweenInstanceTwo != null:
+		TweenInstanceTwo.stop()
+		TweenInstanceTwoRunning = false
+
+	TweenInstanceTwo = get_tree().create_tween()
+	TweenInstanceTwo.bind_node(Camera)
+	TweenInstanceTwoRunning = false
+
+	if Global.Is_Able_To_Turn == true:
+		if TweenInstanceTwoRunning == false:
+			TweenInstanceTwoRunning = true
+			TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, 0.25).finished.connect(Callable(on_camera_tween_finished))
+			return
+	return
 
 func _process(_delta):
+	camera_current_rotation = Camera.get_rotation_degrees()
+
 	if Global.PlayerInstance == null:
 		Global.PlayerInstance = self
 		SignalManager.player_loaded.emit()
@@ -135,7 +158,7 @@ func _process(_delta):
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
 		if Global.Game_Data_Instance.Current_Block == null:
-			print_debug("Block name returned null. Searching for room instead.")
+			#print_debug("Block name returned null. Searching for room instead.")
 			SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Room)
 			return
 

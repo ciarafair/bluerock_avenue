@@ -67,7 +67,7 @@ func find_task_text():
 			set_task_label_text(text)
 			return
 		elif Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
-			text = "Investigate sound coming from the office"
+			text = "Investigate cause of sound"
 			#print_debug("Setting text to %s" %[text])
 			reset()
 			await TweenInstance.finished

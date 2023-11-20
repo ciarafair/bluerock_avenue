@@ -41,10 +41,6 @@ window/size/resizable=false
 
 project/assembly_name="Bluerock Avenue"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/proto_shape/plugin.cfg")
-
 [input]
 
 flashlight={

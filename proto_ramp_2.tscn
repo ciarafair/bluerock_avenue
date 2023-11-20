@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://ducyyrpslotau"]
+
+[ext_resource type="Script" path="res://addons/proto_shape/proto_ramp/proto_ramp.gd" id="1_uux7e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qynox"]
+
+[node name="ProtoRamp2" type="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, -2.64698e-23, -4.37114e-08, 1, 0, -1, -4.37114e-08, -2.5, 5, -2.5)
+material_override = SubResource("StandardMaterial3D_qynox")
+script = ExtResource("1_uux7e")
+type = 0
+width = 1.0
+height = 1.0
+depth = 1.0
+anchor = 0
+anchor_fixed = true
+
+[node name="_CSGPolygon3D_115239" type="CSGPolygon3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.25067, 0, 0)
+polygon = PackedVector2Array(0, 0, 2.501, 0, 2.501, 7.501)
+depth = 2.50135
+
+[node name="_CSGPolygon3D_124876" type="CSGPolygon3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.5, 0, 0)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1)
+
+[node name="@CSGPolygon3D@134755" type="CSGPolygon3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.5, 0, 0)
+polygon = PackedVector2Array(0, 0, 1, 0, 1, 1)

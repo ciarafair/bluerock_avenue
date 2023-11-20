@@ -533,7 +533,7 @@ func on_delete_game_data():
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:
-		push_warning("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
+		#push_warning("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
 		return
 
 func manage_signals():
