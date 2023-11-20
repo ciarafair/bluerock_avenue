@@ -1,9 +1,10 @@
 extends CanvasLayer
 
-@onready var DialogueTextBox: Label = %DialogueLabel
+@onready var DialogueTextBox: RichTextLabel = %DialogueLabel
 @onready var NameTextBox: Label = %NameLabel
 @onready var CloseButton: Button = %Close
 @onready var SkipButton: Button = %Skip
+@onready var NextButton: Button = %Next
 
 enum state {
 	READY,
@@ -11,8 +12,12 @@ enum state {
 	FINISHED
 }
 
+var StoredText: Dictionary
 var TweenInstance: Tween
 var CurrentState: state = state.READY
+
+var CurrentKey: int = 1
+var KeysArray: Array = []
 
 func set_state(next):
 	CurrentState = next
@@ -44,41 +49,56 @@ func set_dialogue(text):
 		TweenInstance.kill()
 
 	TweenInstance = get_tree().create_tween()
-	TweenInstance.finished.connect(Global.on_tween_finished)
 	TweenInstance.bind_node(DialogueTextBox)
 	TweenInstance.finished.connect(Callable(on_tween_finished))
-	DialogueTextBox.text = str(text)
+	DialogueTextBox.set_text("")
+	DialogueTextBox.set_text("[font_size=40][outline_size=25] [outline_color=black]")
+	DialogueTextBox.append_text(" " + str(text))
 
 	TweenInstance.pause()
 	TweenInstance.tween_property(DialogueTextBox, "visible_ratio", 1.0, len(text) * Global.CharacterReadRate)
 	TweenInstance.play()
 
-func set_dialogue_name(text):
+func set_dialogue_name(text: String):
 	NameTextBox.text = str(text)
 
-func on_click_dialogue(_node: Block, text):
-	#print_debug(str(text.keys()))
+func empty_dialogue(text: String):
+	if TweenInstance != null:
+		TweenInstance.kill()
+
+	TweenInstance = get_tree().create_tween()
+	TweenInstance.bind_node(DialogueTextBox)
+	TweenInstance.pause()
+	TweenInstance.tween_property(DialogueTextBox, "visible_ratio", 0, len(text) * Global.CharacterReadRate)
+	TweenInstance.play()
+
+func start_dialogue(text: Dictionary):
+	set_state(state.READING)
+
+	#print_debug("The block %s has dialogue: %s" %[node, parsed_data])
+	KeysArray = text.keys()
+	#print_debug("Total keys in dictionary: %s" %[KeysArray.size()])
+	#print_debug("Current key is: %s" %[text.keys()[CurrentKey - 1]])
+
+	set_dialogue_name(text.values()[CurrentKey - 1].name)
+	set_dialogue(text.values()[CurrentKey - 1].dialogue)
+	return
+
+func on_click_dialogue(_node: Block, text: Dictionary):
+	StoredText = text
 	if CurrentState == state.READY:
 		#print_debug("Clicked while state was %s"%[CurrentState])
 		self.set_visible(true)
-		set_state(state.READING)
-
-		#print_debug("The block %s has dialogue: %s" %[node, parsed_data])
-		set_dialogue_name(text.one.name)
-		set_dialogue(text.one.dialogue)
+		start_dialogue(text)
 		return
+	return
 
-	if CurrentState == state.READING:
-		#print_debug("Clicked while state was %s"%[CurrentState])
-		#TweenInstance.stop()
-		#DialogueTextBox.set_visible_ratio(1.0)
-		#set_state(state.FINISHED)
-		return
-
-	if CurrentState == state.FINISHED:
-		#print_debug("Clicked while state was %s"%[CurrentState])
-		#self.reset()
-		return
+func next_page():
+	empty_dialogue(StoredText.values()[CurrentKey - 1].dialogue)
+	await TweenInstance.finished
+	CurrentKey += 1
+	start_dialogue(StoredText)
+	return
 
 func _on_skip_button_button_up():
 	TweenInstance.stop()
@@ -87,32 +107,50 @@ func _on_skip_button_button_up():
 	pass # Replace with function body.
 
 func _on_close_button_up():
-	self.reset()
+	self.queue_free()
+	StoredText = {}
 	pass # Replace with function body.
 
-func manage_signals():
-	SignalManager.click_dialogue.connect(Callable(on_click_dialogue))
-	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
+func _on_next_button_up():
+	next_page()
 
 func manage_buttons():
 	if CurrentState == state.READY:
 		SkipButton.set_visible(false)
 		CloseButton.set_visible(false)
+		NextButton.set_visible(false)
 		return
+
 	if CurrentState == state.READING:
 		SkipButton.set_visible(true)
+		NextButton.set_visible(false)
 		CloseButton.set_visible(false)
 		return
+
 	if CurrentState == state.FINISHED:
 		SkipButton.set_visible(false)
-		CloseButton.set_visible(true)
-		return
-	pass
+		if CurrentKey < int(KeysArray.size()):
+			#print_debug("%s > %s" %[CurrentKey, KeysArray.size()])
+			NextButton.set_visible(true)
+			CloseButton.set_visible(false)
+			return
+
+		if CurrentKey >= int(KeysArray.size()):
+			#print_debug("%s <= %s" %[CurrentKey, KeysArray.size()])
+			CloseButton.set_visible(true)
+			NextButton.set_visible(false)
+			return
+	return
+
+func manage_signals():
+	SignalManager.click_dialogue.connect(Callable(on_click_dialogue))
+	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
 func _ready():
-	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
+	set_process_mode(Node.PROCESS_MODE_PAUSABLE)
 	reset()
 	manage_signals()
+	return
 
 func _process(_delta):
 	manage_buttons()
@@ -120,3 +158,4 @@ func _process(_delta):
 	if Global.DialogueBoxInstance == null:
 		Global.DialogueBoxInstance = self
 		SignalManager.dialogue_box_loaded.emit()
+

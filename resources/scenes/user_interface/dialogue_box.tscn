@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://caaobudb0a2yl"]
+[gd_scene load_steps=5 format=3 uid="uid://caaobudb0a2yl"]
 
 [ext_resource type="Script" path="res://resources/scripts/dialogue_box.gd" id="1_b0eu1"]
 [ext_resource type="Theme" uid="uid://n3mp2oj5tq0h" path="res://resources/themes/dialogue_box.theme" id="2_634ts"]
 [ext_resource type="LabelSettings" uid="uid://itip0wke1rlr" path="res://resources/label_settings/name.tres" id="3_8sdh8"]
-[ext_resource type="FontFile" uid="uid://bn56vqhwywgjo" path="res://resources/fonts/merriweather/merriweather_regular.ttf" id="4_7tuuq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viob4"]
 bg_color = Color(0.101961, 0.101961, 0.101961, 0.686275)
@@ -11,12 +10,6 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-
-[sub_resource type="LabelSettings" id="LabelSettings_3cy1d"]
-font = ExtResource("4_7tuuq")
-font_size = 40
-outline_size = 25
-outline_color = Color(0, 0, 0, 1)
 
 [node name="DialogueBox" type="CanvasLayer"]
 script = ExtResource("1_b0eu1")
@@ -77,45 +70,57 @@ layout_mode = 2
 text = "Name"
 label_settings = ExtResource("3_8sdh8")
 
-[node name="MarginContainer2" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer"]
-layout_mode = 2
+[node name="Buttons" type="CanvasLayer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer"]
+layer = 5
+
+[node name="MarginContainer2" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons"]
+offset_left = 210.0
+offset_top = 766.667
+offset_right = 1860.0
+offset_bottom = 837.667
 size_flags_horizontal = 3
+theme = ExtResource("2_634ts")
 theme_override_constants/margin_left = 1250
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2"]
 layout_mode = 2
+theme = ExtResource("2_634ts")
 
-[node name="Skip" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Skip" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_634ts")
 text = "Skip"
 
-[node name="Close" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="Next" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_634ts")
+text = "Next"
+
+[node name="Close" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_634ts")
 text = "Close"
 
-[node name="BottomLayerMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = -75
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="DialogueLabel" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/BottomLayerMargin"]
+[node name="DialogueLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Test"
-label_settings = SubResource("LabelSettings_3cy1d")
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[font_size=40][outline_size=25] [outline_color=black] Test"
+fit_content = true
 visible_characters = 0
 visible_ratio = 0.0
 
-[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer/Skip" to="." method="_on_skip_button_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer2/HBoxContainer/Close" to="." method="_on_close_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Skip" to="." method="_on_skip_button_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Next" to="." method="_on_next_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Close" to="." method="_on_close_button_up"]

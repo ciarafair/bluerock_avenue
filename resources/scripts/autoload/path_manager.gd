@@ -22,6 +22,7 @@ const StockCartoonVideoPath: String = "res://resources/video/stock_cartoon.ogv"
 const ScreenOffVideoPath: String = "res://resources/video/tv_off.ogv"
 
 const TaskErrorDialoguePath: String = "res://resources/dialogue/task_error.json"
+const LightswitchDialoguePath: String = "res://resources/dialogue/lightswitch_dialogue.json"
 
 const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"
 

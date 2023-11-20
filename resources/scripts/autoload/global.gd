@@ -105,62 +105,42 @@ func spawn_monster():
 
 func manage_mouse_cursor():
 	if Is_Game_Active == true:
-		if CurrentMouseState == mouse.MOVEMENT:
-			if Hovering_Block != null:
-				Input.set_custom_mouse_cursor(EyeCursor)
+		if CurrentMouseState == mouse.MOVEMENT && Hovering_Block != null:
+			Input.set_custom_mouse_cursor(EyeCursor)
+			return
+
+		if CurrentMouseState == mouse.DIALOGUE && Hovering_Block != null && Hovering_Block.BlockDialoguePath != null:
+			Input.set_custom_mouse_cursor(DialogueCursor)
+			return
+
+		if CurrentMouseState == mouse.ROTATION && Current_Movement_Panel != null:
+			if Current_Movement_Panel.name == "Bottom":
+				Input.set_custom_mouse_cursor(DownArrowCursor)
 				return
-			else:
-				Input.set_custom_mouse_cursor(null)
+			elif Current_Movement_Panel.name == "Right":
+				Input.set_custom_mouse_cursor(RightArrowCursor)
 				return
-
-		elif CurrentMouseState == mouse.DIALOGUE:
-			if Hovering_Block != null:
-				if Hovering_Block.BlockDialoguePath == null:
-					Input.set_custom_mouse_cursor(null)
-					return
-				else:
-					Input.set_custom_mouse_cursor(DialogueCursor)
-					return
-			else:
-				Input.set_custom_mouse_cursor(null)
-
-		if Is_Game_Active == false:
-			Input.set_custom_mouse_cursor(null)
-
-		elif CurrentMouseState == mouse.ROTATION:
-			if Current_Movement_Panel != null:
-				if Current_Movement_Panel.name == "Bottom":
-					Input.set_custom_mouse_cursor(DownArrowCursor)
-					return
-				elif Current_Movement_Panel.name == "Right":
-					Input.set_custom_mouse_cursor(RightArrowCursor)
-					return
-				elif Current_Movement_Panel.name == "Left":
-					Input.set_custom_mouse_cursor(LeftArrowCursor)
-					return
-			else:
-				Input.set_custom_mouse_cursor(null)
+			elif Current_Movement_Panel.name == "Left":
+				Input.set_custom_mouse_cursor(LeftArrowCursor)
 				return
 
 	Input.set_custom_mouse_cursor(null)
 	return
 
 func set_mouse_state(next: mouse) -> mouse:
-	if CurrentMouseState != next:
-		CurrentMouseState = next
-		match CurrentMouseState:
-			mouse.MOVEMENT:
-				#print_debug("Changing mouse state to %s" %[new_state])
-				return mouse.MOVEMENT
+	CurrentMouseState = next
+	match CurrentMouseState:
+		mouse.MOVEMENT:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			return mouse.MOVEMENT
 
-			mouse.DIALOGUE:
-				#print_debug("Changing mouse state to %s" %[new_state])
-				return mouse.DIALOGUE
+		mouse.DIALOGUE:
+			#print_debug("Changing mouse state to %s" %[next])
+			return mouse.DIALOGUE
 
-			mouse.ROTATION:
-				#print_debug("Changing mouse state to %s" %[new_state])
-				return mouse.ROTATION
-		return mouse.ERROR
+		mouse.ROTATION:
+			#print_debug("Changing mouse state to %s" %[new_state])
+			return mouse.ROTATION
 	return mouse.ERROR
 
 var Settings_Dictionary: Dictionary = {}

@@ -263,7 +263,6 @@ orientation = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ir75s"]
 resource_name = "Material_20"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kj801"]
 _surfaces = [{
@@ -298,7 +297,6 @@ shadow_mesh = SubResource("ArrayMesh_kj801")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hn8xg"]
 resource_name = "Material_21"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_rcbgf"]
 _surfaces = [{
@@ -333,7 +331,6 @@ shadow_mesh = SubResource("ArrayMesh_rcbgf")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q0lyr"]
 resource_name = "Material_23"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_fdy2f"]
 _surfaces = [{
@@ -368,7 +365,6 @@ shadow_mesh = SubResource("ArrayMesh_fdy2f")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mf63o"]
 resource_name = "Material_22"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_p8gov"]
 _surfaces = [{
@@ -426,7 +422,6 @@ size = Vector2(5, 10)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8psrb"]
 resource_name = "Material.001"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_24b72"]
 _surfaces = [{

@@ -76,6 +76,8 @@ func search_for_room(node: Node, identifier: int):
 		if child is RoomBlock and child.RoomNumber == identifier:
 			#print_debug("Using %s as the starting room." % [child])
 			Global.Game_Data_Instance.Current_Room = child
+			SignalManager.activate_block.connect(child.on_activate_block)
+			SignalManager.deactivate_block.connect(child.on_deactivate_block)
 			await SignalManager.animation_finished
 			return
 		elif child is RoomBlock and child.RoomNumber != identifier:
@@ -125,7 +127,6 @@ func manage_rotation():
 		self.rotation_degrees.y = 0
 
 func on_camera_tween_finished():
-	print_debug("TEST")
 	TweenInstanceTwoRunning = false
 	TweenInstanceTwo.stop()
 
@@ -140,7 +141,8 @@ func manage_camera_turning():
 
 	if TweenInstanceTwoRunning == false:
 		TweenInstanceTwoRunning = true
-		TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, 0.25).finished.connect(Callable(on_camera_tween_finished))
+		var speed: float = 0.25
+		TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, speed).finished.connect(Callable(on_camera_tween_finished))
 		return
 	return
 

@@ -167,7 +167,42 @@ func search_for_props(node: Node, enable: bool):
 			else:
 				search_for_props(child, false)
 
+func connect_activate_signal(node: Block):
+	if node != null:
+		if SignalManager.activate_block.is_connected(node.on_activate_block):
+			return
+		SignalManager.activate_block.connect(node.on_activate_block)
+		return
+
+func connect_deactivate_signal(node: Block):
+	if node != null:
+		if SignalManager.deactivate_block.is_connected(node.on_deactivate_block):
+			return
+		SignalManager.deactivate_block.connect(node.on_deactivate_block)
+		return
+
+func disconnect_activate_signal(node: Block):
+	if node != null:
+		if !SignalManager.activate_block.is_connected(node.on_activate_block):
+			return
+		SignalManager.activate_block.disconnect(node.on_activate_block)
+		return
+
+func disconnect_deactivate_signal(node: Block):
+	if node != null:
+		if !SignalManager.deactivate_block.is_connected(node.on_deactivate_block):
+			return
+		SignalManager.deactivate_block.disconnect(node.on_deactivate_block)
+		return
+
 func on_activate_block(node: Block):
+
+	connect_activate_signal(node)
+	connect_deactivate_signal(node)
+
+	disconnect_activate_signal(node.BlockParent)
+	disconnect_deactivate_signal(node.BlockParent)
+
 	#print_debug("Activating " + str(Global.Current_Block))
 	move_to_camera_position(node, true, true)
 	Global.Game_Data_Instance.Current_Block = node
@@ -177,8 +212,6 @@ func on_activate_block(node: Block):
 		Global.Is_Able_To_Turn = true
 	else:
 		Global.Is_Able_To_Turn = false
-	if !SignalManager.deactivate_block.is_connected(on_deactivate_block):
-		SignalManager.deactivate_block.connect(on_deactivate_block)
 	if node is RoomBlock:
 		SignalManager.room_loaded.emit(node)
 	else:
@@ -186,11 +219,20 @@ func on_activate_block(node: Block):
 	return
 
 func on_deactivate_block(node: Block):
+	SignalManager.activate_block.disconnect(self.on_activate_block)
+	SignalManager.deactivate_block.disconnect(self.on_deactivate_block)
+
+	connect_activate_signal(node.BlockParent)
+	connect_deactivate_signal(node.BlockParent)
 	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
 
 	if not node is RoomBlock:
 		if node.BlockParent != null:
+
+			SignalManager.activate_block.connect(node.on_activate_block)
+			SignalManager.deactivate_block.connect(node.on_deactivate_block)
+
 			move_to_camera_position(node.BlockParent, true, true)
 			SignalManager.activate_block.emit(node.BlockParent)
 			return
@@ -207,9 +249,6 @@ func set_rotation_ability():
 
 func block_ready():
 	set_rotation_ability()
-
-	SignalManager.activate_block.connect(on_activate_block)
-	SignalManager.deactivate_block.connect(on_deactivate_block)
 
 	self.BlockParent = search_for_parent(self)
 	self.BlockCameraPosition = search_for_camera_position(self)
