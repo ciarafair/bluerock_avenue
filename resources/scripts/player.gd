@@ -138,11 +138,10 @@ func manage_camera_turning():
 	TweenInstanceTwo.bind_node(Camera)
 	TweenInstanceTwoRunning = false
 
-	if Global.Is_Able_To_Turn == true:
-		if TweenInstanceTwoRunning == false:
-			TweenInstanceTwoRunning = true
-			TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, 0.25).finished.connect(Callable(on_camera_tween_finished))
-			return
+	if TweenInstanceTwoRunning == false:
+		TweenInstanceTwoRunning = true
+		TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, 0.25).finished.connect(Callable(on_camera_tween_finished))
+		return
 	return
 
 func _process(_delta):
@@ -153,7 +152,8 @@ func _process(_delta):
 		SignalManager.player_loaded.emit()
 
 	manage_rotation()
-	manage_camera_turning()
+	if Global.Is_Able_To_Turn == true:
+		manage_camera_turning()
 
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
