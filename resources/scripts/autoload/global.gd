@@ -79,24 +79,6 @@ enum task {
 	TASK_THREE = 3
 }
 
-func spawn_monster():
-	if Global.MonsterInstance == null:
-		SignalManager.load_monster.emit()
-		await SignalManager.monster_loaded
-		#print_debug("Monster loaded in room %s at position %s. " %[Game_Data_Instance.Monster_Current_Room.name, Game_Data_Instance.Monster_Current_Stage])
-		return
-	else:
-		#print_debug("Monster already instantiated.")
-		if Game_Data_Instance.Monster_Current_Room == null:
-			SignalManager.find_monster_room.emit(Global.Loaded_Game_World, MonsterInstance.find_room_with_window())
-			print_debug(Game_Data_Instance.Monster_Current_Room)
-			await SignalManager.monster_found_room
-
-		print_debug(Game_Data_Instance.Monster_Current_Stage)
-		SignalManager.set_monster_position.emit()
-		await SignalManager.monster_found_position
-		print_debug(Game_Data_Instance.Monster_Current_Stage)
-
 @onready var EyeCursor = preload("res://resources/textures/mouse_cursors/eye.png")
 @onready var DialogueCursor = preload("res://resources/textures/mouse_cursors/speech_bubble.png")
 @onready var DownArrowCursor = preload("res://resources/textures/mouse_cursors/down_arrow.png")
@@ -105,7 +87,7 @@ func spawn_monster():
 
 func manage_mouse_cursor():
 	if Is_Game_Active == true:
-		if CurrentMouseState == mouse.MOVEMENT && Hovering_Block != null:
+		if CurrentMouseState == mouse.MOVEMENT && Hovering_Block != null && Hovering_Block.BlockCameraPosition != null:
 			Input.set_custom_mouse_cursor(EyeCursor)
 			return
 
@@ -517,8 +499,6 @@ func on_delete_game_data():
 		return
 
 func manage_signals():
-	SignalManager.spawn_monster.connect(Callable(spawn_monster))
-
 	SignalManager.load_settings_data.connect(Callable(load_data).bind(Path.SettingsJSONFilePath, "settings"))
 	SignalManager.save_settings_data.connect(on_save_settings_data)
 	SignalManager.delete_settings_data.connect(on_delete_settings_data)

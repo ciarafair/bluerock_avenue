@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://resources/scripts/game_world.gd" id="1_lcsd0"]
 [ext_resource type="PackedScene" uid="uid://8t20480hhnsb" path="res://resources/scenes/game_world/rooms/hallway.tscn" id="2_3ded8"]
-[ext_resource type="PackedScene" uid="uid://dvtsw3xb27uhl" path="res://resources/scenes/game_world/rooms/kid_bedroom_one.tscn" id="3_n26ou"]
+[ext_resource type="PackedScene" uid="uid://djp7lqqfck03c" path="res://resources/scenes/game_world/rooms/kid_bedroom_one 2.tscn" id="3_n26ou"]
 [ext_resource type="PackedScene" uid="uid://3smbyjolherm" path="res://resources/scenes/game_world/rooms/office.tscn" id="4_2oedj"]
 [ext_resource type="CameraAttributesPractical" uid="uid://bcmemrh4ia4wg" path="res://resources/camera_attributes/Player.tres" id="4_mgfog"]
 [ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/parents_bedroom.tscn" id="5_iiyqp"]
@@ -230,6 +230,7 @@ script = ExtResource("1_lcsd0")
 
 [node name="Hallway" parent="InsideMesh" instance=ExtResource("2_3ded8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.08165e-12, -7.55)
+PlayerRotation = false
 
 [node name="KidOneBedroom" parent="InsideMesh" instance=ExtResource("3_n26ou")]
 

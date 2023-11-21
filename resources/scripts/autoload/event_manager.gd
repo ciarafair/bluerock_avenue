@@ -63,13 +63,9 @@ func random_tick(_delta):
 		var guess = get_random_number_from_pool()
 		if guess == target_number:
 			#print_debug("Match at %s: %s == %s" %[delta, guess, target_number])
-
-			if Global.Game_Data_Instance.Monster_Current_Room != null:
-				SignalManager.set_monster_position.emit()
-			else:
-				SignalManager.find_monster_room.emit()
-				SignalManager.set_monster_position.emit()
-
+			if Global.Game_Data_Instance.Is_Monster_Active == true:
+				print_debug("MONSTER IS ACTIVE")
+				Global.Game_Data_Instance.Monster_Current_Stage += 1
 			number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 			#print_debug("Reset number pool: %s" %[number_pool])
 			return

@@ -147,6 +147,9 @@ func load_children():
 	await SignalManager.dialogue_box_loaded
 	#print_debug("Dialogue box has loaded.")
 
+	SignalManager.load_monster.emit()
+	await SignalManager.monster_loaded
+
 	Global.load_data(Path.GameJSONFilePath, "game")
 
 func _ready():

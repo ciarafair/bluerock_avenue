@@ -71,8 +71,8 @@ func monster_current_stage_info():
 		monster_current_stage_label.set_visible(false)
 
 func monster_current_room_info():
-	if Global.Game_Data_Instance.Monster_Current_Room != null:
-		monster_current_room_label.text = "Monster's current room: %s" %[Global.Game_Data_Instance.Monster_Current_Room.name]
+	if Global.Game_Data_Instance.Monster_Current_Room != "":
+		monster_current_room_label.text = "Monster's current room: %s" %[get_node(Global.Game_Data_Instance.Monster_Current_Room).name]
 	else:
 		monster_current_room_label.text = "Monster's current room: null"
 

@@ -35,10 +35,6 @@ func _on_current_room_toggled(_button_pressed):
 func _on_monster_info_toggled(_button_pressed):
 	Global.Settings_Data_Instance.Is_Monster_Info_Visible = !Global.Settings_Data_Instance.Is_Monster_Info_Visible
 
-@onready var MonsterEnabledButton: Button  = %MonsterEnabled
-func _on_monster_enabled_toggled(_button_pressed):
-	Global.Game_Data_Instance.Is_Monster_Active = !Global.Game_Data_Instance.Is_Monster_Active
-
 # Volume Options
 ## Volume sliders
 @onready var MasterVolumeSlider: HSlider = %MasterVolumeSlider
@@ -153,12 +149,6 @@ func visibility_check():
 
 	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == false:
 		MonsterInfoButton.set_pressed_no_signal(false)
-
-	if Global.Game_Data_Instance.Is_Monster_Active == true:
-		MonsterEnabledButton.set_pressed_no_signal(true)
-
-	if Global.Game_Data_Instance.Is_Monster_Active == false:
-		MonsterEnabledButton.set_pressed_no_signal(false)
 
 func _on_main_menu_button_up():
 	self.set_visible(false)

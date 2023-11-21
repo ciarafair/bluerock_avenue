@@ -195,14 +195,7 @@ func disconnect_deactivate_signal(node: Block):
 		SignalManager.deactivate_block.disconnect(node.on_deactivate_block)
 		return
 
-func on_activate_block(node: Block):
-
-	connect_activate_signal(node)
-	connect_deactivate_signal(node)
-
-	disconnect_activate_signal(node.BlockParent)
-	disconnect_deactivate_signal(node.BlockParent)
-
+func activate(node: Block):
 	#print_debug("Activating " + str(Global.Current_Block))
 	move_to_camera_position(node, true, true)
 	Global.Game_Data_Instance.Current_Block = node
@@ -218,21 +211,15 @@ func on_activate_block(node: Block):
 		disable_collider(node)
 	return
 
-func on_deactivate_block(node: Block):
-	SignalManager.activate_block.disconnect(self.on_activate_block)
-	SignalManager.deactivate_block.disconnect(self.on_deactivate_block)
+func on_activate_block(node: Block):
+	activate(node)
 
-	connect_activate_signal(node.BlockParent)
-	connect_deactivate_signal(node.BlockParent)
+func deactivate(node: Block):
 	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
 
 	if not node is RoomBlock:
 		if node.BlockParent != null:
-
-			SignalManager.activate_block.connect(node.on_activate_block)
-			SignalManager.deactivate_block.connect(node.on_deactivate_block)
-
 			move_to_camera_position(node.BlockParent, true, true)
 			SignalManager.activate_block.emit(node.BlockParent)
 			return
@@ -242,6 +229,10 @@ func on_deactivate_block(node: Block):
 			return
 	return
 
+
+func on_deactivate_block(node: Block):
+	deactivate(node)
+
 func set_rotation_ability():
 	if Global.Game_Data_Instance:
 		if Global.Game_Data_Instance.Current_Block == self:
@@ -250,6 +241,9 @@ func set_rotation_ability():
 func block_ready():
 	set_rotation_ability()
 
+	connect_activate_signal(self)
+	connect_deactivate_signal(self)
+
 	self.BlockParent = search_for_parent(self)
 	self.BlockCameraPosition = search_for_camera_position(self)
 	self.BlockCollider = search_for_collider(self)
@@ -257,6 +251,22 @@ func block_ready():
 	if self.BlockCollider != null:
 		self.BlockCollider.disabled = true
 	return
+
+func manage_activation_signals():
+	if Global.Game_Data_Instance.Current_Block == self:
+		connect_activate_signal(self)
+		connect_deactivate_signal(self)
+		return
+
+	if Global.Hovering_Block == self:
+		connect_activate_signal(self)
+		return
+
+	disconnect_activate_signal(self)
+	disconnect_deactivate_signal(self)
+
+func _process(_delta):
+	manage_activation_signals()
 
 func _ready():
 	block_ready()

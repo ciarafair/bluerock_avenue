@@ -19,67 +19,64 @@ func find_movable_pane(_node):
 		else:
 			pass
 
-func on_tween_finished():
-	if WindowTweenInstance != null:
-		await WindowTweenInstance.finished
+func on_window_tween_finished():
 	if Global.Is_Window_Being_Opened == true:
 		Global.Is_Window_Being_Opened = false
 		Global.Is_Window_Open = true
-		#push_warning("Window opened. Game over.")
+		push_warning("Window opened. Game over.")
 		SignalManager.game_over.emit()
 		get_tree().paused = true
 		return
-	elif Global.Is_Window_Being_Closed == true:
-		Global.Is_Window_Being_Closed = false
-		Global.Is_Window_Open = false
-		#print_debug("Window was closed in time. Continuing game.")
-		SignalManager.reset_monster.emit()
-		return
-	else:
-		return
 
-func on_open_window(_node):
-	#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being opened")
-	if self == _node:
+	Global.Is_Window_Being_Closed = false
+	Global.Is_Window_Open = false
+	print_debug("Window was closed in time. Continuing game.")
+	SignalManager.reset_monster.emit()
+	return
+
+func on_open_window(node: WindowBlock):
+	if node != null:
+		print_debug("The %s from %s is being opened" %[str(self.name), str(self.BlockParent.name)])
 		if WindowTweenInstance:
 			WindowTweenInstance.kill()
 
 		WindowTweenInstance = get_tree().create_tween()
+		WindowTweenInstance.finished.connect(on_window_tween_finished)
 
-		if self.MoveablePaneInstance != null:
+		if node.MoveablePaneInstance != null:
 			Global.Is_Window_Being_Opened = true
 			Global.Is_Window_Being_Closed = false
 			#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being opened: " + str(Global.Is_Window_Being_Opened))
 			#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed: " + str(Global.Is_Window_Being_Closed))
-			WindowTweenInstance.tween_property(self.MoveablePaneInstance, "position:x", self.MoveablePaneInstance.position.x + Window_Open_Amount, 2.5).from_current().finished.connect(on_tween_finished)
-			return
-		else:
-			push_error("Moveable pane returned null. Could not animate.")
-			pass
+			WindowTweenInstance.tween_property(node.MoveablePaneInstance, "position:x", node.MoveablePaneOriginalXPosition + Window_Open_Amount, 2.5)
+		return
+	else:
+		push_error("Moveable pane returned null. Could not animate.")
+		pass
 
-func on_close_window(_node):
-	#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed")
-	if self == _node:
-		if WindowTweenInstance:
-			WindowTweenInstance.kill()
+func on_close_window(node):
+	print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed")
+	if WindowTweenInstance:
+		WindowTweenInstance.kill()
 
-		WindowTweenInstance = get_tree().create_tween()
+	WindowTweenInstance = get_tree().create_tween()
+	WindowTweenInstance.finished.connect(on_window_tween_finished)
 
-		if self.MoveablePaneInstance != null:
-			Global.Is_Window_Being_Closed = true
-			Global.Is_Window_Being_Opened = false
-			SignalManager.window_close_sound.emit(_node, WindowTweenInstance.get_total_elapsed_time())
-			WindowTweenInstance.tween_property(self.MoveablePaneInstance, "position:x", self.MoveablePaneOriginalXPosition, Window_Closing_Time).from_current().finished.connect(on_tween_finished)
-			return
+	if node.MoveablePaneInstance != null:
+		Global.Is_Window_Being_Closed = true
+		Global.Is_Window_Being_Opened = false
+		SignalManager.window_close_sound.emit(node, WindowTweenInstance.get_total_elapsed_time())
+		WindowTweenInstance.tween_property(node.MoveablePaneInstance, "position:x", node.MoveablePaneOriginalXPosition, Window_Closing_Time).from_current()
+		return
 
-		elif self.MoveablePaneIntance == null:
-			push_error("Moveable pane returned null. Could not animate.")
-			return
+	elif node.MoveablePaneIntance == null:
+		push_error("Moveable pane returned null. Could not animate.")
+		return
 	else:
 		pass
 
 func manage_event_signals():
-	if Global.Game_Data_Instance.Monster_Current_Room == self.BlockParent:
+	if Global.Game_Data_Instance.Monster_Current_Room == str(self.BlockParent.get_path()):
 		if SignalManager.open_window.is_connected(on_open_window):
 			pass
 		else:
@@ -89,31 +86,13 @@ func manage_event_signals():
 			pass
 		else:
 			SignalManager.close_window.connect(on_close_window)
+		return
 
-	if Global.Game_Data_Instance.Monster_Current_Room != self.BlockParent:
-		if !SignalManager.open_window.is_connected(on_open_window):
-			pass
-		else:
-			SignalManager.open_window.disconnect(on_open_window)
-
-		if !SignalManager.close_window.is_connected(on_close_window):
-			pass
-		else:
-			SignalManager.close_window.disconnect(on_close_window)
-
-func manage_block_signals():
-	if SignalManager.activate_block.is_connected(on_activate_block) and SignalManager.deactivate_block.is_connected(on_deactivate_block):
-		if Global.Game_Data_Instance.Current_Block != self:
-			SignalManager.activate_block.disconnect(on_activate_block)
-			SignalManager.deactivate_block.disconnect(on_deactivate_block)
-	else:
-		if Global.Game_Data_Instance.Current_Block == self:
-			SignalManager.activate_block.connect(on_activate_block)
-			SignalManager.deactivate_block.connect(on_deactivate_block)
-
-	if Global.Hovering_Block == self and !SignalManager.activate_block.is_connected(on_activate_block):
-		SignalManager.activate_block.connect(on_activate_block)
-
+	if SignalManager.open_window.is_connected(on_open_window):
+		SignalManager.open_window.disconnect(on_open_window)
+	if SignalManager.close_window.is_connected(on_close_window):
+		SignalManager.close_window.disconnect(on_close_window)
+	return
 
 func start_event():
 	#print_debug("Starting event " + self.name)
@@ -123,22 +102,21 @@ func _ready():
 	block_ready()
 	find_movable_pane(self)
 
+	if self.MoveablePaneInstance != null:
+		self.MoveablePaneOriginalXPosition = self.MoveablePaneInstance.position.x
+
 func _process(_delta):
 	#print_debug(str(self.BlockParent))
 	set_rotation_ability()
-	manage_block_signals()
 	manage_event_signals()
 
 	if WindowTweenInstance != null:
 		self.Window_Closing_Time = WindowTweenInstance.get_total_elapsed_time() / 2
 
-	if self.MoveablePaneInstance != null && self.MoveablePaneOriginalXPosition == 0:
-		self.MoveablePaneOriginalXPosition = self.MoveablePaneInstance.position.x
-
 	if Global.Game_Data_Instance.Current_Block == self && Global.Game_Data_Instance.Current_Event != "window":
 		search_for_props(self, true)
 		start_event()
 
-	if Global.Game_Data_Instance.Monster_Current_Room != self.BlockParent:
-		if MoveablePaneInstance.position.x != MoveablePaneOriginalXPosition:
-			MoveablePaneInstance.position.x = MoveablePaneOriginalXPosition
+	if Global.Game_Data_Instance.Monster_Current_Room != str(self.BlockParent.get_path()):
+		if self.MoveablePaneInstance.position.x != self.MoveablePaneOriginalXPosition:
+			self.MoveablePaneInstance.position.x = self.MoveablePaneOriginalXPosition

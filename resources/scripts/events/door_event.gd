@@ -70,7 +70,7 @@ func reset_doorhandle():
 		return
 
 func open_door():
-	SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
+	SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_other_room())
 	Global.Is_Door_Open = true
 	if self.Is_Enabled == true:
 		if self.DoorTweenInstance:
@@ -113,7 +113,7 @@ func close_door():
 func on_door_closed():
 	await self.DoorTweenInstance.finished
 	Global.Is_Door_Open = false
-	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
+	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_other_room())
 
 func on_toggle_door():
 	if Global.Game_Data_Instance.Current_Block == self:
@@ -125,7 +125,7 @@ func on_toggle_door():
 			set_door_state(self.state.CLOSED)
 			return
 
-func find_current_room():
+func find_other_room():
 	# If the current room number is one of the two options move to the other one.
 	if Global.Game_Data_Instance.Current_Room.RoomNumber == ConnectedRoomOne:
 		#print_debug("Opposite room is #" + str(ConnectedRoomTwo))
@@ -144,7 +144,7 @@ func start_event():
 
 	if Global.Is_In_Animation == false:
 		# Signal in game_world.gd
-		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_current_room())
+		SignalManager.enable_other_side_of_door.emit(Global.Loaded_Game_World, find_other_room())
 		Global.Game_Data_Instance.Current_Event = "door"
 
 		if SignalManager.open_door.is_connected(Callable(set_door_state)):
@@ -195,6 +195,7 @@ func manage_signals():
 
 func _process(_delta):
 	set_rotation_ability()
+	manage_activation_signals()
 	manage_signals()
 
 	if self.DoorTweenInstance != null:

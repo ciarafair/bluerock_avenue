@@ -121,29 +121,38 @@ func _ready():
 	self.set_process_mode(Node.PROCESS_MODE_ALWAYS)
 	manage_signals()
 
+var task_one_ran: bool = false
+var task_two_ran: bool = false
+var task_three_ran: bool = false
+
 func manage_tasks():
 	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_ONE:
-		Global.Game_Data_Instance.Is_Monster_Active = false
-
-		await SignalManager.toggle_tv
-		Global.set_task(Global.task.TASK_TWO)
+		if task_one_ran == false:
+			await SignalManager.toggle_tv
+			Global.set_task(Global.task.TASK_TWO)
+			task_one_ran = true
+			return
 		return
 
 	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
-		Global.Game_Data_Instance.Is_Monster_Active = false
-		if Global.Game_Data_Instance.Current_Room.RoomNumber == null:
-			return
-
-		if Global.Game_Data_Instance.Current_Room.RoomNumber == 3:
-			Global.set_task(Global.task.TASK_THREE)
-			return
+		if task_two_ran == false:
+			if Global.Game_Data_Instance.Current_Room.RoomNumber == 3:
+				Global.set_task(Global.task.TASK_THREE)
+				task_two_ran = true
+				return
+		return
 
 	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_THREE:
-		if Global.Game_Data_Instance.Is_Monster_Active == false:
-			SignalManager.spawn_monster.emit()
+		if task_three_ran == false:
+			print_debug("TASK THREE COMPLETED")
+			SignalManager.set_monster_room.emit(Global.Loaded_Game_World, 3)
+			SignalManager.set_monster_stage.emit(3)
+			task_three_ran = true
+			await SignalManager.reset_monster
 			Global.Game_Data_Instance.Is_Monster_Active = true
-			Global.Game_Data_Instance.Monster_Current_Stage = 3
 			return
+		return
+
 	return
 
 func _process(_delta):
