@@ -59,7 +59,8 @@ var Hovering_Block: Block
 var FLASHLIGHT_RAY_ARRAY: Array = []
 
 func on_tween_finished():
-	#print_debug("Tween completed")
+	#print_rich("Tween completed")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = false
 	SignalManager.animation_finished.emit()
 
@@ -110,21 +111,26 @@ func manage_mouse_cursor():
 	Input.set_custom_mouse_cursor(null)
 	return
 
-func set_mouse_state(next: mouse) -> mouse:
+func set_mouse_state(next: mouse):
+	if Global.Is_In_Animation == true && next == mouse.ROTATION:
+		return
 	CurrentMouseState = next
 	match CurrentMouseState:
 		mouse.MOVEMENT:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			return mouse.MOVEMENT
+			#print_rich("Changing mouse state to %s" %[new_state])
+			#Global.stack_info(get_stack())
+			return
 
 		mouse.DIALOGUE:
-			#print_debug("Changing mouse state to %s" %[next])
-			return mouse.DIALOGUE
+			#print_rich("Changing mouse state to %s" %[next])
+			#Global.stack_info(get_stack())
+			return
 
 		mouse.ROTATION:
-			#print_debug("Changing mouse state to %s" %[new_state])
-			return mouse.ROTATION
-	return mouse.ERROR
+			#print_rich("Changing mouse state to %s" %[new_state])
+			#Global.stack_info(get_stack())
+			return
+	return
 
 var Settings_Dictionary: Dictionary = {}
 func verify_settings_file_directory():
@@ -136,7 +142,8 @@ func verify_settings_file_directory():
 		return null
 
 func save_developer_settings():
-	#print_debug("Saving developer settings.")
+	#print_rich("Saving developer settings.")
+	#stack_info(get_stack())
 
 	var data = {
 		"developer_settings":{
@@ -154,7 +161,8 @@ func save_developer_settings():
 	Settings_Dictionary.merge(data, true)
 
 func save_volume_settings():
-	#print_debug("Saving volume settings")
+	#print_rich("Saving volume settings")
+	#stack_info(get_stack())
 
 	var data: Dictionary = {
 		"volume_settings":{
@@ -166,7 +174,8 @@ func save_volume_settings():
 	Settings_Dictionary.merge(data, true)
 
 func save_general_settings():
-	#print_debug("Saving general settings")
+	#print_rich("Saving general settings")
+	#stack_info(get_stack())
 
 	var data: Dictionary = {
 		"general_settings": {
@@ -178,7 +187,8 @@ func save_general_settings():
 	Settings_Dictionary.merge(data, true)
 
 func on_save_settings_data():
-	#print_debug("Saving settings data")
+	#print_rich("Saving settings data")
+	#Global.stack_info(get_stack())
 	var file = FileAccess.open(Path.SettingsJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
@@ -268,11 +278,13 @@ func save_default_settings_data(file: FileAccess):
 
 func on_delete_settings_data():
 	if FileAccess.file_exists(Path.SettingsJSONFilePath) == true:
-		#print_debug("Deleting file %s" % [Path.SettingsJSONFilePath])
+		#print_rich("Deleting file %s" % [Path.SettingsJSONFilePath])
+		#stack_info(get_stack())
 		DirAccess.remove_absolute(Path.SettingsJSONFilePath)
 		return
 	else:
-		push_warning("File %s does not exist." % [Path.SettingsJSONFilePath])
+		printerr("File %s does not exist." % [Path.SettingsJSONFilePath])
+		Global.stack_info(get_stack())
 		return
 
 
@@ -284,11 +296,13 @@ func verify_game_file_directory():
 		SignalManager.load_game_data.emit()
 		return
 	else:
-		print_debug("Game JSON file does not exist.")
+		print_rich("Game JSON file does not exist.")
+		Global.stack_info(get_stack())
 		return null
 
 func save_time_game_data():
-	#print_debug("Saving time data")
+	#print_rich("Saving time data")
+	#stack_info(get_stack())
 
 	var data: Dictionary = {
 		"time": {
@@ -300,7 +314,8 @@ func save_time_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_monster_game_data():
-	#print_debug("Saving monster data")
+	#print_rich("Saving monster data")
+	#stack_info(get_stack())
 
 	var data: Dictionary = {
 		"monster": {
@@ -313,7 +328,9 @@ func save_monster_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_player_game_data():
-	#print_debug("Saving player data")
+	#print_rich("Saving player data")
+	#stack_info(get_stack())
+
 	var RoomPath: String = Game_Data_Instance.Current_Room.get_path()
 	var BlockPath: String = Game_Data_Instance.Current_Block.get_path()
 
@@ -337,7 +354,8 @@ func save_player_game_data():
 	Game_Dictionary.merge(data, true)
 
 func save_world_game_data():
-	#print_debug("Saving world data")
+	#print_rich("Saving world data")
+	#stack_info(get_stack())
 
 	var data: Dictionary = {
 		"world": {
@@ -349,7 +367,8 @@ func save_world_game_data():
 
 func save_default_game_data(file: FileAccess):
 	Global.Game_Data_Instance = GameData.new()
-	#print_debug("Using default data.")
+	#print_rich("Using default data.")
+	stack_info(get_stack())
 
 	var default_data = {
 		"time": {
@@ -394,7 +413,8 @@ func save_default_game_data(file: FileAccess):
 	return
 
 func on_save_game_data():
-	#print_debug("Saving game data")
+	#print_rich("Saving game data")
+	#Global.stack_info(get_stack())
 	var file = FileAccess.open(Path.GameJSONFilePath, FileAccess.WRITE)
 	if file == null:
 		push_warning(str(FileAccess.get_open_error()))
@@ -414,7 +434,8 @@ func on_save_game_data():
 func search_for_block(node: Node, identifier: String) -> Block:
 	for child in node.get_children(true):
 		if child is Block and child.name == identifier:
-			print_debug(child)
+			print_rich(child)
+			Global.stack_info(get_stack())
 			return child
 		search_for_block(child, identifier)
 	return null
@@ -431,7 +452,8 @@ func load_player_data(parsed_data: Dictionary):
 		PlayerInstance.position.y  = parsed_data.player.YPosition
 		PlayerInstance.position.z  = parsed_data.player.ZPosition
 		return
-	push_error("Player instance returned null. Could not load game data.")
+	printerr("Player instance returned null. Could not load game data.")
+	#Global.stack_info(get_stack())
 	return
 
 func load_instanced_game_data(parsed_data: Dictionary):
@@ -452,17 +474,19 @@ func load_instanced_game_data(parsed_data: Dictionary):
 		Game_Data_Instance.Current_Task = parsed_data.world.Current_Task
 		Game_Data_Instance.Television_State = parsed_data.world.Television_State
 		return
-	push_error("Game data instance returned null. Could not load game data.")
+	printerr("Game data instance returned null. Could not load game data.")
+	#Global.stack_info(get_stack())
 	return
 
 func load_game_data(parsed_data: Dictionary):
-	#print_debug("Loading game data.")
+	#print_rich("Loading game data.")
 	load_player_data(parsed_data)
 	load_instanced_game_data(parsed_data)
 	return
 
 func load_data(path: String, type: String):
-	#print_debug("Loading %s-data from %s." % [type, path])
+	#print_rich("Loading %s-data from %s." % [type, path])
+	#Global.stack_info(get_stack())
 
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path, FileAccess.READ)
@@ -475,7 +499,8 @@ func load_data(path: String, type: String):
 
 		var parsed_data = JSON.parse_string(raw_data)
 		if parsed_data == null:
-			push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+			printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
+			#Global.stack_info(get_stack())
 			return
 
 		if type == "settings":
@@ -492,11 +517,13 @@ func on_delete_game_data():
 	Game_Data_Instance = GameData.new()
 
 	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
-		#print_debug("Deleting file %s" % [Path.GameJSONFilePath])
+		#print_rich("Deleting file %s" % [Path.GameJSONFilePath])
+		#Global.stack_info(get_stack())
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:
-		#push_warning("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
+		#printerr("File %s does not exist and cannot be deleted." % [Path.GameJSONFilePath])
+		#Global.stack_info(get_stack())
 		return
 
 func manage_signals():
@@ -512,7 +539,8 @@ func stringify_json(json_file: JSON) -> Dictionary:
 	var path = json_file.resource_path
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		push_warning("JSON file does not exist. %s" %[str(FileAccess.get_open_error())])
+		printerr("JSON file does not exist. %s" %[str(FileAccess.get_open_error())])
+		Global.stack_info(get_stack())
 		return {}
 
 	var raw_data = file.get_as_text()
@@ -520,7 +548,8 @@ func stringify_json(json_file: JSON) -> Dictionary:
 
 	var parsed_data = JSON.parse_string(raw_data)
 	if parsed_data == null:
-		push_error("Cannot parse %s as a json-string: %s" % [path, raw_data])
+		printerr("Cannot parse %s as a json-string: %s" %[path, raw_data])
+		Global.stack_info(get_stack())
 		return {}
 	return parsed_data
 
@@ -529,15 +558,18 @@ func set_task(next: task) -> task:
 		Game_Data_Instance.Current_Task = next
 		match Game_Data_Instance.Current_Task:
 			task.TASK_ONE:
-				#print_debug("Changing task to %s" %[next])
+				#print_rich("Changing task to %s" %[next])
+				#Global.stack_info(get_stack())
 				return task.TASK_ONE
 
 			task.TASK_TWO:
-				#print_debug("Changing task to %s" %[next])
+				#print_rich("Changing task to %s" %[next])
+				#Global.stack_info(get_stack())
 				return task.TASK_TWO
 
 			task.TASK_THREE:
-				#print_debug("Changing task to %s" %[next])
+				#print_rich("Changing task to %s" %[next])
+				#Global.stack_info(get_stack())
 				return task.TASK_THREE
 		return task.ERROR
 	return task.ERROR
@@ -552,6 +584,9 @@ func task_check(node: Node) -> Dictionary:
 			return Global.stringify_json(TaskErrorDialoguePath)
 	else:
 		return {}
+
+func stack_info(stack: Array):
+	print_rich("   At: %s:[color=#cdf8d2bf]%s[/color]:[color=#57b3ff]%s()[/color]" %[stack[0]["source"], stack[0]["line"] - 1, stack[0]["function"]])
 
 func _ready():
 	Settings_Data_Instance = SettingsData.new()

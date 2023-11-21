@@ -23,15 +23,18 @@ func set_state(next):
 	CurrentState = next
 	match CurrentState:
 		state.READY:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 		state.READING:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 		state.FINISHED:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 func reset():
@@ -75,10 +78,13 @@ func empty_dialogue(text: String):
 func start_dialogue(text: Dictionary):
 	set_state(state.READING)
 
-	#print_debug("The block %s has dialogue: %s" %[node, parsed_data])
+	#print_rich("The block %s has dialogue: %s" %[node, parsed_data])
+	#Global.stack_info(get_stack())
 	KeysArray = text.keys()
-	#print_debug("Total keys in dictionary: %s" %[KeysArray.size()])
-	#print_debug("Current key is: %s" %[text.keys()[CurrentKey - 1]])
+	#print_rich("Total keys in dictionary: %s" %[KeysArray.size()])
+	#Global.stack_info(get_stack())
+	#print_rich("Current key is: %s" %[text.keys()[CurrentKey - 1]])
+	#Global.stack_info(get_stack())
 
 	set_dialogue_name(text.values()[CurrentKey - 1].name)
 	set_dialogue(text.values()[CurrentKey - 1].dialogue)
@@ -87,7 +93,8 @@ func start_dialogue(text: Dictionary):
 func on_click_dialogue(_node: Block, text: Dictionary):
 	StoredText = text
 	if CurrentState == state.READY:
-		#print_debug("Clicked while state was %s"%[CurrentState])
+		#print_rich("Clicked while state was %s"%[CurrentState])
+		#Global.stack_info(get_stack())
 		self.set_visible(true)
 		start_dialogue(text)
 		return
@@ -104,12 +111,12 @@ func _on_skip_button_button_up():
 	TweenInstance.stop()
 	DialogueTextBox.set_visible_ratio(1.0)
 	set_state(state.FINISHED)
-	pass # Replace with function body.
+	return
 
 func _on_close_button_up():
 	self.queue_free()
 	StoredText = {}
-	pass # Replace with function body.
+	return
 
 func _on_next_button_up():
 	next_page()
@@ -130,13 +137,15 @@ func manage_buttons():
 	if CurrentState == state.FINISHED:
 		SkipButton.set_visible(false)
 		if CurrentKey < int(KeysArray.size()):
-			#print_debug("%s > %s" %[CurrentKey, KeysArray.size()])
+			#print_rich("%s > %s" %[CurrentKey, KeysArray.size()])
+			#Global.stack_info(get_stack())
 			NextButton.set_visible(true)
 			CloseButton.set_visible(false)
 			return
 
 		if CurrentKey >= int(KeysArray.size()):
-			#print_debug("%s <= %s" %[CurrentKey, KeysArray.size()])
+			#print_rich("%s <= %s" %[CurrentKey, KeysArray.size()])
+			#Global.stack_info(get_stack())
 			CloseButton.set_visible(true)
 			NextButton.set_visible(false)
 			return

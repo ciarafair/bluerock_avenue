@@ -7,7 +7,7 @@ const DefaultRoomPool = [1,3,4]
 var RoomPool: Array = []
 
 var Room: RoomBlock = null
-var WindowNode: WindowBlock = null
+var LocalWindow: WindowBlock = null
 
 var LocalCurrentStage: stage = stage.HIDDEN
 enum stage {
@@ -23,9 +23,10 @@ func get_random_number() -> int:
 	var index = randi_range(0, RoomPool.size() - 1)
 	# Check if monster is already in this room
 	if Global.Game_Data_Instance.Monster_Room_Number != null:
-		if RoomPool[index] == Global.Game_Data_Instance.Monster_Room_Number:
-			print_debug("Generated number %s is equal to %s. Cannot move monster to the room it is already in. Generating new number")
+		if RoomPool[index] == Room.RoomNumber:
 			index = randi_range(0, RoomPool.size() - 1)
+			print_rich("Generated number %s is equal to %s. Cannot move monster to the room it is already in. Generating new number" %[index, Room.RoomNumber])
+			Global.stack_info(get_stack())
 			return RoomPool[index]
 	return RoomPool[index]
 
@@ -33,34 +34,41 @@ func get_number_from_pool() -> int:
 	if RoomPool.size() > 0:
 		var random_room_number: int
 		random_room_number = get_random_number()
-		#print_debug("Chosen room number: %s" % [random_room_number])
+		#print_rich("Chosen room number: %s" % [random_room_number])
+		#Global.stack_info(get_stack())
 		RoomPool.erase(random_room_number)
-		#print_debug("New pool of possible rooms: %s" % [RoomPool])
+		#print_rich("New pool of possible rooms: %s" % [RoomPool])
+		#Global.stack_info(get_stack())
 		return random_room_number
 	else:
 		#push_warning("No more numbers in the pool.")
 		RoomPool.append_array(DefaultRoomPool)
-		#print_debug("New pool of possible rooms:  %s" % [RoomPool])
+		#print_rich("New pool of possible rooms:  %s" % [RoomPool])
+		#Global.stack_info(get_stack())
 		var random_room_number: int
 		random_room_number = get_random_number()
 
-		#print_debug("Chosen room number: %s" % [RoomPool])
+		#print_rich("Chosen room number: %s" % [RoomPool])
+		#Global.stack_info(get_stack())
 		RoomPool.erase(random_room_number)
-		#print_debug("New pool of possible rooms: %s" % [RoomPool])
+		#print_rich("New pool of possible rooms: %s" % [RoomPool])
+		#Global.stack_info(get_stack())
 		return random_room_number
 
 func find_room(node: Node, number: int):
 	for child in node.get_children(true):
-		#print_debug("Scanning %s" %[child])
+		#print_rich("Scanning %s" %[child])
 		if child is RoomBlock && child.RoomNumber == number:
 			Global.Game_Data_Instance.Monster_Current_Room = child.get_path()
 			Room = child
 			Global.Game_Data_Instance.Monster_Room_Number = Room.RoomNumber
-			print_debug("Monster's room is the %s" %[str(child.name)])
+			print_rich("Monster's room is the %s" %[str(child.name)])
+			Global.stack_info(get_stack())
 			SignalManager.monster_found_room.emit()
 			return
 		elif child is RoomBlock && child.RoomNumber != number:
-			#push_warning(str(child) + " is a room but not with the number " + str(number))
+			#printerr(str(child) + " is a room but not with the number " + str(number))
+			#Global.stack_info(get_stack())
 			pass
 		elif not child is RoomBlock:
 			find_room(child, number)
@@ -72,22 +80,27 @@ func set_monster_position(node, number):
 			if child is MonsterPosition:
 				if child.PositionNumber == number:
 					if child.PositionRoom == get_node(Global.Game_Data_Instance.Monster_Current_Room):
-						#print_debug("Setting monsters position to %s"%[child.name])
+						#print_rich("Setting monsters position to %s"%[child.name])
+						#Global.stack_info(get_stack())
 						self.position = child.position + Room.position
-						#print_debug("Monster's position: " + str(self.get_position) + " should equal the set position of " + str(child.position))
+						#print_rich("Monster's position: " + str(self.get_position) + " should equal the set position of " + str(child.position))
+						#Global.stack_info(get_stack())
 						self.rotation = child.rotation + Room.rotation
-						#print_debug("Monster's rotation: " + str(self.get_rotation) + " should equal the set rotation of " + str(child.rotation))
+						#print_rich("Monster's rotation: " + str(self.get_rotation) + " should equal the set rotation of " + str(child.rotation))
+						#Global.stack_info(get_stack())
 						return
 					pass
 				pass
 			set_monster_position(child, number)
 			pass
-	#push_error("Monster room returned null.")
+	#printerr("Monster room returned null.")
+	#Global.stack_info(get_stack())
 	return
 
 func on_timer_timeout():
-	print_debug("%s timed out. Opening %s" %[WindowTimer.name, WindowNode])
-	SignalManager.open_window.emit(WindowNode)
+	print_rich("%s timed out. Opening %s" %[WindowTimer.name, LocalWindow.name])
+	Global.stack_info(get_stack())
+	SignalManager.open_window.emit(LocalWindow)
 	manage_window_timer()
 	pass
 
@@ -101,18 +114,21 @@ func manage_window_timer():
 	return
 
 func on_monster_reset():
-	print_debug("Resetting monster.")
+	print_rich("Resetting monster.")
+	Global.stack_info(get_stack())
 	Global.Game_Data_Instance.Monster_Current_Room = ""
 	SignalManager.set_monster_room.emit(Global.Loaded_Game_World, get_number_from_pool())
-	WindowNode = null
+	LocalWindow = null
 	SignalManager.set_monster_stage.emit(0)
 
 func find_window_node(node: Node):
 	for child in node.get_children():
-		#print_debug(child)
+		#print_rich(child)
+		#Global.stack_info(get_stack())
 		if child is WindowBlock && child.BlockParent == Room:
-			WindowNode = child
-			#print_debug("Found %s from %s" %[WindowNode.name, WindowNode.BlockParent.name])
+			LocalWindow = child
+			#print_rich("Found %s from %s" %[WindowNode.name, WindowNode.BlockParent.name])
+			#Global.stack_info(get_stack())
 			return
 		find_window_node(child)
 	return
@@ -120,34 +136,35 @@ func find_window_node(node: Node):
 func manage_stage():
 	match Global.Game_Data_Instance.Monster_Current_Stage:
 		stage.HIDDEN:
-			#print_debug("Setting monster stage to %s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
-			LocalCurrentStage = stage.HIDDEN
+			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
+			Global.stack_info(get_stack())
 			self.set_visible(false)
 			return
 
 		stage.DISTANT:
-			#print_debug("Setting monster stage to %s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
-			LocalCurrentStage = stage.DISTANT
+			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
+			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 1)
 			return
 
 		stage.MIDWAY:
-			#print_debug("Setting monster stage to %s" % [Global.Game_Data_Instance.Monster_Current_Stage] )
-			LocalCurrentStage = stage.MIDWAY
+			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
+			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 2)
 			return
 
 		stage.NEAR:
-			#print_debug("Setting monster stage to %s" % [Global.Game_Data_Instance.Monster_Current_Stage])
-			LocalCurrentStage = stage.NEAR
+			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
+			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 3)
 			if Room == Global.Game_Data_Instance.Current_Room:
 				WindowTimer.start(WaitTime)
 			else:
-				print_debug("Occupying the %s" %[Room.name])
+				#print_rich("Occupying the %s" %[Room.name])
+				#Global.stack_info(get_stack())
 				Room.IsOccupied = true
 			return
 
@@ -155,7 +172,7 @@ func set_stage(next: stage):
 	if next > 3:
 		return
 	Global.Game_Data_Instance.Monster_Current_Stage = next
-	print_debug("Setting monsters stage to %s" %[stage.keys()[next]])
+	LocalCurrentStage = next
 	manage_stage()
 	return
 
@@ -165,8 +182,10 @@ func manage_signals():
 	SignalManager.reset_monster.connect(Callable(on_monster_reset))
 
 func _process(_delta):
-	if WindowNode == null && Room != null:
-		find_window_node(Room)
+	if Room != null:
+		Global.Game_Data_Instance.Monster_Current_Room = str(Room.get_path())
+		if LocalWindow == null:
+			find_window_node(Room)
 
 	if Global.Game_Data_Instance.Monster_Current_Stage != LocalCurrentStage:
 		set_stage(Global.Game_Data_Instance.Monster_Current_Stage)
@@ -183,5 +202,10 @@ func _ready():
 
 	manage_window_timer()
 	manage_signals()
-	set_stage(stage.HIDDEN)
+
+	if Global.Game_Data_Instance.Monster_Current_Room != "":
+		Room = get_node(Global.Game_Data_Instance.Monster_Current_Room)
+		print_rich("Monster is currently in %s" %[Room])
+		Global.stack_info(get_stack())
+	set_stage(Global.Game_Data_Instance.Monster_Current_Stage)
 #	manage_window_timer()

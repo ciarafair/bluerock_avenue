@@ -19,31 +19,37 @@ func _on_left_mouse_entered():
 	if Global.Is_Able_To_Turn == true:
 		Global.set_mouse_state(Global.mouse.ROTATION)
 		Global.Current_Movement_Panel = LeftPanel
-		#print_debug("Mouse has entered left section.")
+		#print_rich("Mouse has entered left section.")
+		#Global.stack_info(get_stack())
 
 func _on_left_mouse_exited():
 	Global.Current_Movement_Panel = null
 	Global.set_mouse_state(Global.mouse.MOVEMENT)
-	#print_debug("Mouse has exited left section.")
+	#print_rich("Mouse has exited left section.")
+	#Global.stack_info(get_stack())
 
 func _on_right_mouse_entered():
 	if Global.Is_Able_To_Turn == true:
 		Global.Current_Movement_Panel = RightPanel
 		Global.set_mouse_state(Global.mouse.ROTATION)
-		#print_debug("Mouse has entered Right section.")
+		#print_rich("Mouse has entered Right section.")
+		#Global.stack_info(get_stack())
 
 func _on_right_mouse_exited():
 	Global.Current_Movement_Panel = null
 	Global.set_mouse_state(Global.mouse.MOVEMENT)
-	#print_debug("Mouse has exited right section.")
+	#print_rich("Mouse has exited right section.")
+	#Global.stack_info(get_stack())
 
 func _on_bottom_mouse_entered():
 	if Global.Is_Able_To_Turn == true:
 		Global.Current_Movement_Panel = BottomPanel
 		Global.set_mouse_state(Global.mouse.ROTATION)
-		#print_debug("Mouse has entered bottom section.")
+		#print_rich("Mouse has entered bottom section.")
+		#Global.stack_info(get_stack())
 
 func _on_bottom_mouse_exited():
 	Global.Current_Movement_Panel = null
 	Global.set_mouse_state(Global.mouse.MOVEMENT)
-	#print_debug("Mouse has exited bottom section.")
+	#print_rich("Mouse has exited bottom section.")
+	#Global.stack_info(get_stack())

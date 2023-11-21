@@ -56,7 +56,8 @@ func flashlight_raycast():
 		return
 
 	if FlashlightResult.size() > 0:
-		#print_debug(RESULT.values())
+		#print_rich(RESULT.values())
+		#Global.stack_info(get_stack())
 		Global.FLASHLIGHT_RAY_ARRAY = FlashlightResult.values()
 
 func manage_flashlight_raycast():
@@ -71,7 +72,7 @@ func manage_flashlight_raycast():
 		return
 
 func on_enable_door_view(node, number):
-	#print_debug("Enabling door view of room #" + str(number))
+	#print_rich("Enabling door view of room #" + str(number))
 	for child in node.get_children(true):
 		if child is RoomBlock && child.RoomNumber == number:
 			child.set_visible(true)
@@ -83,12 +84,14 @@ func on_enable_door_view(node, number):
 			pass
 
 func on_disable_door_view(node, number):
-	#print_debug("Disabling door view of room #" + str(number))
+	#print_rich("Disabling door view of room #" + str(number))
+	#Global.stack_info(get_stack())
 	for child in node.get_children(true):
 		if child is RoomBlock && child.RoomNumber == number:
 			child.set_visible(false)
 		elif child is RoomBlock && child.RoomNumber != number:
-			#push_warning(str(child.name) + " is a room, but does not have the ID of " + str(number) + ". Not disabling.")
+			#printerr(str(child.name) + " is a room, but does not have the ID of " + str(number) + ". Not disabling.")
+			#Global.stack_info(get_stack())
 			pass
 		elif not child is RoomBlock:
 			SignalManager.disable_other_side_of_door.emit(child, number)
@@ -113,6 +116,7 @@ func on_move_to_room(node, number):
 			return
 		elif not child is RoomBlock:
 			#push_error("Room number does not match " + str(number))
+			#Global.stack_info(get_stack())
 			SignalManager.move_to_room.emit(child, number)
 			pass
 
@@ -122,33 +126,43 @@ func manage_signals():
 	SignalManager.move_to_room.connect(on_move_to_room)
 
 func load_children():
-	#print_debug("Begining to load.")
+	#print_rich("Begining to load.")
+	#Global.stack_info(get_stack())
+
 	SignalManager.load_player.emit()
 	await SignalManager.player_loaded
-	#print_debug("Player loaded.")
+	#print_rich("Player loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_pause_menu.emit()
 	await SignalManager.pause_menu_loaded
-	#print_debug("Pause menu loaded.")
+	#print_rich("Pause menu loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_movement_interface.emit()
 	await SignalManager.movement_interface_loaded
-	#print_debug("Movement interface loaded.")
+	#print_rich("Movement interface loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_game_over_screen.emit()
 	await SignalManager.game_over_screen_loaded
-	#print_debug("Game over screen loaded.")
+	#print_rich("Game over screen loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_task_list.emit()
 	await SignalManager.task_list_loaded
-	#print_debug("Task list has loaded.")
+	#print_rich("Task list has loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_dialogue_box.emit()
 	await SignalManager.dialogue_box_loaded
-	#print_debug("Dialogue box has loaded.")
+	#print_rich("Dialogue box has loaded.")
+	#Global.stack_info(get_stack())
 
 	SignalManager.load_monster.emit()
 	await SignalManager.monster_loaded
+	#print_rich("Monster has loaded.")
+	#Global.stack_info(get_stack())
 
 	Global.load_data(Path.GameJSONFilePath, "game")
 

@@ -41,6 +41,10 @@ window/size/resizable=false
 
 project/assembly_name="Bluerock Avenue"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ColorPreview/plugin.cfg")
+
 [input]
 
 flashlight={

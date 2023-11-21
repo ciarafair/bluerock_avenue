@@ -25,18 +25,21 @@ func add_object(node_path: String, node_instance: Node, parent_instance: Node) -
 		node_instance.queue_free()
 	node_instance = load(str(node_path)).instantiate()
 	if parent_instance == null:
-		print_debug("%s's parent was null. Aborting." %[node_path])
+		printerr("%s's parent was null. Aborting." %[node_path])
 		return null
 	parent_instance.add_child(node_instance)
-	#print_debug(node_instance)
+	#print_rich(node_instance)
+	#Global.stack_info(get_stack())
 	return node_instance
 
 func on_room_loaded(node):
 	if Global.Game_Data_Instance.Current_Room == node:
-		#print_debug(str(_node.name) + " is already the current room.")
+		#print_rich(str(_node.name) + " is already the current room.")
+		#Global.stack_info(get_stack())
 		pass
 	else:
-		#print_debug("Setting " + str(_node.name) + " as current room")
+		#print_rich("Setting " + str(_node.name) + " as current room")
+		#Global.stack_info(get_stack())
 		Global.Game_Data_Instance.Current_Room = node
 
 func load_user_interface():
@@ -48,13 +51,15 @@ func load_user_interface():
 	add_object(Path.OptionsMenuPath, Options_Menu_Instance, User_Interface_Instance)
 
 func on_game_world_loaded():
-	#print_debug("Game world loaded.")
+	#print_rich("Game world loaded.")
+	#Global.stack_info(get_stack())
 	if Global.Loaded_Main_Menu != null:
 		Global.Loaded_Main_Menu.queue_free()
 		return
 
 func on_main_menu_loaded():
-	#print_debug("Main menu was loaded.")
+	#print_rich("Main menu was loaded.")
+	#Global.stack_info(get_stack())
 	if Global.Loaded_Game_World != null:
 		Global.Loaded_Game_World.queue_free()
 	get_tree().paused = false
@@ -66,6 +71,7 @@ func on_load_options_menu():
 
 	if Options_Menu_Instance == null:
 		printerr("Could not find options menu. Trying again.")
+		Global.stack_info(get_stack())
 		Options_Menu_Instance = preload(Path.OptionsMenuPath).instantiate()
 		on_load_options_menu()
 

@@ -9,9 +9,11 @@ func manage_normal_input():
 			if Input.is_action_just_released("mouse_button_1"):
 
 				if Global.CurrentMouseState == 1:
-					#print_debug("Activating %s"%[Global.Hovering_Block])
+					#print_rich("Activating %s"%[Global.Hovering_Block])
+					#Global.stack_info(get_stack())
 					if Global.task_check(Global.Hovering_Block) == {}:
-						#print_debug("Activating %s" %[Global.Hovering_Block])
+						#print_rich("Activating %s" %[Global.Hovering_Block])
+						#Global.stack_info(get_stack())
 						SignalManager.activate_block.emit(Global.Hovering_Block)
 						return
 					else:
@@ -37,21 +39,22 @@ func manage_normal_input():
 				SignalManager.toggle_tv.emit()
 				return
 
-	if Global.Current_Movement_Panel != null:
-		if Global.Current_Movement_Panel.name == "Bottom":
-			if Input.is_action_just_released("mouse_button_1"):
-				SignalManager.turn_180_degrees.emit() # Player.gd
-				return
+	if Global.CurrentMouseState == 3:
+		if Global.Current_Movement_Panel != null:
+			if Global.Current_Movement_Panel.name == "Bottom":
+				if Input.is_action_just_released("mouse_button_1"):
+					SignalManager.turn_180_degrees.emit() # Player.gd
+					return
 
-		if Global.Current_Movement_Panel.name == "Left":
-			if Input.is_action_just_released("mouse_button_1"):
-				SignalManager.turn_positive_90_degrees.emit() # Player.gd
-				return
+			if Global.Current_Movement_Panel.name == "Left":
+				if Input.is_action_just_released("mouse_button_1"):
+					SignalManager.turn_positive_90_degrees.emit() # Player.gd
+					return
 
-		if Global.Current_Movement_Panel.name == "Right":
-			if Input.is_action_just_released("mouse_button_1"):
-				SignalManager.turn_negative_90_degrees.emit() # Player.gd
-				return
+			if Global.Current_Movement_Panel.name == "Right":
+				if Input.is_action_just_released("mouse_button_1"):
+					SignalManager.turn_negative_90_degrees.emit() # Player.gd
+					return
 
 func manage_window_input():
 	if Input.is_action_just_released("manage_door_status"):
@@ -70,6 +73,7 @@ func manage_door_input():
 
 	if Input.is_action_pressed("manage_door_listening"):
 		if Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
+			Global.Game_Data_Instance.Current_Block.check_if_player_is_listening_to_door()
 			if Global.Is_In_Animation == false:
 				if IsHoldingShift == false:
 					Global.Is_Player_Listening_To_Door = true
@@ -84,7 +88,8 @@ func manage_door_input():
 			SignalManager.reset_player_camera.emit()
 
 	if Input.is_action_just_released("mouse_button_1"):
-		#print_debug("Left mouse button pressed.")
+		#print_rich("Left mouse button pressed.")
+		#Global.stack_info(get_stack())
 		if Global.CurrentMouseState == 1:
 			IsHoldingSpace = false
 			Global.Game_Data_Instance.Current_Block.move_to_other_room()
@@ -142,7 +147,7 @@ func _unhandled_input(event: InputEvent):
 			if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:
 				Global.Game_Data_Instance.Is_Flashlight_On = !Global.Game_Data_Instance.Is_Flashlight_On
 			else:
-				push_warning("Flashlight is not toggleable in this location.")
+				printerr("Flashlight is not toggleable in this location.")
 
 		if Input.is_action_just_released("pause_menu_toggle"):
 			Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open

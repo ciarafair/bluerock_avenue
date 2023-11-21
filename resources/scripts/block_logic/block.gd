@@ -18,7 +18,8 @@ func search_for_camera_position(node: Node) -> CameraPosition:
 	for child in node.get_children():
 		if child is CameraPosition:
 			return child
-			#print_debug("Found camera for " + str(self.name) + ": " + str(child))
+			#print_rich("Found camera for " + str(self.name) + ": " + str(child))
+			#Global.stack_info(get_stack())
 		else:
 			return search_for_camera_position(child)
 	return null
@@ -27,30 +28,35 @@ func search_for_parent(node: Node) -> Block:
 	if node != null:
 		var parent: Node = node.get_parent()
 		if parent is Block:
-			#print_debug("%s is a location block." %[parent])
+			#print_rich("%s is a location block." %[parent])
+			#Global.stack_info(get_stack())
 			return parent
 		else:
 			return search_for_parent(parent)
 	return null
 
 func on_tween_finished():
-	#print_debug("Tween completed")
+	#print_rich("Tween completed")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = false
 	TweenInstance.kill()
 	SignalManager.animation_finished.emit()
 
 func set_rotation_direction(target_rotation: Vector3, node: Node):
-	if target_rotation.y > node.rotation_degrees.y + 90 or target_rotation.y < node.rotation_degrees.y -90:
+	if target_rotation.y > node.rotation_degrees.y + 45 or target_rotation.y < node.rotation_degrees.y -45:
 		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-			#print_debug("Rotating from %s clockwise." %[node])
+			#print_rich("Rotating from %s clockwise." %[node])
+			#Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y += 360
 		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-			#print_debug("Rotating from %s anti-clockwise." %[node])
+			#print_rich("Rotating from %s anti-clockwise." %[node])
+			#Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y -= 360
 
 func move_to_camera_position(node: Block, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:
-		#print_debug("Moving to " + str(_node))
+		#print_rich("Moving to " + str(_node))
+		#Global.stack_info(get_stack())
 		if TweenInstance != null:
 			TweenInstance.kill()
 
@@ -60,9 +66,9 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 
 		#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
 		if node.BlockCameraPosition != null:
+			Global.Is_In_Animation = true
 			if node is PropBlock:
 				SignalManager.reset_player_camera.emit()
-				Global.Is_In_Animation = true
 				var target_position = node.BlockCameraPosition.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position , TweenDuration).from_current()
 				var node_location: LocationBlock = search_for_parent(node)
@@ -79,7 +85,6 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 
 			if node is LocationBlock:
 				SignalManager.reset_player_camera.emit()
-				Global.Is_In_Animation = true
 				var target_position = node.BlockCameraPosition.position + node.position + Global.Game_Data_Instance.Current_Room.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position, TweenDuration).from_current()
 				var target_rotation = node.BlockCameraPosition.rotation_degrees
@@ -89,10 +94,10 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 				return
 
 			if node is RoomBlock:
-				Global.Is_In_Animation = true
 				TweenInstance.tween_property(Global.PlayerInstance, "position", node.BlockCameraPosition.position + node.position, TweenDuration)
 				if node.PlayerRotation == true:
-					#print_debug("Rounding to the nearest 90 degrees.")
+					#print_rich("Rounding to the nearest 90 degrees.")
+					#Global.stack_info(get_stack())
 					var target_rotation = 90 * round(Global.PlayerInstance.rotation_degrees.y / 90)
 					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", Vector3(node.BlockCameraPosition.rotation.x, target_rotation, node.BlockCameraPosition.rotation.z), TweenDuration).from_current()
 					return
@@ -103,7 +108,8 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 				pass
 
 	if node.BlockCameraPosition == null:
-		#print_debug("Could not find camera position for " + str(_node) + ". Trying again.")
+		#print_rich("Could not find camera position for " + str(_node) + ". Trying again.")
+		#Global.stack_info(get_stack())
 		for child in node.get_children():
 			if child is CameraPosition:
 				node.BlockCameraPosition = child
@@ -114,7 +120,8 @@ func search_for_collider(node: Block) -> CollisionShape3D:
 		for child in node.get_children():
 			if child is CollisionShape3D:
 				return child
-				#print_debug("Found collider for " + str(self.name) + ": " + str(child))
+				#print_rich("Found collider for " + str(self.name) + ": " + str(child))
+				#Global.stack_info(get_stack())
 	return null
 
 func disable_collider(node: Block):
@@ -122,7 +129,8 @@ func disable_collider(node: Block):
 		node.BlockCollider.set_disabled(true)
 		return
 	else:
-		#print_debug(str(_node.name) + " does not have a collider to disable.")
+		#print_rich(str(_node.name) + " does not have a collider to disable.")
+		#Global.stack_info(get_stack())
 		return
 
 func enable_collider(node: Block):
@@ -130,7 +138,8 @@ func enable_collider(node: Block):
 		node.BlockCollider.set_disabled(false)
 		return
 	else:
-		#print_debug(str(_node.name) + " does not have a collider to enable.")
+		#print_rich(str(_node.name) + " does not have a collider to enable.")
+		#Global.stack_info(get_stack())
 		return
 
 func search_for_locations(node: Node, enable: bool):
@@ -138,7 +147,8 @@ func search_for_locations(node: Node, enable: bool):
 		for child in node.get_children():
 			if child is LocationBlock:
 				enable_collider(child)
-				#print_debug("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#Global.stack_info(get_stack())
 			else:
 				search_for_locations(child, true)
 
@@ -146,7 +156,8 @@ func search_for_locations(node: Node, enable: bool):
 		for child in node.get_children():
 			if child is LocationBlock:
 				disable_collider(child)
-				#print_debug("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#Global.stack_info(get_stack())
 			else:
 				search_for_locations(child, false)
 
@@ -155,7 +166,8 @@ func search_for_props(node: Node, enable: bool):
 		for child in node.get_children():
 			if child is PropBlock:
 				enable_collider(child)
-				#print_debug("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#Global.stack_info(get_stack())
 			else:
 				search_for_props(child, true)
 
@@ -163,7 +175,8 @@ func search_for_props(node: Node, enable: bool):
 		for child in node.get_children():
 			if child is PropBlock:
 				disable_collider(child)
-				#print_debug("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
+				#Global.stack_info(get_stack())
 			else:
 				search_for_props(child, false)
 
@@ -196,10 +209,12 @@ func disconnect_deactivate_signal(node: Block):
 		return
 
 func activate():
-	#print_debug("Activating " + str(Global.Current_Block))
+	#print_rich("Activating " + str(Global.Current_Block))
+	#Global.stack_info(get_stack())
 	move_to_camera_position(self, true, true)
 	Global.Game_Data_Instance.Current_Block = self
-	#print_debug(Global.Game_Data_Instance.Current_Block_Path)
+	#print_rich(Global.Game_Data_Instance.Current_Block_Path)
+	#Global.stack_info(get_stack())
 
 	if self.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
@@ -218,7 +233,6 @@ func deactivate():
 
 	if not self is RoomBlock:
 		if self.BlockParent != null:
-			move_to_camera_position(self.BlockParent, true, true)
 			SignalManager.activate_block.emit(self.BlockParent)
 			return
 

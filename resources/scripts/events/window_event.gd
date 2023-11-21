@@ -12,7 +12,8 @@ var MoveablePaneOriginalXPosition: float
 func find_movable_pane(_node):
 	for child in _node.get_children():
 		if child is Node3D && child.name == "MoveablePane":
-			#print_debug("Found "+ str(child.name) + "for " + str(self.name) + " in " + str(self.BlockParent.name))
+			#print_rich("Found "+ str(child.name) + "for " + str(self.name) + " in " + str(self.BlockParent.name))
+			#Global.stack_info(get_stack())
 			self.MoveablePaneInstance = child
 		elif child is Node3D && child.name != "MoveablePane":
 			find_movable_pane(child)
@@ -23,20 +24,21 @@ func on_window_tween_finished():
 	if Global.Is_Window_Being_Opened == true:
 		Global.Is_Window_Being_Opened = false
 		Global.Is_Window_Open = true
-		push_warning("Window opened. Game over.")
 		SignalManager.game_over.emit()
 		get_tree().paused = true
 		return
 
 	Global.Is_Window_Being_Closed = false
 	Global.Is_Window_Open = false
-	print_debug("Window was closed in time. Continuing game.")
+	print_rich("Window was closed in time. Continuing game.")
+	Global.stack_info(get_stack())
 	SignalManager.reset_monster.emit()
 	return
 
 func on_open_window(node: WindowBlock):
 	if node != null:
-		print_debug("The %s from %s is being opened" %[str(self.name), str(self.BlockParent.name)])
+		print_rich("The %s from %s is being opened" %[str(self.name), str(self.BlockParent.name)])
+		Global.stack_info(get_stack())
 		if WindowTweenInstance:
 			WindowTweenInstance.kill()
 
@@ -46,16 +48,20 @@ func on_open_window(node: WindowBlock):
 		if node.MoveablePaneInstance != null:
 			Global.Is_Window_Being_Opened = true
 			Global.Is_Window_Being_Closed = false
-			#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being opened: " + str(Global.Is_Window_Being_Opened))
-			#print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed: " + str(Global.Is_Window_Being_Closed))
+			#print_rich(str(self.name) + " from " + str(self.BlockParent.name) + " is being opened: " + str(Global.Is_Window_Being_Opened))
+			#Global.stack_info(get_stack())
+			#print_rich(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed: " + str(Global.Is_Window_Being_Closed))
+			#Global.stack_info(get_stack())
 			WindowTweenInstance.tween_property(node.MoveablePaneInstance, "position:x", node.MoveablePaneOriginalXPosition + Window_Open_Amount, 2.5)
 		return
 	else:
-		push_error("Moveable pane returned null. Could not animate.")
+		printerr("Moveable pane returned null. Could not animate.")
+		Global.stack_info(get_stack())
 		pass
 
 func on_close_window(node):
-	print_debug(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed")
+	print_rich(str(self.name) + " from " + str(self.BlockParent.name) + " is being closed")
+	Global.stack_info(get_stack())
 	if WindowTweenInstance:
 		WindowTweenInstance.kill()
 
@@ -70,7 +76,8 @@ func on_close_window(node):
 		return
 
 	elif node.MoveablePaneIntance == null:
-		push_error("Moveable pane returned null. Could not animate.")
+		printerr("Moveable pane returned null. Could not animate.")
+		Global.stack_info(get_stack())
 		return
 	else:
 		pass
@@ -95,7 +102,7 @@ func manage_event_signals():
 	return
 
 func start_event():
-	#print_debug("Starting event " + self.name)
+	#print_rich("Starting event " + self.name)
 	Global.Game_Data_Instance.Current_Event = "window"
 
 func _ready():
@@ -106,7 +113,7 @@ func _ready():
 		self.MoveablePaneOriginalXPosition = self.MoveablePaneInstance.position.x
 
 func _process(_delta):
-	#print_debug(str(self.BlockParent))
+	#print_rich(str(self.BlockParent))
 	set_rotation_ability()
 	manage_event_signals()
 

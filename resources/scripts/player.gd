@@ -10,7 +10,8 @@ var TweenInstanceTwo: Tween = null
 var TweenInstanceTwoRunning: bool = false
 
 func on_turn_180_degrees():
-	#print_debug("Turning around 180 degrees.")
+	#print_rich("Turning around 180 degrees.")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = true
 	if TweenInstance != null:
 		TweenInstance.kill()
@@ -22,7 +23,8 @@ func on_turn_180_degrees():
 	return
 
 func on_turn_positive_90_degrees():
-	#print_debug("Turning to the left 90 degrees.")
+	#print_rich("Turning to the left 90 degrees.")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = true
 	if TweenInstance != null:
 		TweenInstance.kill()
@@ -34,7 +36,8 @@ func on_turn_positive_90_degrees():
 	return
 
 func on_turn_negative_90_degrees():
-	#print_debug("Turning to the right 90 degrees.")
+	#print_rich("Turning to the right 90 degrees.")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = true
 	if TweenInstance != null:
 		TweenInstance.kill()
@@ -74,7 +77,8 @@ func manage_signals():
 func search_for_room(node: Node, identifier: int):
 	for child in node.get_children(true):
 		if child is RoomBlock and child.RoomNumber == identifier:
-			#print_debug("Using %s as the starting room." % [child])
+			#print_rich("Using %s as the starting room." % [child])
+			#Global.stack_info(get_stack())
 			Global.Game_Data_Instance.Current_Room = child
 			SignalManager.activate_block.connect(child.on_activate_block)
 			SignalManager.deactivate_block.connect(child.on_deactivate_block)
@@ -160,7 +164,7 @@ func _process(_delta):
 	if Global.Game_Data_Instance.Current_Room == null:
 		search_for_room(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Room_Number)
 		if Global.Game_Data_Instance.Current_Block == null:
-			#print_debug("Block name returned null. Searching for room instead.")
+			#print_rich("Block name returned null. Searching for room instead.")
 			SignalManager.activate_block.emit(Global.Game_Data_Instance.Current_Room)
 			return
 

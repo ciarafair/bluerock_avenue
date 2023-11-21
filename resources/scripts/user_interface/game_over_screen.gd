@@ -10,6 +10,8 @@ func on_game_over():
 	Global.Loaded_Game_World.queue_free()
 	set_dialogue()
 	Global.Is_Game_Active = false
+	print_rich("[b][color=#c81d25]GAME OVER[/color][/b]")
+	Global.stack_info(get_stack())
 
 func _process(_delta):
 	if Global.GameOverScreenInstance == null:

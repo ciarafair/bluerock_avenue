@@ -37,7 +37,8 @@ func manage_time():
 
 func on_clock_timeout():
 	Global.Game_Data_Instance.Time_Minute = Global.Game_Data_Instance.Time_Minute + 10
-	#print_debug("Clock timer timed out.")
+	#print_rich("Clock timer timed out.")
+	#Global.stack_info(get_stack())
 
 func get_random_number_from_pool():
 	if number_pool.size() == 0:
@@ -62,16 +63,20 @@ func random_tick(_delta):
 	while number_pool.size() > 0:
 		var guess = get_random_number_from_pool()
 		if guess == target_number:
-			#print_debug("Match at %s: %s == %s" %[delta, guess, target_number])
+			#print_rich("Match at %s: %s == %s" %[delta, guess, target_number])
+			#Global.stack_info(get_stack())
 			if Global.Game_Data_Instance.Is_Monster_Active == true:
 				Global.Game_Data_Instance.Monster_Current_Stage += 1
 			number_pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-			#print_debug("Reset number pool: %s" %[number_pool])
+			#print_rich("Reset number pool: %s" %[number_pool])
+			#Global.stack_info(get_stack())
 			return
 		else:
-			#print_debug("Skip at %s: %s == %s" %[delta, guess, target_number])
+			#print_rich("Skip at %s: %s == %s" %[delta, guess, target_number])
+			#Global.stack_info(get_stack())
 			number_pool.erase(guess)
-			#print_debug("Updated number pool: %s" %[number_pool])
+			#print_rich("Updated number pool: %s" %[number_pool])
+			#Global.stack_info(get_stack())
 			return
 	printerr("No more numbers in the pool.")
 
@@ -108,4 +113,5 @@ func _process(delta):
 
 func _ready():
 	target_number = randi_range(1, 10)
-	print_verbose("Target number for event is %s" %[target_number])
+	#print_rich("Target number for event is %s" %[target_number])
+	#Global.stack_info(get_stack())

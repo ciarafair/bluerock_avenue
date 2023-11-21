@@ -50,7 +50,7 @@ func _on_new_game_button_up():
 		Global.verify_game_file_directory()
 		self.queue_free()
 		return
-	push_error("Loaded game world was not found.")
+	printerr("Loaded game world was not found.")
 	self.queue_free()
 	return
 

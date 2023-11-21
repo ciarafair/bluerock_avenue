@@ -41,7 +41,8 @@ func find_door_handle(node: Node3D):
 
 func set_door_state(next: state):
 	self.CurrentStatus = next
-	#print_debug("Changing door state to %s" %[CurrentStatus])
+	#print_rich("Changing door state to %s" %[CurrentStatus])
+	#Global.stack_info(get_stack())
 	match CurrentStatus:
 		self.state.OPENED:
 			open_door()
@@ -57,7 +58,8 @@ func twist_doorhandle():
 		pass
 
 	elif self.DoorHandle == null:
-		push_warning("Door handle returned null. Could not animate.")
+		printerr("Door handle returned null. Could not animate.")
+		Global.stack_info(get_stack())
 		pass
 
 func reset_doorhandle():
@@ -66,7 +68,8 @@ func reset_doorhandle():
 		return
 
 	elif self.DoorHandle == null:
-		push_warning("Door handle returned null. Could not animate.")
+		printerr("Door handle returned null. Could not animate.")
+		Global.stack_info(get_stack())
 		return
 
 func open_door():
@@ -85,7 +88,8 @@ func open_door():
 			return
 
 		elif self.PivotPoint == null:
-			push_warning("Pivot point returned null. Could not animate.")
+			printerr("Pivot point returned null. Could not animate.")
+			Global.stack_info(get_stack())
 			return
 
 func on_door_opened():
@@ -106,32 +110,38 @@ func close_door():
 			pass
 
 		elif self.PivotPoint == null:
-			push_warning("Pivot point returned null. Could not animate.")
+			printerr("Pivot point returned null. Could not animate.")
+			Global.stack_info(get_stack())
 			pass
 
 func find_room_by_number(node: Node, number: int):
 	for child in node.get_children(true):
 		if child is RoomBlock && child.RoomNumber == number:
-			#print_debug("Using %s as room to check if monster is inside." %[child])
+			#print_rich("Using %s as room to check if monster is inside." %[child])
 			return child
 		elif not child is RoomBlock:
 			#push_warning(str(child.name) + " is a room, but does not have the ID of " + str(number) + ". Not enabling.")
-			#print_debug("Using %s as node to find room." %[child])
+			#print_rich("Using %s as node to find room." %[child])
 			return find_room_by_number(child, number)
 
 func check_if_player_is_listening_to_door():
+	var boolian: bool = false
 	if Global.Game_Data_Instance.Current_Block is DoorBlock:
-		var room: RoomBlock = find_room_by_number(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.find_other_room())
-		if Global.Is_Player_Listening_To_Door == true:
-			#print_debug("Player is listening to door.")
+		if boolian == false:
+			var room: RoomBlock = find_room_by_number(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.find_other_room())
+			#print_rich("Player is listening to door.")
 			if room != null:
 				if room.IsOccupied == true:
-					print_rich("[color=red]Room #%s is occupied.[/color]" %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+					print_rich("Room #%s is [color=#EE6055]occupied[/color]," %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+					Global.stack_info(get_stack())
+					boolian = true
 					return
-				print_rich("[color=green]Room #%s is not occupied.[/color]" %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+				print_rich("Room #%s is [color=#CDE7B0]not occupied[/color]." %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+				Global.stack_info(get_stack())
+				boolian = true
 				return
 			room = find_room_by_number(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.find_other_room())
-		return
+			return
 
 func on_door_closed():
 	await self.DoorTweenInstance.finished
@@ -151,13 +161,16 @@ func on_toggle_door():
 func find_other_room():
 	# If the current room number is one of the two options move to the other one.
 	if Global.Game_Data_Instance.Current_Room.RoomNumber == ConnectedRoomOne:
-		#print_debug("Opposite room is #" + str(ConnectedRoomTwo))
+		#print_rich("Opposite room is #" + str(ConnectedRoomTwo))
+		#Global.stack_info(get_stack())
 		return ConnectedRoomTwo
 	elif Global.Game_Data_Instance.Current_Room.RoomNumber == ConnectedRoomTwo:
-		#print_debug("Opposite room is #" + str(ConnectedRoomOne))
+		#print_rich("Opposite room is #" + str(ConnectedRoomOne))
+		#Global.stack_info(get_stack())
 		return ConnectedRoomOne
 	elif Global.Game_Data_Instance.Current_Room.RoomNumber != ConnectedRoomOne and Global.Game_Data_Instance.Current_Room.RoomNumber != ConnectedRoomTwo:
-		push_warning("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
+		printerr("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
+		Global.stack_info(get_stack())
 
 func start_event():
 	self.PivotPoint = find_pivot_point(self)
@@ -181,8 +194,8 @@ func start_event():
 			SignalManager.close_door.connect(Callable(set_door_state).bind(self.state.CLOSED))
 
 func on_stop_event():
-	#print_debug("Stopping door event.")
-	# Game world
+	#print_rich("Stopping door event.")
+	#Global.stack_info(get_stack())
 	SignalManager.close_door.emit()
 	Global.Game_Data_Instance.Current_Event = ""
 
@@ -220,13 +233,15 @@ func move_to_other_room():
 	if Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
 		SignalManager.stop_event.emit()
 		if Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomOne:
-			#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			#print_rich("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			#Global.stack_info(get_stack())
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomTwo)
 			return
 		elif Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomTwo:
-			#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			#print_rich("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			#Global.stack_info(get_stack())
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomOne)
@@ -238,7 +253,6 @@ func _process(_delta):
 	manage_activation_signals()
 	manage_signals()
 
-	check_if_player_is_listening_to_door()
 	if self.DoorTweenInstance != null:
 		door_closing_time = self.DoorTweenInstance.get_total_elapsed_time()
 
@@ -252,7 +266,7 @@ func _process(_delta):
 		search_for_props(self, false)
 
 	if self.BlockParent == Global.Game_Data_Instance.Current_Room:
-		#print_debug(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")
+		#print_rich(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")
 		self.set_visible(true)
 	elif self.BlockParent != Global.Game_Data_Instance.Current_Room:
 		self.set_visible(false)

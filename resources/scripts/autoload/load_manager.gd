@@ -31,12 +31,15 @@ func _process(_delta):
 		0, 2: #? THREAD_LOAD_INVALID_RESOURCE, THREAD_LOAD_FAILED
 			set_process(false)
 			#printerr(load_status)
+			#Global.stack_info(get_stack())
 			return
 		1: #? THREAD_LOAD_IN_PROGRESS
-			#print_debug("Loading scene %s: %s percent." %[Scene_Path, ProgressMade[0]])
+			#print_rich("Loading scene %s: %s percent." %[Scene_Path, ProgressMade[0]])
+			#Global.stack_info(get_stack())
 			emit_signal("progress_changed", ProgressMade[0])
 		3: #? THREAD_LOAD_LOADED
-			#print_debug("Loading scene %s completed." %[Scene_Path])
+			#print_rich("Loading scene %s completed." %[Scene_Path])
+			#Global.stack_info(get_stack())
 			Loaded_Resource = ResourceLoader.load_threaded_get(Scene_Path)
 			emit_signal("progress_changed", 1.0)
 			emit_signal("load_done")

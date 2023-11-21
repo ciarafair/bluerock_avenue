@@ -3,14 +3,16 @@ extends CanvasLayer
 var IsOptionsMenuOpen: bool = false
 
 func _on_resume_game_button_up():
-	#print_debug("Resume button was pressed.")
+	#print_rich("Resume button was pressed.")
+	#Global.stack_info(get_stack())
 	Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
 	get_tree().paused = false
 	SignalManager.hide_pause_menu.emit()
 	return
 
 func _on_options_button_up():
-	#print_debug("Options button was pressed.")
+	#print_rich("Options button was pressed.")
+	#Global.stack_info(get_stack())
 	set_visible(false)
 	SignalManager.load_settings_data.emit()
 	SignalManager.show_options_menu.emit()
@@ -18,7 +20,8 @@ func _on_options_button_up():
 	return
 
 func _on_quit_button_up():
-	#print_debug("Quit button was pressed.")
+	#print_rich("Quit button was pressed.")
+	#Global.stack_info(get_stack())
 	Global.Is_Pause_Menu_Open = false
 	get_tree().paused = false
 	LoadManager.load_scene(Path.MainMenuPath)

@@ -10,7 +10,8 @@ func find_parent_room(_node):
 
 	if parent is RoomBlock:
 		self.PositionRoom = parent
-		#print_debug("Found " + str(self.name) + "'s parent room: " + str(self.PositionRoom.name))
+		#print_rich("Found " + str(self.name) + "'s parent room: " + str(self.PositionRoom.name))
+		#Global.stack_info(get_stack())
 		return
 	else:
 		find_parent_room(parent)

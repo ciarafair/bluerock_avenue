@@ -17,15 +17,18 @@ func set_state(next):
 	CurrentState = next
 	match CurrentState:
 		state.READY:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 		state.READING:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 		state.FINISHED:
-			#print_debug("Changing dialogue box's state to %s" %[NextState])
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
 			pass
 
 func reset():
@@ -59,23 +62,27 @@ func on_tween_finished():
 func find_task_text():
 	if Global.Game_Data_Instance.Current_Task != self.CurrentTask:
 		CurrentTask = Global.Game_Data_Instance.Current_Task
-		#print_debug("Recieved signal")
+		#print_rich("Recieved signal")
+		#Global.stack_info(get_stack())
 		var text: String
 		if Global.Game_Data_Instance.Current_Task == Global.task.TASK_ONE:
 			text = "Turn off television"
-			#print_debug("Setting text to %s" %[text])
+			#print_rich("Setting text to %s" %[text])
+			#Global.stack_info(get_stack())
 			set_task_label_text(text)
 			return
 		elif Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
 			text = "Investigate cause of sound"
-			#print_debug("Setting text to %s" %[text])
+			#print_rich("Setting text to %s" %[text])
+			#Global.stack_info(get_stack())
 			reset()
 			await TweenInstance.finished
 			set_task_label_text(text)
 			return
 		elif Global.Game_Data_Instance.Current_Task == Global.task.TASK_THREE:
 			text = "Survive"
-			#print_debug("Setting text to %s" %[text])
+			#print_rich("Setting text to %s" %[text])
+			#Global.stack_info(get_stack())
 			reset()
 			await TweenInstance.finished
 			set_task_label_text(text)
@@ -144,7 +151,8 @@ func manage_tasks():
 
 	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_THREE:
 		if task_three_ran == false:
-			print_debug("TASK THREE COMPLETED")
+			print_rich("TASK THREE COMPLETED")
+			Global.stack_info(get_stack())
 			SignalManager.set_monster_room.emit(Global.Loaded_Game_World, 3)
 			SignalManager.set_monster_stage.emit(3)
 			task_three_ran = true
