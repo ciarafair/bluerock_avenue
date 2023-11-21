@@ -195,43 +195,41 @@ func disconnect_deactivate_signal(node: Block):
 		SignalManager.deactivate_block.disconnect(node.on_deactivate_block)
 		return
 
-func activate(node: Block):
+func activate():
 	#print_debug("Activating " + str(Global.Current_Block))
-	move_to_camera_position(node, true, true)
-	Global.Game_Data_Instance.Current_Block = node
+	move_to_camera_position(self, true, true)
+	Global.Game_Data_Instance.Current_Block = self
 	#print_debug(Global.Game_Data_Instance.Current_Block_Path)
 
-	if node.PlayerRotation == true:
+	if self.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
 	else:
 		Global.Is_Able_To_Turn = false
-	if node is RoomBlock:
-		SignalManager.room_loaded.emit(node)
-	else:
-		disable_collider(node)
+	if not self is RoomBlock:
+		disable_collider(self)
 	return
 
 func on_activate_block(node: Block):
-	activate(node)
+	node.activate()
 
-func deactivate(node: Block):
+func deactivate():
 	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
 
-	if not node is RoomBlock:
-		if node.BlockParent != null:
-			move_to_camera_position(node.BlockParent, true, true)
-			SignalManager.activate_block.emit(node.BlockParent)
+	if not self is RoomBlock:
+		if self.BlockParent != null:
+			move_to_camera_position(self.BlockParent, true, true)
+			SignalManager.activate_block.emit(self.BlockParent)
 			return
 
 		if BlockParent == null:
-			push_error("Could not find " + str(node.name) + "'s parent")
+			push_error("Could not find " + str(self.name) + "'s parent")
 			return
 	return
 
 
 func on_deactivate_block(node: Block):
-	deactivate(node)
+	node.deactivate()
 
 func set_rotation_ability():
 	if Global.Game_Data_Instance:

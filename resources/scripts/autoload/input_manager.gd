@@ -84,24 +84,8 @@ func manage_door_input():
 	if Input.is_action_just_released("mouse_button_1"):
 		#print_debug("Left mouse button pressed.")
 		if Global.CurrentMouseState == 1:
-			if Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
-				SignalManager.stop_event.emit()
-				IsHoldingSpace = false
-				if Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Block.ConnectedRoomOne:
-					#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
-					Global.Game_Data_Instance.Current_Room.set_visible(false)
-					Global.Game_Data_Instance.Current_Event = ""
-					SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo)
-					return
-				elif Global.Game_Data_Instance.Current_Room.RoomNumber == Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo:
-					#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
-					Global.Game_Data_Instance.Current_Room.set_visible(false)
-					Global.Game_Data_Instance.Current_Event = ""
-					SignalManager.move_to_room.emit(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.ConnectedRoomOne)
-					return
-				else:
-					#print_debug("Could not find room number out of either ConnectedRoomOne or ConnectedRoomTwo.")
-					return
+			IsHoldingSpace = false
+			Global.Game_Data_Instance.Current_Block.move_to_other_room()
 
 		if Global.CurrentMouseState == 2:
 			if Global.Hovering_Block != null:

@@ -193,6 +193,23 @@ func manage_signals():
 			if !SignalManager.activate_block.is_connected(Callable(on_activate_block)):
 				SignalManager.activate_block.connect(Callable(on_activate_block))
 
+func move_to_other_room():
+	if Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
+		SignalManager.stop_event.emit()
+		if Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomOne:
+			#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			Global.Game_Data_Instance.Current_Room.set_visible(false)
+			Global.Game_Data_Instance.Current_Event = ""
+			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomTwo)
+			return
+		elif Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomTwo:
+			#print_debug("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
+			Global.Game_Data_Instance.Current_Room.set_visible(false)
+			Global.Game_Data_Instance.Current_Event = ""
+			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomOne)
+			return
+	return
+
 func _process(_delta):
 	set_rotation_ability()
 	manage_activation_signals()
