@@ -38,6 +38,7 @@ var Loaded_Overlay_Effect: CanvasLayer = null
 var Is_Window_Focused: bool = true
 var Current_Track: String = ""
 
+var Is_Player_Listening_To_Door: bool = false
 var Is_Door_Open: bool = false
 var Is_Music_Playing: bool = false
 var Is_Game_Active: bool = false

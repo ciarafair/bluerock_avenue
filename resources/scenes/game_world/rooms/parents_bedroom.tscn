@@ -512,7 +512,6 @@ size = Vector3(0.1, 5, 10)
 [node name="ParentsBedroom" type="Node3D"]
 script = ExtResource("1_tu3lm")
 RoomNumber = 4
-IsOccupied = null
 PlayerRotation = true
 
 [node name="CameraPosition" type="Marker3D" parent="."]

@@ -109,6 +109,29 @@ func close_door():
 			push_warning("Pivot point returned null. Could not animate.")
 			pass
 
+func find_room_by_number(node: Node, number: int):
+	for child in node.get_children(true):
+		if child is RoomBlock && child.RoomNumber == number:
+			#print_debug("Using %s as room to check if monster is inside." %[child])
+			return child
+		elif not child is RoomBlock:
+			#push_warning(str(child.name) + " is a room, but does not have the ID of " + str(number) + ". Not enabling.")
+			#print_debug("Using %s as node to find room." %[child])
+			return find_room_by_number(child, number)
+
+func check_if_player_is_listening_to_door():
+	if Global.Game_Data_Instance.Current_Block is DoorBlock:
+		var room: RoomBlock = find_room_by_number(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.find_other_room())
+		if Global.Is_Player_Listening_To_Door == true:
+			#print_debug("Player is listening to door.")
+			if room != null:
+				if room.IsOccupied == true:
+					print_rich("[color=red]Room #%s is occupied.[/color]" %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+					return
+				print_rich("[color=green]Room #%s is not occupied.[/color]" %[Global.Game_Data_Instance.Current_Block.find_other_room()])
+				return
+			room = find_room_by_number(Global.Loaded_Game_World, Global.Game_Data_Instance.Current_Block.find_other_room())
+		return
 
 func on_door_closed():
 	await self.DoorTweenInstance.finished
@@ -215,6 +238,7 @@ func _process(_delta):
 	manage_activation_signals()
 	manage_signals()
 
+	check_if_player_is_listening_to_door()
 	if self.DoorTweenInstance != null:
 		door_closing_time = self.DoorTweenInstance.get_total_elapsed_time()
 

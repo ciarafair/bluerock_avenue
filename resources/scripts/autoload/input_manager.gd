@@ -72,14 +72,16 @@ func manage_door_input():
 		if Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
 			if Global.Is_In_Animation == false:
 				if IsHoldingShift == false:
+					Global.Is_Player_Listening_To_Door = true
 					IsHoldingShift = true
 					SignalManager.player_camera_listen.emit()
 					return
 
 	if Input.is_action_just_released("manage_door_listening"):
 		if IsHoldingShift == true:
-				IsHoldingShift = false
-				SignalManager.reset_player_camera.emit()
+			IsHoldingShift = false
+			Global.Is_Player_Listening_To_Door = false
+			SignalManager.reset_player_camera.emit()
 
 	if Input.is_action_just_released("mouse_button_1"):
 		#print_debug("Left mouse button pressed.")

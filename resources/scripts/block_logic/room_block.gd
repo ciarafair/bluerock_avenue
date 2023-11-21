@@ -17,7 +17,7 @@ func activate():
 
 	SignalManager.room_loaded.emit(self)
 	if self.IsOccupied == true:
-		print_debug("%s is occupied." %[self.name])
+		#print_debug("%s is occupied." %[self.name])
 		SignalManager.game_over.emit()
 
 func manage_locations():
