@@ -1,12 +1,15 @@
-[gd_scene load_steps=60 format=3 uid="uid://3smbyjolherm"]
+[gd_scene load_steps=64 format=3 uid="uid://3smbyjolherm"]
 
 [ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_3l7i8"]
 [ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_j4lwq"]
 [ext_resource type="Script" path="res://resources/scripts/events/window_event.gd" id="3_q411f"]
 [ext_resource type="Script" path="res://resources/scripts/events/door_event.gd" id="4_hprdi"]
-[ext_resource type="Material" uid="uid://csml2hulph3bl" path="res://resources/materials/office_wall.tres" id="5_6keiu"]
 [ext_resource type="Script" path="res://resources/scripts/monster_position.gd" id="5_orn4p"]
+[ext_resource type="Texture2D" uid="uid://251pj46fsjbm" path="res://resources/textures/fiber-textured-wall-unity/fiber-textured-wall1_albedo.png" id="6_yb8oy"]
+[ext_resource type="Texture2D" uid="uid://becrl842l7cs6" path="res://resources/textures/fiber-textured-wall-unity/fiber-textured-wall1_ao.png" id="7_314x5"]
 [ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="7_r51e1"]
+[ext_resource type="Texture2D" uid="uid://biddu8pyqdcje" path="res://resources/textures/fiber-textured-wall-unity/fiber-textured-wall1_normal-ogl.png" id="8_mxqk8"]
+[ext_resource type="Texture2D" uid="uid://dsxpp7nxv8mff" path="res://resources/textures/fiber-textured-wall-unity/fiber-textured-wall1_height.png" id="9_g5v4b"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ujcxy"]
 size = Vector3(2.5, 4, 0.5)
@@ -353,6 +356,27 @@ center_offset = Vector3(2.08165e-12, 2.08165e-12, 2.08165e-12)
 [sub_resource type="BoxShape3D" id="BoxShape3D_a1ovh"]
 size = Vector3(10, 5, 0.1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_51rqv"]
+albedo_color = Color(0.423529, 0.8, 0.756863, 1)
+albedo_texture = ExtResource("6_yb8oy")
+albedo_texture_force_srgb = true
+roughness = 0.75
+normal_enabled = true
+normal_texture = ExtResource("8_mxqk8")
+ao_enabled = true
+ao_texture = ExtResource("7_314x5")
+heightmap_texture = ExtResource("9_g5v4b")
+detail_mask = ExtResource("6_yb8oy")
+detail_blend_mode = 3
+detail_albedo = ExtResource("6_yb8oy")
+detail_normal = ExtResource("8_mxqk8")
+uv1_scale = Vector3(1.25, 1.25, 1.25)
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv2_scale = Vector3(1.25, 1.25, 1.25)
+uv2_triplanar = true
+uv2_world_triplanar = true
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_xxupu"]
 _surfaces = [{
 "aabb": AABB(-5, -26.0699, -2.71011e-07, 10, 28.5714, 1.0271e-05),
@@ -654,7 +678,7 @@ shape = SubResource("BoxShape3D_a1ovh")
 
 [node name="DoorWall" type="MeshInstance3D" parent="OfficeMesh/PositiveZ"]
 transform = Transform3D(1, -6.10377e-17, 3.48787e-16, 3.48787e-16, 0.175, -3.48787e-16, -3.48787e-16, 6.10377e-17, 1, 2.08165e-12, 2.075, 2.08165e-12)
-material_override = ExtResource("5_6keiu")
+material_override = SubResource("StandardMaterial3D_51rqv")
 cast_shadow = 2
 mesh = SubResource("ArrayMesh_4acnk")
 skeleton = NodePath("")
@@ -688,7 +712,7 @@ skeleton = NodePath("")
 
 [node name="Wall" type="MeshInstance3D" parent="OfficeMesh/NegativeZ"]
 transform = Transform3D(3.90475e-15, -4.37114e-08, 5, -2.5, -4.37114e-08, -1.74393e-15, 1.09278e-07, -1, -2.18557e-07, 0, 0, 0)
-material_override = ExtResource("5_6keiu")
+material_override = SubResource("StandardMaterial3D_51rqv")
 cast_shadow = 2
 mesh = SubResource("ArrayMesh_q8i5t")
 skeleton = NodePath("")
@@ -706,7 +730,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_ek314")
 
 [node name="Wall" type="MeshInstance3D" parent="OfficeMesh/PositiveX"]
-material_override = ExtResource("5_6keiu")
+material_override = SubResource("StandardMaterial3D_51rqv")
 cast_shadow = 2
 mesh = SubResource("QuadMesh_lwp84")
 
@@ -723,7 +747,7 @@ collision_layer = 5
 shape = SubResource("BoxShape3D_mq1k2")
 
 [node name="Wall" type="MeshInstance3D" parent="OfficeMesh/NegativeX"]
-material_override = ExtResource("5_6keiu")
+material_override = SubResource("StandardMaterial3D_51rqv")
 cast_shadow = 2
 mesh = SubResource("QuadMesh_f1l36")
 

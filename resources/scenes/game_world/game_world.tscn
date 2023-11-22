@@ -1,28 +1,15 @@
-[gd_scene load_steps=37 format=3 uid="uid://bhqpysp2fmp7s"]
+[gd_scene load_steps=33 format=3 uid="uid://bhqpysp2fmp7s"]
 
 [ext_resource type="Script" path="res://resources/scripts/game_world.gd" id="1_lcsd0"]
 [ext_resource type="PackedScene" uid="uid://8t20480hhnsb" path="res://resources/scenes/game_world/rooms/hallway.tscn" id="2_3ded8"]
-[ext_resource type="PackedScene" uid="uid://djp7lqqfck03c" path="res://resources/scenes/game_world/rooms/kid_bedroom_one 2.tscn" id="3_n26ou"]
+[ext_resource type="PackedScene" uid="uid://djp7lqqfck03c" path="res://resources/scenes/game_world/rooms/bedroom_one.tscn" id="3_n26ou"]
 [ext_resource type="PackedScene" uid="uid://3smbyjolherm" path="res://resources/scenes/game_world/rooms/office.tscn" id="4_2oedj"]
 [ext_resource type="CameraAttributesPractical" uid="uid://bcmemrh4ia4wg" path="res://resources/camera_attributes/Player.tres" id="4_mgfog"]
-[ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/parents_bedroom.tscn" id="5_iiyqp"]
+[ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/bedroom_two.tscn" id="5_iiyqp"]
 [ext_resource type="Environment" uid="uid://83bq1txta8r5" path="res://resources/environments/active_game.tres" id="6_u2lc4"]
-[ext_resource type="LightmapGIData" uid="uid://dmu7v62sd3o5p" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
+[ext_resource type="LightmapGIData" uid="uid://b2tb6ctprj7qy" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
 [ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/grass/colour.jpg" id="9_625td"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="10_6ogec"]
-[ext_resource type="VoxelGIData" uid="uid://cf41u4fimujus" path="res://resources/light_data/game_world.VoxelGI_data.res" id="11_pw5yy"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sf5j4"]
-frequency = 1.0
-
-[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_qv1be"]
-noise = SubResource("FastNoiseLite_sf5j4")
-
-[sub_resource type="FogMaterial" id="FogMaterial_ejgkk"]
-density = 0.12
-albedo = Color(0, 0, 0, 1)
-edge_fade = 2.98571
-density_texture = SubResource("NoiseTexture3D_qv1be")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fdkqv"]
 size = Vector3(120, 0.1, 45)
@@ -243,31 +230,23 @@ transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.08165e-12, -7.55)
 
 [node name="Moonlight" type="DirectionalLight3D" parent="Lighting"]
-transform = Transform3D(0.907749, 0.29357, -0.299679, 0.0736942, 0.591653, 0.802818, 0.412989, -0.750842, 0.515438, 2.08165e-12, 10, 2.08165e-12)
-light_color = Color(0.423529, 0.592157, 0.745098, 1)
-light_energy = 0.26
-light_bake_mode = 1
+transform = Transform3D(0.944376, -0.185325, 0.271676, 2.88132e-16, 0.826099, 0.563526, -0.328867, -0.532181, 0.780147, 0, 10, 0)
+light_color = Color(0.415686, 0.364706, 0.658824, 1)
 shadow_enabled = true
+directional_shadow_blend_splits = true
 
-[node name="Underlighting" type="DirectionalLight3D" parent="Lighting"]
-transform = Transform3D(-0.637379, 0.161786, -0.753375, 0.61934, -0.474126, -0.625798, -0.45844, -0.865465, 0.201997, 2.08165e-12, -10, 2.08165e-12)
-light_color = Color(0.415686, 0.384314, 0.658824, 1)
-light_energy = 0.075
-light_bake_mode = 1
+[node name="Underlight" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.441146, 0.784162, -0.436439, 0.582674, 0.119606, 0.803857, 0.682555, -0.60892, -0.404147, 0, -10, 0)
+light_color = Color(0.309804, 0.356863, 0.588235, 1)
+light_energy = 0.25
 
-[node name="Underlighting2" type="DirectionalLight3D" parent="Lighting"]
-transform = Transform3D(-0.110689, -0.494906, 0.861868, 0.216513, -0.858376, -0.465094, 0.969985, 0.135124, 0.202166, 2.08165e-12, -10, 2.08165e-12)
-light_color = Color(0.415686, 0.384314, 0.658824, 1)
-light_energy = 0.075
-light_bake_mode = 1
+[node name="Underlight2" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(-0.572768, -0.559193, 0.599367, -0.722967, -3.16019e-08, -0.690882, 0.386337, -0.829038, -0.404278, 0, -10, 0)
+light_color = Color(0.309804, 0.356863, 0.588235, 1)
+light_energy = 0.25
 
 [node name="OutsideMesh" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4503, 2.08165e-12, 20)
-
-[node name="FogVolume" type="FogVolume" parent="OutsideMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.189, 7, 2.08165e-12)
-size = Vector3(120, 15, 30)
-material = SubResource("FogMaterial_ejgkk")
 
 [node name="Floor" type="StaticBody3D" parent="OutsideMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.08165e-12, 0)
@@ -348,7 +327,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -379,7 +360,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -410,7 +393,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -441,7 +426,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -472,7 +459,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -503,7 +492,9 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
@@ -534,26 +525,18 @@ skeleton = NodePath("")
 transform = Transform3D(0.961204, 6.0171e-09, -0.275839, -5.98049e-09, 1, 9.73842e-10, 0.275839, 7.1359e-10, 0.961204, 0, 0, 0)
 light_color = Color(0.701961, 0.541176, 0.337255, 1)
 light_energy = 16.0
-light_indirect_energy = 7.5
+light_volumetric_fog_energy = 4.25
+light_specular = 1.0
+light_bake_mode = 1
 spot_range = 20.0
 spot_attenuation = 0.5
 spot_angle = 27.2881
 
 [node name="LightmapGI" type="LightmapGI" parent="."]
-transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
-quality = 3
-directional = true
-interior = true
-camera_attributes = ExtResource("4_mgfog")
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
+generate_probes_subdiv = 4
 light_data = ExtResource("7_xxvdt")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_u2lc4")
 camera_attributes = ExtResource("4_mgfog")
-
-[node name="VoxelGI" type="VoxelGI" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.6229, 5, -4.959)
-visible = false
-size = Vector3(38.5119, 10, 20)
-camera_attributes = ExtResource("4_mgfog")
-data = ExtResource("11_pw5yy")

@@ -54,8 +54,8 @@ func on_reset_player_camera():
 
 	TweenInstance = get_tree().create_tween()
 	TweenInstance.bind_node(Camera)
-	TweenInstance.tween_property(Camera, "rotation", Vector3(0,0,0), 0.25)
-	TweenInstance.tween_property(Camera, "position", Vector3(0,0,0), 0.25)
+	TweenInstance.tween_property(Camera, "rotation", Vector3(0,0,0), 0.5)
+	TweenInstance.tween_property(Camera, "position", Vector3(0,0,0), 0.5)
 
 func on_player_camera_listen():
 	if TweenInstance != null:
@@ -145,7 +145,7 @@ func manage_camera_turning():
 
 	if TweenInstanceTwoRunning == false:
 		TweenInstanceTwoRunning = true
-		var speed: float = 0.25
+		var speed: float = 0.5
 		TweenInstanceTwo.tween_property(Camera, "rotation_degrees", camera_target_rotation, speed).finished.connect(Callable(on_camera_tween_finished))
 		return
 	return

@@ -104,7 +104,3 @@ game_over={
 3d_physics/layer_2="BlockCollision"
 3d_physics/layer_3="FlashlightCollision"
 3d_physics/layer_4="DialogueCollision"
-
-[rendering]
-
-occlusion_culling/use_occlusion_culling=true

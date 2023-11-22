@@ -1,6 +1,6 @@
 extends Node
 
-const random_tick_interval: float = 1
+const random_tick_interval: float = 15
 const clock_tick_interval: float = 15
 
 var IS_FLASHLIGHT_TOGGLEABLE = true

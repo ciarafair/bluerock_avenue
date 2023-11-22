@@ -93,7 +93,6 @@ func _on_overlay_effect_toggled(_button_pressed):
 	Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled = !Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled
 
 func visibility_check():
-
 # General Settings
 	if Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled == true:
 		OverlayEffectButton.set_pressed_no_signal(true)

@@ -5,7 +5,7 @@ const GameWorldPath: String = "res://resources/scenes/game_world/game_world.tscn
 const PlayerPath: String = "res://resources/scenes/game_world/player.tscn"
 const MonsterPath: String = "res://resources/scenes/game_world/monster.tscn"
 
-const OverlayEffectPath: String = "res://resources/scenes/user_interface/overlay_effect.tscn"
+const OverlayEffectPath: String = "res://resources/materials/color_reduction_and_dither.material"
 const LoadingScreenPath: String = "res://resources/scenes/user_interface/loading_screen.tscn"
 const PauseMenuPath: String = "res://resources/scenes/user_interface/pause_menu.tscn"
 const OptionsMenuPath: String = "res://resources/scenes/user_interface/options_menu.tscn"

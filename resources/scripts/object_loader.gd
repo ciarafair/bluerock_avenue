@@ -1,4 +1,4 @@
-extends Node
+extends SubViewport
 
 # Audio
 var Audio_Manager_Instance
@@ -18,7 +18,6 @@ var Options_Menu_Instance
 var Game_Over_Screen_Instance
 var Dialogue_Box_Instance
 var Task_List_Instance
-var OverlayEffectInstance
 
 func add_object(node_path: String, node_instance: Node, parent_instance: Node) -> Node:
 	if node_instance:
@@ -83,7 +82,20 @@ func on_exit_options_menu():
 		SignalManager.show_main_menu.emit()
 		return
 
+@onready var ObjectLoaderContainer = self.get_parent()
+var OverlayMaterial = preload(Path.OverlayEffectPath)
+
+func manage_overlay():
+	if Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled != true:
+		if ObjectLoaderContainer.get_material() != null:
+			ObjectLoaderContainer.material = null
+		return
+	if ObjectLoaderContainer.get_material() == null:
+		ObjectLoaderContainer.material = OverlayMaterial
+	return
+
 func _process(_delta):
+	manage_overlay()
 	Global.MousePosition2D = get_viewport().get_mouse_position()
 
 	if User_Interface_Instance == null:
@@ -151,7 +163,6 @@ func manage_signals():
 	SignalManager.scene_loaded.connect(Callable(on_scene_loaded))
 	SignalManager.load_audio_manager.connect(Callable(add_object).bind(Path.AudioManagerPath, Audio_Manager_Instance, self))
 	SignalManager.main_menu_loaded.connect(Callable(on_main_menu_loaded))
-	SignalManager.add_overlay_effect.connect(Callable(add_object).bind(Path.OverlayEffectPath, OverlayEffectInstance, User_Interface_Instance))
 	SignalManager.game_world_loaded.connect(Callable(on_game_world_loaded))
 	SignalManager.exit_options_menu.connect(Callable(on_exit_options_menu))
 	SignalManager.room_loaded.connect(Callable(on_room_loaded))

@@ -14,11 +14,9 @@ var RoomBlocks: Array = []
 var LocationBlocks: Array = []
 var PropBlocks: Array = []
 
-# Meta Data - Stays in this script as it does not need to be saved
 const CharacterReadRate: float = 0.025
 
 var Object_Loader: Node = null
-
 var PlayerInstance: Player = null
 var MonsterInstance: Node3D = null
 var PauseMenuInstance: CanvasLayer = null
