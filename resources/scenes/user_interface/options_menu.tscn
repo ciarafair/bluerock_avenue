@@ -248,7 +248,6 @@ theme = ExtResource("2_dq3bs")
 tab_alignment = 1
 
 [node name="General" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
-visible = false
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
@@ -634,6 +633,7 @@ tick_count = 15
 ticks_on_borders = true
 
 [node name="Developer" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
