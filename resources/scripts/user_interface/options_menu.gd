@@ -38,8 +38,13 @@ func _on_monster_info_toggled(_button_pressed):
 # Volume Options
 ## Volume sliders
 @onready var MasterVolumeSlider: HSlider = %MasterVolumeSlider
+@onready var MasterVolumePercentage: Label = %MasterPercent
+
 @onready var MusicVolumeSlider: HSlider = %MusicVolumeSlider
+@onready var MusicVolumePercentage: Label = %MusicPercent
+
 @onready var SFXVolumeSlider: HSlider = %SFXVolumeSlider
+@onready var SFXVolumePercentage: Label = %SFXPercent
 
 func _on_master_volume_slider_value_changed(value):
 	Global.Settings_Data_Instance.Master_Volume_Setting = value
@@ -50,15 +55,27 @@ func _on_music_volume_slider_value_changed(value):
 func _on_sfx_volume_slider_value_changed(value):
 	Global.Settings_Data_Instance.SFX_Volume_Setting = value
 
+func decibles_to_percentage(dB_value: float, min_dB: float, max_dB: float) -> float:
+	var percentage: float = (dB_value - min_dB) / (max_dB - min_dB) * 100
+	return percentage
+
 func manage_volume_sliders():
+	var MasterVolume: float = Global.Settings_Data_Instance.Master_Volume_Setting
+	var MusicVolume: float = Global.Settings_Data_Instance.Music_Volume_Setting
+	var SFXVolume: float = Global.Settings_Data_Instance.SFX_Volume_Setting
+
 	if Global.Settings_Data_Instance.Master_Volume_Setting != MasterVolumeSlider.value:
-		MasterVolumeSlider.set_value_no_signal(Global.Settings_Data_Instance.Master_Volume_Setting)
+		MasterVolumeSlider.set_value_no_signal(MasterVolume)
 
 	if Global.Settings_Data_Instance.Music_Volume_Setting != MusicVolumeSlider.value:
-		MusicVolumeSlider.set_value_no_signal(Global.Settings_Data_Instance.Music_Volume_Setting)
+		MusicVolumeSlider.set_value_no_signal(MusicVolume)
 
 	if Global.Settings_Data_Instance.SFX_Volume_Setting != SFXVolumeSlider.value:
-		SFXVolumeSlider.set_value_no_signal(Global.Settings_Data_Instance.SFX_Volume_Setting)
+		SFXVolumeSlider.set_value_no_signal(SFXVolume)
+
+	MasterVolumePercentage.text = str(snapped(decibles_to_percentage(MasterVolume, MasterVolumeSlider.min_value, MasterVolumeSlider.max_value), 1)) + "%"
+	MusicVolumePercentage.text = str(snapped(decibles_to_percentage(MusicVolume, MusicVolumeSlider.min_value, MusicVolumeSlider.max_value), 1)) + "%"
+	SFXVolumePercentage.text = str(snapped(decibles_to_percentage(SFXVolume, SFXVolumeSlider.min_value, SFXVolumeSlider.max_value), 1)) + "%"
 
 # General Options
 ## Resolution

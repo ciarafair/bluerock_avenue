@@ -246,12 +246,14 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_dq3bs")
 tab_alignment = 1
+drag_to_rearrange_enabled = true
 
 [node name="General" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="ContentMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General"]
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -265,22 +267,22 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 175
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin"]
+[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 follow_focus = true
 
-[node name="NormalOptions" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Resolution" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
+[node name="Resolution" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution"]
+[node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -289,19 +291,19 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/LabelMargin"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 text = "Resolution"
 horizontal_alignment = 1
 
-[node name="DropdownMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution"]
+[node name="DropdownMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -310,7 +312,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="ResolutionButton" type="OptionButton" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/DropdownMargin"]
+[node name="ResolutionButton" type="OptionButton" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution/DropdownMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
@@ -326,11 +328,11 @@ popup/item_1/id = 1
 popup/item_2/text = "1280x720"
 popup/item_2/id = 2
 
-[node name="MouseSensitivity" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
+[node name="MouseSensitivity" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity"]
+[node name="LabelMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -339,12 +341,12 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/LabelMargin"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/LabelMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -352,7 +354,7 @@ text = "Mouse Sensitivity"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SliderMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity"]
+[node name="SliderMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -361,12 +363,12 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/SliderMargin"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/SliderMargin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="SensitivitySlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/SliderMargin"]
+[node name="SensitivitySlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/SliderMargin"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -379,82 +381,11 @@ value = 0.01
 tick_count = 10
 ticks_on_borders = true
 
-[node name="Row1" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions"]
-clip_contents = true
-layout_mode = 2
-theme = ExtResource("2_dq3bs")
-alignment = 1
-
-[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank"]
-layout_mode = 2
-theme = ExtResource("2_dq3bs")
-
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank/HBoxContainer/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-text = "
-"
-
-[node name="Blank2" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank2"]
-layout_mode = 2
-theme = ExtResource("2_dq3bs")
-
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Row1/Blank2/HBoxContainer/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_dq3bs")
-text = "
-"
-
 [node name="Audio" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
-visible = false
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="ContentMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio"]
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -468,22 +399,22 @@ theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 250
 theme_override_constants/margin_bottom = 175
 
-[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin"]
+[node name="ScrollContainer" type="ScrollContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 follow_focus = true
 
-[node name="NormalOptions" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="MasterVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions"]
+[node name="MasterVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume"]
+[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -492,12 +423,25 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -505,7 +449,27 @@ text = "Master Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume"]
+[node name="Percentage" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer/Percentage"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="MasterPercent" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/LabelCollection/HBoxContainer/Percentage"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+text = "0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -514,12 +478,12 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/SliderCollection"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="MasterVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/SliderCollection"]
+[node name="MasterVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
@@ -527,14 +491,15 @@ mouse_default_cursor_shape = 10
 theme = ExtResource("2_dq3bs")
 min_value = -80.0
 max_value = 2.08165e-12
+rounded = true
 tick_count = 50
 ticks_on_borders = true
 
-[node name="MusicVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions"]
+[node name="MusicVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume"]
+[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -543,12 +508,25 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -556,7 +534,27 @@ text = "Music Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume"]
+[node name="Percentage" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2/Percentage"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="MusicPercent" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/LabelCollection/HBoxContainer2/Percentage"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+text = "0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -565,27 +563,28 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/SliderCollection"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="MusicVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/SliderCollection"]
+[node name="MusicVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
 theme = ExtResource("2_dq3bs")
-min_value = -60.0
+min_value = -80.0
 max_value = 2.08165e-12
+rounded = true
 tick_count = 15
 ticks_on_borders = true
 
-[node name="SFXVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions"]
+[node name="SFXVolume" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume"]
+[node name="LabelCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -594,12 +593,25 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Title" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/LabelCollection"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2/Title"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -607,7 +619,27 @@ text = "SFX Volume"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume"]
+[node name="Percentage" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2/Percentage"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="SFXPercent" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/LabelCollection/HBoxContainer2/Percentage"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+text = "0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SliderCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -616,19 +648,20 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/SliderCollection"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/SliderCollection"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="SFXVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/SliderCollection"]
+[node name="SFXVolumeSlider" type="HSlider" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/SliderCollection"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 mouse_default_cursor_shape = 10
 theme = ExtResource("2_dq3bs")
-min_value = -60.0
+min_value = -80.0
 max_value = 2.08165e-12
+rounded = true
 tick_count = 15
 ticks_on_borders = true
 
@@ -662,13 +695,13 @@ size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 theme_override_constants/separation = 15
 
-[node name="Row1" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 alignment = 1
 
-[node name="FPSCounterCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1"]
+[node name="FPSCounterCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -677,16 +710,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/FPSCounterCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/FPSCounterCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/FPSCounterCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -701,13 +734,13 @@ text = "FPS Counter"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FpsCounter" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer"]
+[node name="FpsCounter" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/FPSCounterCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="PlayerInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1"]
+[node name="PlayerInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -716,16 +749,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PlayerInfoCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PlayerInfoCollection/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PlayerInfoCollection/HBoxContainer2/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -738,17 +771,17 @@ text = "Player Info"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2"]
+[node name="PlayerInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PlayerInfoCollection/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="Row2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="CurrentBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2"]
+[node name="CurrentBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -757,16 +790,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/CurrentBlockCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/CurrentBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/CurrentBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -781,7 +814,7 @@ text = "Current Block"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer"]
+[node name="CurrentBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/CurrentBlockCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
@@ -789,7 +822,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 0)
 icon_alignment = 1
 expand_icon = true
 
-[node name="HoveringBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2"]
+[node name="HoveringBlockCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -798,16 +831,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/HoveringBlockCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/HoveringBlockCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/HoveringBlockCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -822,17 +855,17 @@ text = "Hovering Block"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HoveringBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer"]
+[node name="HoveringBlock" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/HoveringBlockCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="Row3" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="CurrentEventCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3"]
+[node name="CurrentEventCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -841,16 +874,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentEventCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentEventCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentEventCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -865,13 +898,13 @@ text = "Current Event"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentEvent" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer"]
+[node name="CurrentEvent" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentEventCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="CurrentTimeCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3"]
+[node name="CurrentTimeCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -880,16 +913,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentTimeCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentTimeCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentTimeCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -904,17 +937,17 @@ text = "Current Time"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentTime" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer"]
+[node name="CurrentTime" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentTimeCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="Row4" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="CurrentRoomCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4"]
+[node name="CurrentRoomCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -923,16 +956,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/CurrentRoomCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/CurrentRoomCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/CurrentRoomCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -947,13 +980,13 @@ text = "Current Room"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentRoom" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer"]
+[node name="CurrentRoom" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/CurrentRoomCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4"]
+[node name="MonsterInfoCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -962,16 +995,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/MonsterInfoCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/MonsterInfoCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/MonsterInfoCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -986,17 +1019,17 @@ text = "Monster Info"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MonsterInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer"]
+[node name="MonsterInfo" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/MonsterInfoCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 theme_override_colors/font_color = Color(0, 0, 0, 0)
 
-[node name="Row5" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
+[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -1005,16 +1038,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/Blank"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/Blank/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/Blank/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/Blank/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1026,7 +1059,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="OverlayEffectCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5"]
+[node name="OverlayEffectCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
@@ -1035,16 +1068,16 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/OverlayEffectCollection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OverlayEffectCollection"]
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
 
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/OverlayEffectCollection/HBoxContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OverlayEffectCollection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_dq3bs")
 
-[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/OverlayEffectCollection/HBoxContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OverlayEffectCollection/HBoxContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1059,7 +1092,7 @@ text = "Overlay Effect"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OverlayEffect" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/OverlayEffectCollection/HBoxContainer"]
+[node name="OverlayEffect" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OverlayEffectCollection/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_dq3bs")
@@ -1068,17 +1101,17 @@ theme_override_colors/font_color = Color(0, 0, 0, 0)
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/BackToMenuMargin/MainMenu" to="." method="_on_main_menu_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/SaveChangesMargin/SaveChanges" to="." method="_on_save_changes_button_up"]
-[connection signal="item_selected" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/Resolution/DropdownMargin/ResolutionButton" to="." method="_on_resolution_button_item_selected"]
-[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/ContentMargin/ScrollContainer/NormalOptions/MouseSensitivity/SliderMargin/SensitivitySlider" to="." method="_on_sensitivity_slider_value_changed"]
-[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MasterVolume/SliderCollection/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
-[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/MusicVolume/SliderCollection/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
-[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/ContentMargin/ScrollContainer/NormalOptions/SFXVolume/SliderCollection/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/FPSCounterCollection/HBoxContainer/FpsCounter" to="." method="_on_fps_counter_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row1/PlayerInfoCollection/HBoxContainer2/PlayerInfo" to="." method="_on_player_info_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/CurrentBlockCollection/HBoxContainer/CurrentBlock" to="." method="_on_current_block_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row2/HoveringBlockCollection/HBoxContainer/HoveringBlock" to="." method="_on_hovering_block_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentEventCollection/HBoxContainer/CurrentEvent" to="." method="_on_current_event_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row3/CurrentTimeCollection/HBoxContainer/CurrentTime" to="." method="_on_current_time_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/CurrentRoomCollection/HBoxContainer/CurrentRoom" to="." method="_on_current_room_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row4/MonsterInfoCollection/HBoxContainer/MonsterInfo" to="." method="_on_monster_info_toggled"]
-[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/Row5/OverlayEffectCollection/HBoxContainer/OverlayEffect" to="." method="_on_overlay_effect_toggled"]
+[connection signal="item_selected" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution/DropdownMargin/ResolutionButton" to="." method="_on_resolution_button_item_selected"]
+[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/SliderMargin/SensitivitySlider" to="." method="_on_sensitivity_slider_value_changed"]
+[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/SliderCollection/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
+[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/SliderCollection/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/SliderCollection/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/FPSCounterCollection/HBoxContainer/FpsCounter" to="." method="_on_fps_counter_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/PlayerInfoCollection/HBoxContainer2/PlayerInfo" to="." method="_on_player_info_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/CurrentBlockCollection/HBoxContainer/CurrentBlock" to="." method="_on_current_block_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2/HoveringBlockCollection/HBoxContainer/HoveringBlock" to="." method="_on_hovering_block_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentEventCollection/HBoxContainer/CurrentEvent" to="." method="_on_current_event_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3/CurrentTimeCollection/HBoxContainer/CurrentTime" to="." method="_on_current_time_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/CurrentRoomCollection/HBoxContainer/CurrentRoom" to="." method="_on_current_room_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer4/MonsterInfoCollection/HBoxContainer/MonsterInfo" to="." method="_on_monster_info_toggled"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Developer/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OverlayEffectCollection/HBoxContainer/OverlayEffect" to="." method="_on_overlay_effect_toggled"]

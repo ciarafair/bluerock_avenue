@@ -26,8 +26,8 @@ func on_music_player_finished():
 
 func on_stop_track():
 	if MusicPlayer != null and Global.Is_Music_Playing == true:
-		#print_rich("Stopping track: " + str(Global.Current_Track))
-		#Global.stack_info(get_stack())
+		print_rich("Stopping track: %s" %[str(Global.Current_Track)])
+		Global.stack_info(get_stack())
 		Global.Is_Music_Playing = false
 		Global.Current_Track = ""
 		MusicPlayer.stop()
@@ -47,8 +47,8 @@ func on_start_track(track: AudioStreamMP3):
 
 		if MusicPlayer.stream != null:
 			Global.Current_Track = MusicPlayer.stream.resource_name
-			#print_rich("Playing track: " +  str(Global.Current_Track))
-			#Global.stack_info(get_stack())
+			print_rich("Playing track: %s" %[str(Global.Current_Track)])
+			Global.stack_info(get_stack())
 			MusicPlayer.play()
 			return
 
