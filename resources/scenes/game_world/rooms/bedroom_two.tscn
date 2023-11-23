@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://bpvx4f0rphvya"]
+[gd_scene load_steps=67 format=3 uid="uid://bpvx4f0rphvya"]
 
 [ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_bjcqc"]
 [ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_gjr3a"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://resources/scripts/events/window_event.gd" id="4_qvl1d"]
 [ext_resource type="Script" path="res://resources/scripts/block_logic/location_block.gd" id="5_cjxfk"]
 [ext_resource type="Texture2D" uid="uid://cemowqvps2yye" path="res://addons/kenney_prototype_textures/light/texture_01.png" id="6_7ma7f"]
-[ext_resource type="Script" path="res://resources/scripts/block_logic/prop_block.gd" id="7_hmswh"]
 [ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="8_amydf"]
 [ext_resource type="Material" uid="uid://rj05y6fkdh4j" path="res://resources/materials/parents_bedroom_wall.tres" id="9_wboax"]
 [ext_resource type="Script" path="res://resources/scripts/monster_position.gd" id="10_vcmbt"]
@@ -561,6 +560,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.75, 5)
 collision_layer = 3
 script = ExtResource("4_qvl1d")
+Is_Window_Open = null
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Window"]
 transform = Transform3D(-0.963626, -0.00445142, 0.267217, 0, 0.999862, 0.0166561, -0.267254, 0.0160503, -0.963493, 0.803194, -0.234522, -1.8722)
@@ -618,7 +618,6 @@ skeleton = NodePath("")
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.45, 2.08165e-12, 2.08165e-12)
 collision_layer = 3
 script = ExtResource("5_cjxfk")
-PlayerRotation = null
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/Bed"]
 transform = Transform3D(-0.58569, 0.243116, -0.773215, 4.86985e-16, 0.953956, 0.299946, 0.810535, 0.175675, -0.558723, -0.475433, 2.39999, -3.10757)
@@ -640,40 +639,40 @@ mesh = SubResource("BoxMesh_xpc58")
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 1.81282, 1.03705, -0.908976)
 mesh = SubResource("BoxMesh_xpc58")
 
-[node name="Props" type="Node3D" parent="Locations/Bed"]
+[node name="SubLocations" type="Node3D" parent="Locations/Bed"]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 
-[node name="BedsideTable" type="StaticBody3D" parent="Locations/Bed/Props"]
+[node name="BedsideTable" type="StaticBody3D" parent="Locations/Bed/SubLocations"]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 1.929, 2.08213e-12, 3.27214)
 collision_layer = 3
-script = ExtResource("7_hmswh")
+script = ExtResource("5_cjxfk")
 
-[node name="CameraPosition" type="Marker3D" parent="Locations/Bed/Props/BedsideTable"]
+[node name="CameraPosition" type="Marker3D" parent="Locations/Bed/SubLocations/BedsideTable"]
 transform = Transform3D(-0.0148749, 0.54391, -0.839011, 1.06181e-15, 0.839104, 0.54397, 0.999889, 0.0080915, -0.0124816, -0.895438, 2.31889, -0.0191855)
 script = ExtResource("2_gjr3a")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Bed/Props/BedsideTable"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Bed/SubLocations/BedsideTable"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.5, 2.08165e-12)
 shape = SubResource("BoxShape3D_v5qu0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Locations/Bed/Props/BedsideTable"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Locations/Bed/SubLocations/BedsideTable"]
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 0.3, 0.7739, 0)
 mesh = SubResource("BoxMesh_hx1vj")
 
-[node name="BedsideTable2" type="StaticBody3D" parent="Locations/Bed/Props"]
+[node name="BedsideTable2" type="StaticBody3D" parent="Locations/Bed/SubLocations"]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 1.927, 2.08198e-12, -3.10481)
 collision_layer = 3
-script = ExtResource("7_hmswh")
+script = ExtResource("5_cjxfk")
 
-[node name="CameraPosition" type="Marker3D" parent="Locations/Bed/Props/BedsideTable2"]
+[node name="CameraPosition" type="Marker3D" parent="Locations/Bed/SubLocations/BedsideTable2"]
 transform = Transform3D(-0.0148749, 0.55847, -0.829391, 1.06181e-15, 0.829483, 0.558532, 0.999889, 0.00830811, -0.0123385, -0.799273, 2.31889, 0.0278268)
 script = ExtResource("2_gjr3a")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Bed/Props/BedsideTable2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Locations/Bed/SubLocations/BedsideTable2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.5, 2.08165e-12)
 shape = SubResource("BoxShape3D_ta64n")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Locations/Bed/Props/BedsideTable2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Locations/Bed/SubLocations/BedsideTable2"]
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 0.3, 0.7739, 0)
 mesh = SubResource("BoxMesh_hx1vj")
 

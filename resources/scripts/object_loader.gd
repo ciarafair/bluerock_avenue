@@ -18,6 +18,7 @@ var Options_Menu_Instance
 var Game_Over_Screen_Instance
 var Dialogue_Box_Instance
 var Task_List_Instance
+var Popup_Instance
 
 func add_object(node_path: String, node_instance: Node, parent_instance: Node) -> Node:
 	if node_instance:
@@ -159,6 +160,15 @@ func on_scene_loaded(resource: PackedScene):
 		return
 	pass
 
+func on_activate_popup(text: String, wait_time: float):
+	if Popup_Instance != null:
+		Popup_Instance.queue_free()
+
+	Popup_Instance = load(str(Path.PopupScenePath)).instantiate()
+	User_Interface_Instance.add_child(Popup_Instance)
+	Popup_Instance.play_animation(text, wait_time)
+	pass
+
 func manage_signals():
 	SignalManager.scene_loaded.connect(Callable(on_scene_loaded))
 	SignalManager.load_audio_manager.connect(Callable(add_object).bind(Path.AudioManagerPath, Audio_Manager_Instance, self))
@@ -166,6 +176,7 @@ func manage_signals():
 	SignalManager.game_world_loaded.connect(Callable(on_game_world_loaded))
 	SignalManager.exit_options_menu.connect(Callable(on_exit_options_menu))
 	SignalManager.room_loaded.connect(Callable(on_room_loaded))
+	SignalManager.activate_popup.connect(Callable(on_activate_popup))
 
 func _ready():
 	Global.Object_Loader = self

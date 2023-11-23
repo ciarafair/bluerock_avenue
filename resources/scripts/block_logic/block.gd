@@ -67,27 +67,19 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 		#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
 		if node.BlockCameraPosition != null:
 			Global.Is_In_Animation = true
-			if node is PropBlock:
-				SignalManager.reset_player_camera.emit()
-				var target_position = node.BlockCameraPosition.position
-				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position , TweenDuration).from_current()
-				var node_location: LocationBlock = search_for_parent(node)
-				var target_rotation: Vector3
-
-				if node_location != null:
-					target_rotation = node.BlockCameraPosition.rotation_degrees + node_location.rotation_degrees
-				else:
-					target_rotation = node.BlockCameraPosition.rotation_degrees
-
-				set_rotation_direction(target_rotation, node)
-				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
-				return
-
 			if node is LocationBlock:
 				SignalManager.reset_player_camera.emit()
-				var target_position = node.BlockCameraPosition.position + node.position + Global.Game_Data_Instance.Current_Room.position
+				var target_position: Vector3
+				if node.BlockParent is RoomBlock:
+					target_position = node.BlockCameraPosition.position + node.position + node.BlockParent.position
+				else:
+					target_position = node.BlockCameraPosition.position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position, TweenDuration).from_current()
-				var target_rotation = node.BlockCameraPosition.rotation_degrees
+				var target_rotation: Vector3
+				if node.BlockParent != null:
+					target_rotation = node.BlockCameraPosition.rotation_degrees + node.BlockParent.rotation_degrees
+				else:
+					target_rotation = node.BlockCameraPosition.rotation_degrees
 
 				set_rotation_direction(target_rotation, node)
 				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
@@ -124,18 +116,18 @@ func search_for_collider(node: Block) -> CollisionShape3D:
 				#Global.stack_info(get_stack())
 	return null
 
-func disable_collider(node: Block):
-	if node.BlockCollider != null:
-		node.BlockCollider.set_disabled(true)
+func disable_collider():
+	if self.BlockCollider != null:
+		self.BlockCollider.set_disabled(true)
 		return
 	else:
 		#print_rich(str(_node.name) + " does not have a collider to disable.")
 		#Global.stack_info(get_stack())
 		return
 
-func enable_collider(node: Block):
-	if node.BlockCollider != null:
-		node.BlockCollider.set_disabled(false)
+func enable_collider():
+	if self.BlockCollider != null:
+		self.BlockCollider.set_disabled(false)
 		return
 	else:
 		#print_rich(str(_node.name) + " does not have a collider to enable.")
@@ -146,7 +138,7 @@ func search_for_locations(node: Node, enable: bool):
 	if enable == true:
 		for child in node.get_children():
 			if child is LocationBlock:
-				enable_collider(child)
+				child.enable_collider()
 				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
 				#Global.stack_info(get_stack())
 			else:
@@ -155,30 +147,11 @@ func search_for_locations(node: Node, enable: bool):
 	if enable == false:
 		for child in node.get_children():
 			if child is LocationBlock:
-				disable_collider(child)
+				child.disable_collider()
 				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
 				#Global.stack_info(get_stack())
 			else:
 				search_for_locations(child, false)
-
-func search_for_props(node: Node, enable: bool):
-	if enable == true:
-		for child in node.get_children():
-			if child is PropBlock:
-				enable_collider(child)
-				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
-				#Global.stack_info(get_stack())
-			else:
-				search_for_props(child, true)
-
-	if enable == false:
-		for child in node.get_children():
-			if child is PropBlock:
-				disable_collider(child)
-				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
-				#Global.stack_info(get_stack())
-			else:
-				search_for_props(child, false)
 
 func connect_activate_signal(node: Block):
 	if node != null:
@@ -220,8 +193,8 @@ func activate():
 		Global.Is_Able_To_Turn = true
 	else:
 		Global.Is_Able_To_Turn = false
-	if not self is RoomBlock:
-		disable_collider(self)
+	if self.BlockCollider != null:
+		self.disable_collider()
 	return
 
 func on_activate_block(node: Block):
@@ -237,7 +210,8 @@ func deactivate():
 			return
 
 		if BlockParent == null:
-			push_error("Could not find " + str(self.name) + "'s parent")
+			print_rich("Could not find " + str(self.name) + "'s parent")
+			Global.stack_info(get_stack())
 			return
 	return
 

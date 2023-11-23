@@ -27,9 +27,8 @@ func _on_quit_button_up():
 	LoadManager.load_scene(Path.MainMenuPath)
 	return
 
-@onready var AnimationPlayerInstance = %AnimationPlayer
 func _on_save_button_up():
-	AnimationPlayerInstance.play("saved_popup")
+	SignalManager.activate_popup.emit("Game-data written.", 1.5)
 	SignalManager.save_game_data.emit()
 	return
 

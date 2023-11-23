@@ -45,6 +45,28 @@ func block_raycast():
 		if BlockResult.size() <= 0:
 			Global.Hovering_Block = null
 
+
+func item_raycast():
+	if Global.CurrentMouseState == Global.mouse.MOVEMENT or Global.CurrentMouseState == Global.mouse.DIALOGUE:
+		var CollisionMask: int = 5
+		var AreaBool: bool = false
+		var BodyBool: bool = true
+		var InteractableResult = mouse_position(CollisionMask, Global.PlayerInstance.Camera, AreaBool, BodyBool)
+
+		if InteractableResult == null:
+			Global.Hovering_Interactable = null
+			return
+		if InteractableResult.size() > 0:
+			Global.Is_Clickable = true
+			Global.Hovering_Interactable = InteractableResult.values()[3]
+			#print_rich("Hovering over item %s" %[Global.Hovering_Interactable])
+			#Global.stack_info(get_stack())
+			return
+		if InteractableResult.size() <= 0:
+			Global.Hovering_Interactable = null
+			return
+		return
+
 func flashlight_raycast():
 	var CollisionMask: int = 3
 	var AreaBool: bool = false
@@ -73,6 +95,7 @@ func manage_flashlight_raycast():
 
 func on_enable_door_view(node, number):
 	#print_rich("Enabling door view of room #" + str(number))
+	#Global.stack_info(get_stack())
 	for child in node.get_children(true):
 		if child is RoomBlock && child.RoomNumber == number:
 			child.set_visible(true)
@@ -182,6 +205,7 @@ func _process(_delta):
 	if Global.PlayerInstance != null:
 		manage_flashlight_raycast()
 		block_raycast()
+		item_raycast()
 		Global.SpaceState = Global.PlayerInstance.get_world_3d().direct_space_state
 	Global.ScreenCentre = get_window().size / 2
 	Global.MousePosition2D = get_viewport().get_mouse_position()

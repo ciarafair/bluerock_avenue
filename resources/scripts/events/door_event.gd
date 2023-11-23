@@ -252,6 +252,7 @@ func _process(_delta):
 	set_rotation_ability()
 	manage_activation_signals()
 	manage_signals()
+	manage_current_block()
 
 	if self.DoorTweenInstance != null:
 		door_closing_time = self.DoorTweenInstance.get_total_elapsed_time()
@@ -259,11 +260,9 @@ func _process(_delta):
 	if Global.Game_Data_Instance.Current_Block == self:
 		self.Is_Enabled = true
 		if Global.Game_Data_Instance.Current_Event != "door":
-			search_for_props(self, true)
 			start_event()
 	elif Global.Game_Data_Instance.Current_Block != self:
 		self.Is_Enabled = false
-		search_for_props(self, false)
 
 	if self.BlockParent == Global.Game_Data_Instance.Current_Room:
 		#print_rich(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")

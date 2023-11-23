@@ -172,9 +172,8 @@ func _on_main_menu_button_up():
 	SignalManager.exit_options_menu.emit()
 	return
 
-@onready var AnimationPlayerInstance = %AnimationPlayer
 func _on_save_changes_button_up():
-	AnimationPlayerInstance.play("saved_popup")
+	SignalManager.activate_popup.emit("Save-data written.", 1.5)
 	SignalManager.save_settings_data.emit()
 	return
 

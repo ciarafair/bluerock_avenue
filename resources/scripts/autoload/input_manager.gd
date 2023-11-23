@@ -4,6 +4,12 @@ var IsHoldingSpace: bool = false
 var IsHoldingShift: bool = false
 
 func manage_normal_input():
+	if Global.Hovering_Interactable != null:
+		if Input.is_action_just_released("mouse_button_1"):
+			if Global.CurrentMouseState == 1:
+				Global.Hovering_Interactable.activate()
+				return
+
 	if Global.Hovering_Block != null:
 		if Global.Is_Clickable == true:
 			if Input.is_action_just_released("mouse_button_1"):
@@ -143,11 +149,12 @@ func _unhandled_input(event: InputEvent):
 		if Global.Game_Data_Instance.Current_Event == "window":
 			manage_window_input()
 
-		if Input.is_action_just_released("flashlight"):
-			if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:
-				Global.Game_Data_Instance.Is_Flashlight_On = !Global.Game_Data_Instance.Is_Flashlight_On
-			else:
-				printerr("Flashlight is not toggleable in this location.")
+		if Global.Game_Data_Instance.PlayerInventory.has("Flashlight"):
+			if Input.is_action_just_released("flashlight"):
+				if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:
+					Global.Game_Data_Instance.Is_Flashlight_On = !Global.Game_Data_Instance.Is_Flashlight_On
+				else:
+					printerr("Flashlight is not toggleable in this location.")
 
 		if Input.is_action_just_released("pause_menu_toggle"):
 			Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open

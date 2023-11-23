@@ -75,7 +75,6 @@ func _on_tree_exiting():
 	Global.Loaded_Main_Menu = null
 	return
 
-@onready var AnimationPlayerInstance = %AnimationPlayer
 func _on_credits_button_up():
-	AnimationPlayerInstance.play("saved_popup")
+	SignalManager.activate_popup.emit("Feature not available.", 1.5)
 	return

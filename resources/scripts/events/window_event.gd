@@ -116,12 +116,12 @@ func _process(_delta):
 	#print_rich(str(self.BlockParent))
 	set_rotation_ability()
 	manage_event_signals()
+	manage_current_block()
 
 	if WindowTweenInstance != null:
 		self.Window_Closing_Time = WindowTweenInstance.get_total_elapsed_time() / 2
 
 	if Global.Game_Data_Instance.Current_Block == self && Global.Game_Data_Instance.Current_Event != "window":
-		search_for_props(self, true)
 		start_event()
 
 	if Global.Game_Data_Instance.Monster_Current_Room != str(self.BlockParent.get_path()):

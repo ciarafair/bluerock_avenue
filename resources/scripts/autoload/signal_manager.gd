@@ -62,6 +62,9 @@ signal activate_block
 signal deactivate_block
 
 # Object Loader
+signal activate_popup
+signal popup_loaded
+
 ## Audio
 signal load_audio_manager
 

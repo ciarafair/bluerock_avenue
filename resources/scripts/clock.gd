@@ -8,7 +8,7 @@ extends SubViewport
 
 var frame_count: int = 0
 var frame_bool: bool = true
-var frames_to_change: int = 50
+var frames_to_change: int = 25
 
 var HourString: String = "00"
 var MinuteString: String = "02"
@@ -52,10 +52,10 @@ func check_count():
 func _process(_delta):
 	frame_count += 1
 	if frame_count >= frames_to_change:
-		print_rich("Toggling seperator on clock")
-		Global.stack_info(get_stack())
 		check_count()
 		frame_count = 0
+		#print_rich("Toggling seperator on clock")
+		#Global.stack_info(get_stack())
 
 	manage_hour()
 	manage_minute()

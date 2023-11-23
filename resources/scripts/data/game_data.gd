@@ -25,6 +25,8 @@ var Current_Room_Number = 1
 var Television_State: bool = true
 var Current_Task: Global.task = Global.task.TASK_ONE
 
+var PlayerInventory: Array = []
+
 func _process(_delta):
 	if has_emitted_loaded == false:
 		has_emitted_loaded = true

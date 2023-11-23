@@ -54,6 +54,7 @@ var ScreenCentre: Vector2i
 var SpaceState: PhysicsDirectSpaceState3D
 var RAYCAST_COLLISION_OBJECT
 var Hovering_Block: Block
+var Hovering_Interactable: Interactable
 var FLASHLIGHT_RAY_ARRAY: Array = []
 
 func on_tween_finished():
@@ -346,7 +347,8 @@ func save_player_game_data():
 			"Room" = RoomPath,
 
 			"Current_Event" = Game_Data_Instance.Current_Event,
-			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On
+			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On,
+			"Inventory" = Game_Data_Instance.PlayerInventory
 		}
 	}
 	Game_Dictionary.merge(data, true)
@@ -395,7 +397,8 @@ func save_default_game_data(file: FileAccess):
 			"Current_Event" = Game_Data_Instance.Current_Event,
 
 			"Current_Room" = Game_Data_Instance.Current_Room,
-			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number
+			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number,
+			"Inventory" = Game_Data_Instance.PlayerInventory
 		},
 
 		"world": {
@@ -449,6 +452,7 @@ func load_player_data(parsed_data: Dictionary):
 		PlayerInstance.position.x  = parsed_data.player.XPosition
 		PlayerInstance.position.y  = parsed_data.player.YPosition
 		PlayerInstance.position.z  = parsed_data.player.ZPosition
+		Game_Data_Instance.PlayerInventory = parsed_data.player.Inventory
 		return
 	printerr("Player instance returned null. Could not load game data.")
 	#Global.stack_info(get_stack())
