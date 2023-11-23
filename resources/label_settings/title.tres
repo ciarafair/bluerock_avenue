@@ -1,9 +1,9 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://b14nmheo6frid"]
 
-[ext_resource type="FontFile" uid="uid://r5mw5kvy62hn" path="res://resources/fonts/playfair_title/playfair_title_italic.ttf" id="1_hjrp2"]
+[ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="1_t03ml"]
 
 [resource]
-font = ExtResource("1_hjrp2")
+font = ExtResource("1_t03ml")
 font_size = 75
 font_color = Color(0.784314, 0.113725, 0.145098, 1)
 outline_size = 25

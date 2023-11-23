@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://43f0kddcxc7p"]
+
+[ext_resource type="FontFile" uid="uid://8u0nombhvdv0" path="res://resources/fonts/10_segment_set/ten_segment_sixteen.ttf" id="1_4lel1"]
+
+[resource]
+default_font = ExtResource("1_4lel1")
+default_font_size = 200
+Label/colors/font_color = Color(1, 0, 0.0705882, 1)
+Label/font_sizes/font_size = 200

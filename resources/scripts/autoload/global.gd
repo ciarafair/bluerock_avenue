@@ -576,7 +576,7 @@ func task_check(node: Node) -> Dictionary:
 	var TaskErrorDialoguePath = preload(Path.TaskErrorDialoguePath)
 
 	if Game_Data_Instance.Current_Task == task.TASK_ONE:
-		if node.name == "TVTable":
+		if node.name == "TVBench":
 			return {}
 		else:
 			return Global.stringify_json(TaskErrorDialoguePath)

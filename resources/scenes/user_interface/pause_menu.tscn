@@ -175,14 +175,14 @@ theme = ExtResource("2_qnnea")
 layout_mode = 2
 theme = ExtResource("2_qnnea")
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
+theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
 [node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/Title"]
 layout_mode = 2
 theme = ExtResource("2_qnnea")
-text = "Paused"
+text = "Pused"
 label_settings = ExtResource("4_cbvhb")
 horizontal_alignment = 1
 

@@ -7,7 +7,8 @@ extends SubViewport
 @onready var PMMeridian: Label = %Pm
 
 var frame_count: int = 0
-var frames_to_change: int = 25
+var frame_bool: bool = true
+var frames_to_change: int = 50
 
 var HourString: String = "00"
 var MinuteString: String = "02"
@@ -42,7 +43,8 @@ func manage_labels():
 	MinuteLabel.text = MinuteString
 
 func check_count():
-	if SeperatorLabel.label_settings.font_color == ActiveColor:
+	frame_bool = !frame_bool
+	if frame_bool == true:
 		SeperatorLabel.label_settings.font_color = DisabledColor
 	else:
 		SeperatorLabel.label_settings.font_color = ActiveColor
@@ -50,6 +52,8 @@ func check_count():
 func _process(_delta):
 	frame_count += 1
 	if frame_count >= frames_to_change:
+		print_rich("Toggling seperator on clock")
+		Global.stack_info(get_stack())
 		check_count()
 		frame_count = 0
 

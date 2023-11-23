@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://co37qtggbjfii"]
+
+[ext_resource type="FontFile" uid="uid://bgvdjgmkodw7e" path="res://resources/fonts/10_segment_set/Flat10SegSixteen.ttf" id="1_vvdn1"]
+
+[resource]
+font = ExtResource("1_vvdn1")
+font_size = 225
+font_color = Color(1, 0, 0.0705882, 1)

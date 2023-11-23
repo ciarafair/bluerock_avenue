@@ -1,10 +1,10 @@
 {
 	"one":{
 		"name": "Example Name",
-		"dialogue": "This is some example dialogue... Lorum ipsum."
+		"dialogue": "This is some [b]example dialogue[/b]... Lorum ipsum."
 	},
 	"two":{
 		"name": "Example Name",
-		"dialogue": "This is still example dialogue but now you've changed to a second page."
+		"dialogue": "This is [i]still[/i] example dialogue but now you've changed to a second page."
 	}
 }

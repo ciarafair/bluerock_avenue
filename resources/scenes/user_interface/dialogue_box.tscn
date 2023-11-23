@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://caaobudb0a2yl"]
+[gd_scene load_steps=12 format=3 uid="uid://caaobudb0a2yl"]
 
 [ext_resource type="Script" path="res://resources/scripts/dialogue_box.gd" id="1_b0eu1"]
 [ext_resource type="Theme" uid="uid://n3mp2oj5tq0h" path="res://resources/themes/dialogue_box.theme" id="2_634ts"]
 [ext_resource type="LabelSettings" uid="uid://itip0wke1rlr" path="res://resources/label_settings/name.tres" id="3_8sdh8"]
+[ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="4_jha6c"]
+[ext_resource type="FontFile" uid="uid://bn56vqhwywgjo" path="res://resources/fonts/merriweather/merriweather_regular.ttf" id="5_7mwjg"]
+[ext_resource type="FontFile" uid="uid://crx6gatti8tfp" path="res://resources/fonts/merriweather/merriweather_bold.ttf" id="6_wqwiw"]
+[ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="7_syqjs"]
+[ext_resource type="FontFile" uid="uid://cr04xotjhkv08" path="res://resources/fonts/merriweather/merriweather_bold_italic.ttf" id="8_7apxj"]
+[ext_resource type="FontFile" uid="uid://dlida2bdoqwls" path="res://resources/fonts/merriweather/merriweather_black.ttf" id="9_rl5rc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viob4"]
 bg_color = Color(0.101961, 0.101961, 0.101961, 0.686275)
@@ -10,6 +16,12 @@ border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_brggx"]
+font = ExtResource("4_jha6c")
+font_size = 50
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)
 
 [node name="DialogueBox" type="CanvasLayer"]
 script = ExtResource("1_b0eu1")
@@ -60,7 +72,7 @@ layout_mode = 2
 [node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
+theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
@@ -111,10 +123,26 @@ size_flags_horizontal = 3
 theme = ExtResource("2_634ts")
 text = "Close"
 
-[node name="DialogueLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " ×"
+label_settings = SubResource("LabelSettings_brggx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DialogueLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_7mwjg")
+theme_override_fonts/bold_font = ExtResource("6_wqwiw")
+theme_override_fonts/italics_font = ExtResource("7_syqjs")
+theme_override_fonts/bold_italics_font = ExtResource("8_7apxj")
+theme_override_fonts/mono_font = ExtResource("9_rl5rc")
 bbcode_enabled = true
 text = "[font_size=40][outline_size=25] [outline_color=black] Test"
 fit_content = true

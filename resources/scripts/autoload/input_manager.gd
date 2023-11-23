@@ -34,7 +34,7 @@ func manage_normal_input():
 		return
 
 	if Global.Game_Data_Instance.Current_Block != null:
-		if Global.Game_Data_Instance.Current_Block.name == "TVTable":
+		if Global.Game_Data_Instance.Current_Block.name == "TVBench":
 			if Input.is_action_just_released("toggle_tv"):
 				SignalManager.toggle_tv.emit()
 				return
