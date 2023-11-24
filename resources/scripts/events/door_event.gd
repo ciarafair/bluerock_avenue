@@ -231,20 +231,21 @@ func manage_signals():
 
 func move_to_other_room():
 	if Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
-		SignalManager.stop_event.emit()
 		if Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomOne:
-			#print_rich("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
-			#Global.stack_info(get_stack())
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
+			print_rich("Moving to room #" + str(Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo))
+			Global.stack_info(get_stack())
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomTwo)
+			SignalManager.stop_event.emit()
 			return
 		elif Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomTwo:
-			#print_rich("Moving to room #" + str(Global.Current_Block.ConnectedRoomTwo))
-			#Global.stack_info(get_stack())
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
+			print_rich("Moving to room #" + str(Global.Game_Data_Instance.Current_Block.ConnectedRoomOne))
+			Global.stack_info(get_stack())
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomOne)
+			SignalManager.stop_event.emit()
 			return
 	return
 

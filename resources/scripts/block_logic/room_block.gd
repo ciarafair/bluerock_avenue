@@ -5,10 +5,10 @@ class_name RoomBlock
 @export var IsOccupied: bool = false
 
 func activate():
-	#print_rich("Activating " + str(Global.Current_Block))
-	#Global.stack_info(get_stack())
 	move_to_camera_position(self, true, true)
 	Global.Game_Data_Instance.Current_Block = self
+	print_rich("Activating %s" %[str(Global.Game_Data_Instance.Current_Block)])
+	Global.stack_info(get_stack())
 	#print_rich(Global.Game_Data_Instance.Current_Block_Path)
 	#Global.stack_info(get_stack())
 
