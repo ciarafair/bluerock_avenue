@@ -1,7 +1,16 @@
 extends StaticBody3D
 class_name Interactable
 
+enum type {
+	UNSELECTED = 0,
+	DIALOGUE = 1,
+	OBTAINABLE = 2
+}
+
 @onready var ItemCollider = find_collider()
+
+@export var DialoguePath: String
+@export var InteractableType: type
 
 func find_collider() -> CollisionShape3D:
 	for child in self.get_children():
@@ -21,8 +30,35 @@ func disable_collider():
 		#Global.stack_info(get_stack())
 		self.ItemCollider.set_disabled(true)
 
+func manage_dialogue():
+		if DialoguePath != null:
+			var json = load(DialoguePath)
+			var stringified_json = Global.stringify_json(json)
+			print_rich("Activating %s with the dialogue %s." %[self.name, stringified_json])
+			Global.stack_info(get_stack())
+			SignalManager.click_dialogue.emit(self, stringified_json)
+			return
+		else:
+			print_rich("Dialogue path not entered.")
+			Global.stack_info(get_stack())
+			return
+
+func manage_type():
+	match self.InteractableType:
+		type.UNSELECTED:
+			print_rich("Type not selected on interactable %s." %[self.name])
+			Global.stack_info(get_stack())
+			return
+		type.DIALOGUE:
+			manage_dialogue()
+			return
+		type.OBTAINABLE:
+			SignalManager.activate_popup.emit("Picked up %s." %[self.name], 0.5)
+			Global.Game_Data_Instance.PlayerInventory.append(self.name)
+			return
+
 func activate():
-	print_debug("Activating %s" %[self.name])
+	manage_type()
 
 func _ready():
 	self.disable_collider()

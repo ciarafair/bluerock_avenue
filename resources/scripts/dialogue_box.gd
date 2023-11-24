@@ -90,7 +90,7 @@ func start_dialogue(text: Dictionary):
 	set_dialogue(text.values()[CurrentKey - 1].dialogue)
 	return
 
-func on_click_dialogue(_node: Block, text: Dictionary):
+func on_click_dialogue(_node: Node, text: Dictionary):
 	StoredText = text
 	if CurrentState == state.READY:
 		#print_rich("Clicked while state was %s"%[CurrentState])

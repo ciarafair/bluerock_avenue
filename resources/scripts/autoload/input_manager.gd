@@ -96,7 +96,12 @@ func manage_door_input():
 	if Input.is_action_just_released("mouse_button_1"):
 		#print_rich("Left mouse button pressed.")
 		#Global.stack_info(get_stack())
-		if Global.CurrentMouseState == 1:
+		if Global.CurrentMouseState == 1 && Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
+			if Global.Hovering_Interactable != null:
+				Global.Hovering_Interactable.activate()
+				return
+
+		if Global.CurrentMouseState == 1 && Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
 			IsHoldingSpace = false
 			Global.Game_Data_Instance.Current_Block.move_to_other_room()
 
