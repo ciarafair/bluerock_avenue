@@ -535,7 +535,7 @@ size = Vector3(0.025, 0.125, 10)
 [node name="Office" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 script = ExtResource("1_3l7i8")
-RoomNumber = 3
+RoomNumber = 4
 PlayerRotation = true
 
 [node name="CameraPosition" type="Marker3D" parent="."]

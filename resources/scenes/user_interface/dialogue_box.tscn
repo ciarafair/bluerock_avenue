@@ -149,6 +149,7 @@ fit_content = true
 visible_characters = 0
 visible_ratio = 0.0
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Skip" to="." method="_on_skip_button_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Next" to="." method="_on_next_button_up"]
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/Buttons/MarginContainer2/HBoxContainer/Close" to="." method="_on_close_button_up"]

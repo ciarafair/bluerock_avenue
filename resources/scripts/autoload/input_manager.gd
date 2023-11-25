@@ -20,7 +20,7 @@ func manage_normal_input():
 					if Global.task_check(Global.Hovering_Block) == {}:
 						#print_rich("Activating %s" %[Global.Hovering_Block])
 						#Global.stack_info(get_stack())
-						SignalManager.activate_block.emit(Global.Hovering_Block)
+						Global.Hovering_Block.activate()
 						return
 					else:
 						if Global.DialogueBoxInstance == null:
@@ -38,12 +38,6 @@ func manage_normal_input():
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block)
 		return
-
-	if Global.Game_Data_Instance.Current_Block != null:
-		if Global.Game_Data_Instance.Current_Block.name == "TVBench":
-			if Input.is_action_just_released("toggle_tv"):
-				SignalManager.toggle_tv.emit()
-				return
 
 	if Global.CurrentMouseState == 3:
 		if Global.Current_Movement_Panel != null:
@@ -108,8 +102,8 @@ func manage_door_input():
 		if Global.CurrentMouseState == 2:
 			if Global.Hovering_Block != null:
 				if Global.Hovering_Block.BlockDialoguePath != null:
-					if Global.DialogueBoxInstance == null:
-						SignalManager.load_dialogue_box.emit()
+					print_debug("Emitting dialogue signal")
+					Global.stack_info(get_stack())
 					SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
 					return
 

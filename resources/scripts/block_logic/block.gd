@@ -14,14 +14,12 @@ var BlockParent: Block = null
 var IsActive: bool = false
 var CanMove: bool = true
 
-func search_for_camera_position(node: Node) -> CameraPosition:
-	for child in node.get_children():
+func search_for_camera_position() -> CameraPosition:
+	for child in self.get_children():
 		if child is CameraPosition:
+			print_rich("Found camera for %s" %[str(self.name)])
+			Global.stack_info(get_stack())
 			return child
-			#print_rich("Found camera for " + str(self.name) + ": " + str(child))
-			#Global.stack_info(get_stack())
-		else:
-			return search_for_camera_position(child)
 	return null
 
 func search_for_parent(node: Node) -> Block:
@@ -35,28 +33,36 @@ func search_for_parent(node: Node) -> Block:
 			return search_for_parent(parent)
 	return null
 
+func search_for_collider() -> CollisionShape3D:
+	for child in self.get_children():
+		if child is CollisionShape3D:
+			#print_rich("Found collider for " + str(node.name) + ": " + str(child))
+			#Global.stack_info(get_stack())
+			return child
+	return null
+
 func on_tween_finished():
 	print_rich("Tween completed")
 	Global.stack_info(get_stack())
 	Global.Is_In_Animation = false
-	TweenInstance.kill()
+	self.TweenInstance.kill()
 	SignalManager.animation_finished.emit()
 
 func set_rotation_direction(target_rotation: Vector3, node: Node):
 	if target_rotation.y > node.rotation_degrees.y + 45 or target_rotation.y < node.rotation_degrees.y -45:
 		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-			print_rich("Rotating from %s clockwise." %[node])
+			print_rich("Rotating from %s clockwise." %[node.name])
 			Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y += 360
 		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-			print_rich("Rotating from %s anti-clockwise." %[node])
+			print_rich("Rotating from %s anti-clockwise." %[node.name])
 			Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y -= 360
 
 func move_to_camera_position(node: Block, enable_position: bool, enable_rotation: bool):
 	if node.BlockCameraPosition != null:
-		print_rich("Moving to " + str(node.name))
-		Global.stack_info(get_stack())
+		#print_rich("Moving to " + str(node.name))
+		#Global.stack_info(get_stack())
 		if TweenInstance != null:
 			TweenInstance.kill()
 
@@ -106,15 +112,6 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 			if child is CameraPosition:
 				node.BlockCameraPosition = child
 				move_to_camera_position(node, enable_position, enable_rotation)
-
-func search_for_collider(node: Block) -> CollisionShape3D:
-	if not node is RoomBlock:
-		for child in node.get_children():
-			if child is CollisionShape3D:
-				return child
-				print_rich("Found collider for " + str(node.name) + ": " + str(child))
-				Global.stack_info(get_stack())
-	return null
 
 func disable_collider():
 	if self.BlockCollider != null:
@@ -195,9 +192,6 @@ func activate():
 		self.disable_collider()
 	return
 
-func on_activate_block(node: Block):
-	node.activate()
-
 func deactivate():
 	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
@@ -207,12 +201,14 @@ func deactivate():
 			SignalManager.activate_block.emit(self.BlockParent)
 			return
 
-		if BlockParent == null:
+		if self.BlockParent == null:
 			print_rich("Could not find " + str(self.name) + "'s parent")
 			Global.stack_info(get_stack())
 			return
 	return
 
+func on_activate_block(node: Block):
+	node.activate()
 
 func on_deactivate_block(node: Block):
 	node.deactivate()
@@ -229,8 +225,8 @@ func block_ready():
 	connect_deactivate_signal(self)
 
 	self.BlockParent = search_for_parent(self)
-	self.BlockCameraPosition = search_for_camera_position(self)
-	self.BlockCollider = search_for_collider(self)
+	self.BlockCameraPosition = search_for_camera_position()
+	self.BlockCollider = search_for_collider()
 
 	if self.BlockCollider != null:
 		self.BlockCollider.disabled = true

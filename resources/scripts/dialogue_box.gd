@@ -19,28 +19,29 @@ var CurrentState: state = state.READY
 var CurrentKey: int = 1
 var KeysArray: Array = []
 
-func set_state(next):
+func set_state(next: state):
 	CurrentState = next
 	match CurrentState:
 		state.READY:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
-			pass
+			return
 
 		state.READING:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
-			pass
+			return
 
 		state.FINISHED:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
-			pass
+			return
 
 func reset():
 	set_state(state.READY)
 	self.set_visible(false)
 	NameTextBox.text = ""
+	CurrentKey = 1
 	DialogueTextBox.text = ""
 	DialogueTextBox.visible_ratio = 0
 
@@ -91,10 +92,13 @@ func start_dialogue(text: Dictionary):
 	return
 
 func on_click_dialogue(_node: Node, text: Dictionary):
+	print_rich("Beginning dialogue.")
+	Global.stack_info(get_stack())
+
 	StoredText = text
 	if CurrentState == state.READY:
-		#print_rich("Clicked while state was %s"%[CurrentState])
-		#Global.stack_info(get_stack())
+		print_rich("Clicked while state was %s"%[CurrentState])
+		Global.stack_info(get_stack())
 		self.set_visible(true)
 		start_dialogue(text)
 		return
@@ -114,46 +118,50 @@ func _on_skip_button_button_up():
 	return
 
 func _on_close_button_up():
-	self.queue_free()
 	StoredText = {}
+	reset()
 	return
 
 func _on_next_button_up():
 	next_page()
 
 func manage_buttons():
-	if CurrentState == state.READY:
-		SkipButton.set_visible(false)
-		CloseButton.set_visible(false)
-		NextButton.set_visible(false)
-		return
+	match CurrentState:
+		state.READY:
+			SkipButton.set_visible(false)
+			CloseButton.set_visible(false)
+			NextButton.set_visible(false)
+			return
 
-	if CurrentState == state.READING:
-		SkipButton.set_visible(true)
-		NextButton.set_visible(false)
-		CloseButton.set_visible(false)
-		return
-
-	if CurrentState == state.FINISHED:
-		SkipButton.set_visible(false)
-		if CurrentKey < int(KeysArray.size()):
-			#print_rich("%s > %s" %[CurrentKey, KeysArray.size()])
-			#Global.stack_info(get_stack())
-			NextButton.set_visible(true)
+		state.READING:
+			SkipButton.set_visible(true)
+			NextButton.set_visible(false)
 			CloseButton.set_visible(false)
 			return
 
-		if CurrentKey >= int(KeysArray.size()):
-			#print_rich("%s <= %s" %[CurrentKey, KeysArray.size()])
-			#Global.stack_info(get_stack())
-			CloseButton.set_visible(true)
-			NextButton.set_visible(false)
-			return
+		state.FINISHED:
+			SkipButton.set_visible(false)
+			if CurrentKey < int(KeysArray.size()):
+				#print_rich("%s > %s" %[CurrentKey, KeysArray.size()])
+				#Global.stack_info(get_stack())
+				NextButton.set_visible(true)
+				CloseButton.set_visible(false)
+				return
+
+			if CurrentKey >= int(KeysArray.size()):
+				#print_rich("%s <= %s" %[CurrentKey, KeysArray.size()])
+				#Global.stack_info(get_stack())
+				CloseButton.set_visible(true)
+				NextButton.set_visible(false)
+				return
 	return
 
 func manage_signals():
-	SignalManager.click_dialogue.connect(Callable(on_click_dialogue))
-	SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
+	if not SignalManager.click_dialogue.is_connected(Callable(on_click_dialogue)):
+		SignalManager.click_dialogue.connect(Callable(on_click_dialogue))
+
+	if not SignalManager.main_menu_loaded.is_connected(Callable(self.queue_free)):
+		SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
 func _ready():
 	set_process_mode(Node.PROCESS_MODE_PAUSABLE)
@@ -168,3 +176,6 @@ func _process(_delta):
 		Global.DialogueBoxInstance = self
 		SignalManager.dialogue_box_loaded.emit()
 
+func _on_tree_exiting():
+	print_rich("Freeing %s" %[self.name])
+	Global.stack_info(get_stack())

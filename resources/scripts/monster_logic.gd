@@ -98,8 +98,8 @@ func set_monster_position(node, number):
 	return
 
 func on_timer_timeout():
-	print_rich("%s timed out. Opening %s" %[WindowTimer.name, LocalWindow.name])
-	Global.stack_info(get_stack())
+	#print_rich("%s timed out. Opening %s" %[WindowTimer.name, LocalWindow.name])
+	#Global.stack_info(get_stack())
 	SignalManager.open_window.emit(LocalWindow)
 	manage_window_timer()
 	pass
@@ -114,8 +114,8 @@ func manage_window_timer():
 	return
 
 func on_monster_reset():
-	print_rich("Resetting monster.")
-	Global.stack_info(get_stack())
+	#print_rich("Resetting monster.")
+	#Global.stack_info(get_stack())
 	Global.Game_Data_Instance.Monster_Current_Room = ""
 	SignalManager.set_monster_room.emit(Global.Loaded_Game_World, get_number_from_pool())
 	LocalWindow = null
@@ -134,30 +134,24 @@ func find_window_node(node: Node):
 	return
 
 func manage_stage():
+	#print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
+	#Global.stack_info(get_stack())
 	match Global.Game_Data_Instance.Monster_Current_Stage:
 		stage.HIDDEN:
-			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
-			Global.stack_info(get_stack())
 			self.set_visible(false)
 			return
 
 		stage.DISTANT:
-			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
-			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 1)
 			return
 
 		stage.MIDWAY:
-			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
-			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 2)
 			return
 
 		stage.NEAR:
-			print_rich("Setting monster stage to [b]%s[/b]" %[stage.keys()[Global.Game_Data_Instance.Monster_Current_Stage]])
-			Global.stack_info(get_stack())
 			self.set_visible(true)
 			set_monster_position(Room, 3)
 			if Room == Global.Game_Data_Instance.Current_Room:
@@ -205,7 +199,7 @@ func _ready():
 
 	if Global.Game_Data_Instance.Monster_Current_Room != "":
 		Room = get_node(Global.Game_Data_Instance.Monster_Current_Room)
-		print_rich("Monster is currently in %s" %[Room])
-		Global.stack_info(get_stack())
+		#print_rich("Monster is currently in %s" %[Room])
+		#Global.stack_info(get_stack())
 	set_stage(Global.Game_Data_Instance.Monster_Current_Stage)
 #	manage_window_timer()
