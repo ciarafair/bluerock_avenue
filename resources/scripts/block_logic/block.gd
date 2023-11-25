@@ -48,19 +48,19 @@ func on_tween_finished():
 	self.TweenInstance.kill()
 	SignalManager.animation_finished.emit()
 
-func set_rotation_direction(target_rotation: Vector3, node: Node):
-	if target_rotation.y > node.rotation_degrees.y + 45 or target_rotation.y < node.rotation_degrees.y -45:
+func set_rotation_direction(target_rotation: Vector3):
+	if target_rotation.y > self.rotation_degrees.y + 45 or target_rotation.y < self.rotation_degrees.y -45:
 		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-			print_rich("Rotating from %s clockwise." %[node.name])
+			print_rich("Rotating from %s clockwise." %[self.name])
 			Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y += 360
 		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-			print_rich("Rotating from %s anti-clockwise." %[node.name])
+			print_rich("Rotating from %s anti-clockwise." %[self.name])
 			Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y -= 360
 
-func move_to_camera_position(node: Block, enable_position: bool, enable_rotation: bool):
-	if node.BlockCameraPosition != null:
+func move_to_camera_position():
+	if self.BlockCameraPosition != null:
 		#print_rich("Moving to " + str(node.name))
 		#Global.stack_info(get_stack())
 		if TweenInstance != null:
@@ -68,50 +68,50 @@ func move_to_camera_position(node: Block, enable_position: bool, enable_rotation
 
 		TweenInstance = get_tree().create_tween()
 		TweenInstance.finished.connect(on_tween_finished)
-		TweenInstance.bind_node(node)
+		TweenInstance.bind_node(self)
 
 		#! This function includes the RoomBlock because its focusing on the PARENT node and not the node that is being animated from.
-		if node.BlockCameraPosition != null:
+		if self.BlockCameraPosition != null:
 			Global.Is_In_Animation = true
-			if node is LocationBlock:
+			if self is LocationBlock:
 				SignalManager.reset_player_camera.emit()
 				var target_position: Vector3
-				if node.BlockParent is RoomBlock:
-					target_position = node.BlockCameraPosition.position + node.position + node.BlockParent.position
+				if self.BlockParent is RoomBlock:
+					target_position = self.BlockCameraPosition.position + self.position + self.BlockParent.position
 				else:
-					target_position = node.BlockCameraPosition.position + node.position + node.BlockParent.position + Global.Game_Data_Instance.Current_Room.position
+					target_position = self.BlockCameraPosition.position + self.position + self.BlockParent.position + Global.Game_Data_Instance.Current_Room.position
 				TweenInstance.tween_property(Global.PlayerInstance, "position", target_position, TweenDuration).from_current()
 				var target_rotation: Vector3
-				if node.BlockParent != null:
-					target_rotation = node.BlockCameraPosition.rotation_degrees + node.BlockParent.rotation_degrees
+				if self.BlockParent != null:
+					target_rotation = self.BlockCameraPosition.rotation_degrees + self.BlockParent.rotation_degrees
 				else:
-					target_rotation = node.BlockCameraPosition.rotation_degrees
+					target_rotation = self.BlockCameraPosition.rotation_degrees
 
-				set_rotation_direction(target_rotation, node)
+				set_rotation_direction(target_rotation)
 				TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", target_rotation, TweenDuration)
 				return
 
-			if node is RoomBlock:
-				TweenInstance.tween_property(Global.PlayerInstance, "position", node.BlockCameraPosition.position + node.position, TweenDuration)
-				if node.PlayerRotation == true:
+			if self is RoomBlock:
+				TweenInstance.tween_property(Global.PlayerInstance, "position", self.BlockCameraPosition.position + self.position, TweenDuration)
+				if self.PlayerRotation == true:
 					print_rich("Rounding to the nearest 90 degrees.")
 					Global.stack_info(get_stack())
 					var target_rotation = 90 * round(Global.PlayerInstance.rotation_degrees.y / 90)
-					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", Vector3(node.BlockCameraPosition.rotation.x, target_rotation, node.BlockCameraPosition.rotation.z), TweenDuration).from_current()
+					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", Vector3(self.BlockCameraPosition.rotation.x, target_rotation, self.BlockCameraPosition.rotation.z), TweenDuration).from_current()
 					return
 				else:
-					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", node.BlockCameraPosition.rotation_degrees, TweenDuration).from_current()
+					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", self.BlockCameraPosition.rotation_degrees, TweenDuration).from_current()
 					return
 			else:
 				pass
 
-	if node.BlockCameraPosition == null:
-		print_rich("Could not find camera position for " + str(node) + ". Trying again.")
+	if self.BlockCameraPosition == null:
+		print_rich("Could not find camera position for %s. Trying again." %[str(self.name)])
 		Global.stack_info(get_stack())
-		for child in node.get_children():
+		for child in self.get_children():
 			if child is CameraPosition:
-				node.BlockCameraPosition = child
-				move_to_camera_position(node, enable_position, enable_rotation)
+				self.BlockCameraPosition = child
+				move_to_camera_position()
 
 func disable_collider():
 	if self.BlockCollider != null:
@@ -179,9 +179,9 @@ func disconnect_deactivate_signal(node: Block):
 		return
 
 func activate():
-	print_rich("Activating %s." %[str(Global.Game_Data_Instance.Current_Block)])
+	print_rich("Activating %s." %[str(Global.Game_Data_Instance.Current_Block.name)])
 	Global.stack_info(get_stack())
-	move_to_camera_position(self, true, true)
+	move_to_camera_position()
 	Global.Game_Data_Instance.Current_Block = self
 
 	if self.PlayerRotation == true:
@@ -245,8 +245,27 @@ func manage_activation_signals():
 	disconnect_activate_signal(self)
 	disconnect_deactivate_signal(self)
 
+
+func toggle_items(node: Node, boolian: bool):
+	for child in node.get_children():
+		if child is Interactable:
+			if boolian == true:
+				child.enable_collider()
+			else:
+				child.disable_collider()
+		toggle_items(child, boolian)
+	return
+
+func manage_current_block():
+	if Global.Game_Data_Instance.Current_Block == self:
+		toggle_items(self, true)
+
+	if Global.Game_Data_Instance.Current_Block != self:
+		toggle_items(self, false)
+
 func _process(_delta):
 	manage_activation_signals()
+	manage_current_block()
 
 func _ready():
 	block_ready()

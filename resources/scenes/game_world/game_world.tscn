@@ -223,6 +223,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, -7.55)
 
 [node name="Hallway2" parent="InsideMesh" instance=ExtResource("3_e6urm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2.08165e-12, -7.55)
+PlayerRotation = null
+IsOccupied = null
 
 [node name="Office" parent="InsideMesh" instance=ExtResource("4_2oedj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 2.08165e-12, 2.08165e-12)

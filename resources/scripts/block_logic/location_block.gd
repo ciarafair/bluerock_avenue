@@ -21,17 +21,6 @@ func toggle_items(node: Node, boolian: bool):
 		toggle_items(child, boolian)
 	return
 
-
-func manage_items(node: Node, boolian: bool):
-	for child in node.get_children():
-		if child is Interactable:
-			if boolian == true:
-				child.enable_collider()
-			else:
-				child.disable_collider()
-		toggle_items(child, boolian)
-	return
-
 func manage_current_block():
 	if Global.Game_Data_Instance.Current_Block == self:
 		toggle_sub_locations(self, true)

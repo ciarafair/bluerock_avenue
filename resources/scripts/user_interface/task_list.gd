@@ -143,7 +143,7 @@ func manage_tasks():
 
 	if Global.Game_Data_Instance.Current_Task == Global.task.TASK_TWO:
 		if task_two_ran == false:
-			if Global.Game_Data_Instance.Current_Room.RoomNumber == 3:
+			if Global.Game_Data_Instance.Current_Room.RoomNumber == 4:
 				Global.set_task(Global.task.TASK_THREE)
 				task_two_ran = true
 				return

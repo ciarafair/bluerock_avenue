@@ -4,18 +4,8 @@ class_name RoomBlock
 @export var RoomNumber: int
 @export var IsOccupied: bool = false
 
-var VisibleOnScreenEnablerInstance: VisibleOnScreenNotifier3D = null
-
-func search_for_enabler() -> VisibleOnScreenNotifier3D:
-	for child in self.get_children():
-		if child is VisibleOnScreenNotifier3D:
-			print_rich("Found visible on screen enabler for %s." %[self.name])
-			Global.stack_info(get_stack())
-			return child
-	return null
-
 func activate():
-	move_to_camera_position(self, true, true)
+	self.move_to_camera_position()
 	Global.Game_Data_Instance.Current_Block = self
 	print_rich("Activating %s" %[str(Global.Game_Data_Instance.Current_Block)])
 	Global.stack_info(get_stack())
@@ -41,9 +31,16 @@ func manage_locations():
 	search_for_locations(self, true)
 	Global.Game_Data_Instance.Current_Room_Number = RoomNumber
 
+func on_screen_entered():
+	print_rich("%s has entered screen." %[self.name])
+	manage_locations()
+
+func on_screen_exited():
+	print_rich("%s has exited screen." %[self.name])
+	manage_locations()
+
 func _process(_delta):
-	if self.VisibleOnScreenEnablerInstance == null:
-		self.VisibleOnScreenEnablerInstance = self.search_for_enabler()
+	manage_current_block()
 	manage_activation_signals()
 	manage_locations()
 	set_rotation_ability()

@@ -265,8 +265,21 @@ func _process(_delta):
 	elif Global.Game_Data_Instance.Current_Block != self:
 		self.Is_Enabled = false
 
-	if self.BlockParent == Global.Game_Data_Instance.Current_Room:
-		#print_rich(str(Global.Current_Room) + " has " + str(self.name) + " as a child.")
-		self.set_visible(true)
-	elif self.BlockParent != Global.Game_Data_Instance.Current_Room:
-		self.set_visible(false)
+	if self.BlockParent != null:
+		if Global.Game_Data_Instance.Current_Room != null:
+			if Global.Game_Data_Instance.Current_Room.RoomNumber == 2 or Global.Game_Data_Instance.Current_Room.RoomNumber == 3:
+				if self.BlockParent == Global.Game_Data_Instance.Current_Room:
+					self.set_visible(true)
+					return
+				elif self.BlockParent != Global.Game_Data_Instance.Current_Room:
+					if self.BlockParent.RoomNumber == 2 or self.BlockParent.RoomNumber == 3:
+						self.set_visible(true)
+						return
+					else:
+						self.set_visible(false)
+						return
+			else:
+				if self.BlockParent != Global.Game_Data_Instance.Current_Room:
+					self.set_visible(false)
+				else:
+					self.set_visible(true)
