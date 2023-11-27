@@ -153,7 +153,7 @@ func manage_tasks():
 		if task_three_ran == false:
 			print_rich("TASK THREE COMPLETED")
 			Global.stack_info(get_stack())
-			SignalManager.set_monster_room.emit(Global.Loaded_Game_World, 3)
+			SignalManager.set_monster_room.emit(Global.Loaded_Game_World, 4)
 			SignalManager.set_monster_stage.emit(3)
 			task_three_ran = true
 			await SignalManager.reset_monster

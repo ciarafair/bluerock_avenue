@@ -42,6 +42,7 @@ func _on_discord_button_up():
 	return
 
 func _on_new_game_button_up():
+	Global.Settings_Data_Instance.Skip_Introduction = false
 	SignalManager.stop_track.emit()
 	SignalManager.delete_game_data.emit()
 	LoadManager.load_scene(Path.GameWorldPath)
@@ -50,7 +51,6 @@ func _on_new_game_button_up():
 		Global.verify_game_file_directory()
 		self.queue_free()
 		return
-	printerr("Loaded game world was not found.")
 	self.queue_free()
 	return
 
@@ -62,7 +62,6 @@ func _on_continue_button_up():
 		Global.verify_game_file_directory()
 		self.queue_free()
 		return
-	printerr("Loaded game world was not found.")
 	self.queue_free()
 	return
 

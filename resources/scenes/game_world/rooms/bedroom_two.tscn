@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bpvx4f0rphvya"]
+[gd_scene load_steps=68 format=3 uid="uid://bpvx4f0rphvya"]
 
 [ext_resource type="Script" path="res://resources/scripts/block_logic/room_block.gd" id="1_bjcqc"]
 [ext_resource type="Script" path="res://resources/scripts/camera_position.gd" id="2_gjr3a"]
@@ -9,6 +9,9 @@
 [ext_resource type="Material" uid="uid://e4b4cj68vue8" path="res://resources/materials/carpet.tres" id="8_amydf"]
 [ext_resource type="Material" uid="uid://rj05y6fkdh4j" path="res://resources/materials/parents_bedroom_wall.tres" id="9_wboax"]
 [ext_resource type="Script" path="res://resources/scripts/monster_position.gd" id="10_vcmbt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqffc"]
+size = Vector3(10, 5, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xmmqt"]
 size = Vector3(0.5, 4, 2.5)
@@ -508,15 +511,18 @@ size = Vector3(3.8, 0.125, 0.025)
 [sub_resource type="BoxShape3D" id="BoxShape3D_mq1k2"]
 size = Vector3(0.1, 5, 10)
 
-[node name="BedroomTwo" type="Node3D"]
+[node name="BedroomTwo" type="StaticBody3D"]
 script = ExtResource("1_bjcqc")
 RoomNumber = 5
-IsOccupied = null
 PlayerRotation = true
 
 [node name="CameraPosition" type="Marker3D" parent="."]
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 0, 1.75, 2.08165e-12)
 script = ExtResource("2_gjr3a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.5, 2.08165e-12)
+shape = SubResource("BoxShape3D_oqffc")
 
 [node name="Locations" type="Node3D" parent="."]
 
@@ -524,8 +530,8 @@ script = ExtResource("2_gjr3a")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.95, 1.666, 2.08165e-12)
 collision_layer = 3
 script = ExtResource("3_ghikw")
-ConnectedRoomOne = 2
-ConnectedRoomTwo = 4
+ConnectedRoomOne = 3
+ConnectedRoomTwo = 5
 
 [node name="CameraPosition" type="Marker3D" parent="Locations/HallwayDoor"]
 transform = Transform3D(0.62668, -0.0498048, 0.777683, 0, 0.997955, 0.0639116, -0.779276, -0.0400521, 0.625399, 1.39292, 0.586322, 1.1345)

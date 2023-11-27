@@ -19,5 +19,6 @@ var SFX_Volume_Setting: float = -30
 # General
 var Mouse_Sensitivity: float = 0.01
 var Is_Overlay_Effect_Enabled: bool = true
+var Skip_Introduction: bool = false
 var Current_Window_Size: Vector2i = Vector2i(1920,1080)
 var Selected_Resolution_Index: int = 0

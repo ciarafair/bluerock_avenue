@@ -43,18 +43,31 @@ func manage_dialogue():
 			Global.stack_info(get_stack())
 			return
 
+func manage_visibility():
+	for item in Global.Game_Data_Instance.PlayerInventory:
+		if item.name == self.name:
+			self.set_visible(false)
+			self.disable_collider()
+			return
+
+	self.set_visible(true)
+	self.enable_collider()
+	return
+
 func manage_type():
 	match self.InteractableType:
 		type.UNSELECTED:
 			print_rich("Type not selected on interactable %s." %[self.name])
 			Global.stack_info(get_stack())
 			return
+
 		type.DIALOGUE:
 			manage_dialogue()
 			return
+
 		type.OBTAINABLE:
 			SignalManager.activate_popup.emit("Picked up %s." %[self.name], 0.5)
-			Global.Game_Data_Instance.PlayerInventory.append(self.name)
+			Global.add_to_inventory(self)
 			return
 
 func activate():
@@ -62,3 +75,7 @@ func activate():
 
 func _ready():
 	self.disable_collider()
+
+func _process(_delta):
+	if self.InteractableType == type.OBTAINABLE:
+		manage_visibility()

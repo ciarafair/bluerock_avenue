@@ -9,6 +9,7 @@ var BLOCK_RAY_ARRAY: Array = []
 var FLASHLIGHT_RAY_ARRAY: Array = []
 var BLOCK_RESULT_VALUE
 var SpaceState: PhysicsDirectSpaceState3D
+var are_objects_loaded: bool = false
 
 func mouse_position(mask, camera, area_bool, body_bool):
 	if Global.SpaceState == null:
@@ -152,6 +153,11 @@ func load_children():
 	#print_rich("Begining to load.")
 	#Global.stack_info(get_stack())
 
+	SignalManager.load_dialogue_box.emit()
+	await SignalManager.dialogue_box_loaded
+	#print_rich("Dialogue box has loaded.")
+	#Global.stack_info(get_stack())
+
 	SignalManager.load_player.emit()
 	await SignalManager.player_loaded
 	#print_rich("Player loaded.")
@@ -177,28 +183,36 @@ func load_children():
 	#print_rich("Task list has loaded.")
 	#Global.stack_info(get_stack())
 
-	SignalManager.load_dialogue_box.emit()
-	await SignalManager.dialogue_box_loaded
-	#print_rich("Dialogue box has loaded.")
-	#Global.stack_info(get_stack())
-
 	SignalManager.load_monster.emit()
 	await SignalManager.monster_loaded
 	#print_rich("Monster has loaded.")
 	#Global.stack_info(get_stack())
 
-	Global.load_data(Path.GameJSONFilePath, "game")
+	if Global.Settings_Data_Instance.Skip_Introduction == false:
+		SignalManager.load_intro_animation.emit()
+		await SignalManager.intro_animation_loaded
+		await SignalManager.intro_animation_completed
 
+	Global.load_data(Path.GameJSONFilePath, "game")
+	are_objects_loaded = true
+
+@onready var AnimationPlayerInstance = %AnimationPlayer
+@onready var ScreenCover = %ScreenCover
 func _ready():
 	self.set_process_mode(Node.PROCESS_MODE_PAUSABLE)
 	manage_signals()
 	Global.Is_Game_Active = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	load_children()
+	await SignalManager.game_world_loaded
+	AnimationPlayerInstance.play("fade_in")
+	await AnimationPlayerInstance.animation_finished
+	AnimationPlayerInstance.queue_free()
+	ScreenCover.queue_free()
 	return
 
 func _process(_delta):
-	if has_emitted_loaded == false:
+	if has_emitted_loaded == false && are_objects_loaded == true:
 		has_emitted_loaded = true
 		SignalManager.game_world_loaded.emit()
 
@@ -207,5 +221,6 @@ func _process(_delta):
 		block_raycast()
 		item_raycast()
 		Global.SpaceState = Global.PlayerInstance.get_world_3d().direct_space_state
+
 	Global.ScreenCentre = get_window().size / 2
 	Global.MousePosition2D = get_viewport().get_mouse_position()

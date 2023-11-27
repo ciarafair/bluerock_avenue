@@ -245,6 +245,78 @@ value = 0.01
 tick_count = 10
 ticks_on_borders = true
 
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="IntroAnimationCollection" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/IntroAnimationCollection"]
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/IntroAnimationCollection/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/IntroAnimationCollection/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+text = "Skip Introduction"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IntroAnimation" type="CheckBox" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/IntroAnimationCollection/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+
+[node name="Blank" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Blank"]
+layout_mode = 2
+theme = ExtResource("2_dq3bs")
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Blank/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
+[node name="Label" type="Label" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/Blank/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_dq3bs")
+
 [node name="Audio" type="TabBar" parent="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer"]
 visible = false
 layout_mode = 2
@@ -968,6 +1040,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 0)
 [connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer2/StaticOptionsMargin/HBoxContainer/SaveChangesMargin/SaveChanges" to="." method="_on_save_changes_button_up"]
 [connection signal="item_selected" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/Resolution/DropdownMargin/ResolutionButton" to="." method="_on_resolution_button_item_selected"]
 [connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/MouseSensitivity/SliderMargin/SensitivitySlider" to="." method="_on_sensitivity_slider_value_changed"]
+[connection signal="toggled" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/General/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/IntroAnimationCollection/HBoxContainer/IntroAnimation" to="." method="_on_intro_animation_toggled"]
 [connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MasterVolume/SliderCollection/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/MusicVolume/SliderCollection/MusicVolumeSlider" to="." method="_on_music_volume_slider_value_changed"]
 [connection signal="value_changed" from="AspectRatioContainer/MarginContainer/VBoxContainer2/TabContainerMargin/TabContainer/Audio/MarginContainer/ScrollContainer/VBoxContainer/SFXVolume/SliderCollection/SFXVolumeSlider" to="." method="_on_sfx_volume_slider_value_changed"]

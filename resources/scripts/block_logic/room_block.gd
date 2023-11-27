@@ -7,9 +7,7 @@ class_name RoomBlock
 func activate():
 	self.move_to_camera_position()
 	Global.Game_Data_Instance.Current_Block = self
-	print_rich("Activating %s" %[str(Global.Game_Data_Instance.Current_Block)])
-	Global.stack_info(get_stack())
-	#print_rich(Global.Game_Data_Instance.Current_Block_Path)
+	#print_rich("Activating %s" %[str(Global.Game_Data_Instance.Current_Block)])
 	#Global.stack_info(get_stack())
 
 	if self.PlayerRotation == true:
@@ -18,6 +16,7 @@ func activate():
 		Global.Is_Able_To_Turn = false
 
 	SignalManager.room_loaded.emit(self)
+
 	if self.IsOccupied == true:
 		SignalManager.game_over.emit()
 		#print_rich("%s is occupied." %[self.name])
@@ -43,4 +42,3 @@ func _process(_delta):
 	manage_current_block()
 	manage_activation_signals()
 	manage_locations()
-	set_rotation_ability()

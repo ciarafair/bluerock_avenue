@@ -17,8 +17,8 @@ var CanMove: bool = true
 func search_for_camera_position() -> CameraPosition:
 	for child in self.get_children():
 		if child is CameraPosition:
-			print_rich("Found camera for %s" %[str(self.name)])
-			Global.stack_info(get_stack())
+			#print_rich("Found camera for %s" %[str(self.name)])
+			#Global.stack_info(get_stack())
 			return child
 	return null
 
@@ -42,8 +42,8 @@ func search_for_collider() -> CollisionShape3D:
 	return null
 
 func on_tween_finished():
-	print_rich("Tween completed")
-	Global.stack_info(get_stack())
+	#print_rich("Tween completed")
+	#Global.stack_info(get_stack())
 	Global.Is_In_Animation = false
 	self.TweenInstance.kill()
 	SignalManager.animation_finished.emit()
@@ -51,12 +51,12 @@ func on_tween_finished():
 func set_rotation_direction(target_rotation: Vector3):
 	if target_rotation.y > self.rotation_degrees.y + 45 or target_rotation.y < self.rotation_degrees.y -45:
 		if target_rotation.y > 0 && Global.PlayerInstance.rotation_degrees.y < target_rotation.y:
-			print_rich("Rotating from %s clockwise." %[self.name])
-			Global.stack_info(get_stack())
+			#print_rich("Rotating from %s clockwise." %[self.name])
+			#Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y += 360
 		elif target_rotation.y < 0 && Global.PlayerInstance.rotation_degrees.y > target_rotation.y:
-			print_rich("Rotating from %s anti-clockwise." %[self.name])
-			Global.stack_info(get_stack())
+			#print_rich("Rotating from %s anti-clockwise." %[self.name])
+			#Global.stack_info(get_stack())
 			Global.PlayerInstance.rotation_degrees.y -= 360
 
 func move_to_camera_position():
@@ -94,8 +94,8 @@ func move_to_camera_position():
 			if self is RoomBlock:
 				TweenInstance.tween_property(Global.PlayerInstance, "position", self.BlockCameraPosition.position + self.position, TweenDuration)
 				if self.PlayerRotation == true:
-					print_rich("Rounding to the nearest 90 degrees.")
-					Global.stack_info(get_stack())
+					#print_rich("Rounding to the nearest 90 degrees.")
+					#Global.stack_info(get_stack())
 					var target_rotation = 90 * round(Global.PlayerInstance.rotation_degrees.y / 90)
 					TweenInstance.tween_property(Global.PlayerInstance, "rotation_degrees", Vector3(self.BlockCameraPosition.rotation.x, target_rotation, self.BlockCameraPosition.rotation.z), TweenDuration).from_current()
 					return
@@ -106,7 +106,7 @@ func move_to_camera_position():
 				pass
 
 	if self.BlockCameraPosition == null:
-		print_rich("Could not find camera position for %s. Trying again." %[str(self.name)])
+		printerr("Could not find camera position for %s. Trying again." %[str(self.name)])
 		Global.stack_info(get_stack())
 		for child in self.get_children():
 			if child is CameraPosition:
@@ -118,7 +118,7 @@ func disable_collider():
 		self.BlockCollider.set_disabled(true)
 		return
 	else:
-		print_rich("%s does not have a collider to disable." %[str(self.name)])
+		printerr("%s does not have a collider to disable." %[str(self.name)])
 		Global.stack_info(get_stack())
 		return
 
@@ -127,7 +127,7 @@ func enable_collider():
 		self.BlockCollider.set_disabled(false)
 		return
 	else:
-		print_rich("%s does not have a collider to enable." %[str(self.name)])
+		printerr("%s does not have a collider to enable." %[str(self.name)])
 		Global.stack_info(get_stack())
 		return
 
@@ -179,8 +179,8 @@ func disconnect_deactivate_signal(node: Block):
 		return
 
 func activate():
-	print_rich("Activating %s." %[str(Global.Game_Data_Instance.Current_Block.name)])
-	Global.stack_info(get_stack())
+	#print_rich("Activating %s." %[str(Global.Game_Data_Instance.Current_Block.name)])
+	#Global.stack_info(get_stack())
 	move_to_camera_position()
 	Global.Game_Data_Instance.Current_Block = self
 
@@ -202,7 +202,7 @@ func deactivate():
 			return
 
 		if self.BlockParent == null:
-			print_rich("Could not find " + str(self.name) + "'s parent")
+			printerr("Could not find %s's parent" %[str(self.name)])
 			Global.stack_info(get_stack())
 			return
 	return

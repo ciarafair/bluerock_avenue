@@ -109,6 +109,11 @@ func manage_sensitivity_slider():
 func _on_overlay_effect_toggled(_button_pressed):
 	Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled = !Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled
 
+@onready var IntroAnimationButton = %IntroAnimation
+func _on_intro_animation_toggled(_button_pressed):
+	Global.Settings_Data_Instance.Skip_Introduction = !Global.Settings_Data_Instance.Skip_Introduction
+
+
 func visibility_check():
 # General Settings
 	if Global.Settings_Data_Instance.Is_Overlay_Effect_Enabled == true:
@@ -165,6 +170,12 @@ func visibility_check():
 
 	if Global.Settings_Data_Instance.Is_Monster_Info_Visible == false:
 		MonsterInfoButton.set_pressed_no_signal(false)
+
+	if Global.Settings_Data_Instance.Skip_Introduction == true:
+		IntroAnimationButton.set_pressed_no_signal(true)
+
+	if Global.Settings_Data_Instance.Skip_Introduction == false:
+		IntroAnimationButton.set_pressed_no_signal(false)
 
 func _on_main_menu_button_up():
 	self.set_visible(false)

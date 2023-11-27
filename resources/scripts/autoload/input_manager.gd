@@ -130,6 +130,14 @@ func manage_mouse_status():
 		if Input.is_action_just_released("select_dialogue"):
 			Global.set_mouse_state(Global.mouse.MOVEMENT)
 
+func flashlight_check() -> bool:
+	for item in Global.Game_Data_Instance.PlayerInventory:
+		if item is Flashlight:
+			return true
+		else:
+			pass
+	return false
+
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion and Global.Is_Window_Focused == true:
 		SignalManager.mouse_movement.emit(event.position)
@@ -148,7 +156,7 @@ func _unhandled_input(event: InputEvent):
 		if Global.Game_Data_Instance.Current_Event == "window":
 			manage_window_input()
 
-		if Global.Game_Data_Instance.PlayerInventory.has("Flashlight"):
+		if flashlight_check() == true:
 			if Input.is_action_just_released("flashlight"):
 				if EventManager.IS_FLASHLIGHT_TOGGLEABLE == true:
 					Global.Game_Data_Instance.Is_Flashlight_On = !Global.Game_Data_Instance.Is_Flashlight_On

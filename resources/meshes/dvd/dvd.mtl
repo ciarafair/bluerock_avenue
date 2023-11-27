@@ -1,0 +1,13 @@
+# Blender 3.6.2 MTL File: 'dvd.blend'
+# www.blender.org
+
+newmtl Front
+Ns 399.999969
+Ka 1.000000 1.000000 1.000000
+Ks 0.400000 0.400000 0.400000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /Users/ciara/Documents/github/bluerock_avenue/blender/OBJ/Texture/Small Disc Front.bmp
+map_Bump /Users/ciara/Documents/github/bluerock_avenue/blender/OBJ/Texture/Small Disc Alpha.bmp

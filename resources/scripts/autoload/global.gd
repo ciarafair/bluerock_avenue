@@ -19,6 +19,7 @@ const CharacterReadRate: float = 0.025
 var Object_Loader: Node = null
 var PlayerInstance: Player = null
 var MonsterInstance: Node3D = null
+var IntroAnimationInstance: CanvasLayer = null
 var PauseMenuInstance: CanvasLayer = null
 var MovementInterfaceInstance: CanvasLayer = null
 var GameOverScreenInstance: CanvasLayer = null
@@ -79,6 +80,11 @@ enum task {
 	TASK_TWO = 2,
 	TASK_THREE = 3
 }
+
+func add_to_inventory(node: Node):
+	Game_Data_Instance.PlayerInventory.append(node)
+	print_rich("Adding %s to players inventory." %[node])
+	stack_info(get_stack())
 
 @onready var EyeCursor = preload("res://resources/textures/mouse_cursors/eye.png")
 @onready var DialogueCursor = preload("res://resources/textures/mouse_cursors/speech_bubble.png")
@@ -180,7 +186,8 @@ func save_general_settings():
 		"general_settings": {
 			"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
 			"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
-			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
+			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index,
+			"Skip_Introduction": Settings_Data_Instance.Skip_Introduction
 		}
 	}
 	Settings_Dictionary.merge(data, true)
@@ -228,6 +235,7 @@ func load_settings_data(parsed_data: Dictionary):
 	Settings_Data_Instance.Mouse_Sensitivity = parsed_data.general_settings.Mouse_Sensitivity
 	Settings_Data_Instance.Is_Overlay_Effect_Enabled = parsed_data.general_settings.Is_Overlay_Effect_Enabled
 	Settings_Data_Instance.Selected_Resolution_Index = parsed_data.general_settings.Selected_Resolution_Index
+	Settings_Data_Instance.Skip_Introduction = parsed_data.general_settings.Skip_Introduction
 
 	Settings_Data_Instance.Master_Volume_Setting = parsed_data.volume_settings.Master_Volume_Setting
 	Settings_Data_Instance.Music_Volume_Setting = parsed_data.volume_settings.Music_Volume_Setting
@@ -265,7 +273,8 @@ func save_default_settings_data(file: FileAccess):
 		"general_settings": {
 			"Mouse_Sensitivity": Settings_Data_Instance.Mouse_Sensitivity,
 			"Is_Overlay_Effect_Enabled": Settings_Data_Instance.Is_Overlay_Effect_Enabled,
-			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index
+			"Selected_Resolution_Index": Settings_Data_Instance.Selected_Resolution_Index,
+			"Skip_Introduction": Settings_Data_Instance.Skip_Introduction
 		}
 	}
 
@@ -295,7 +304,8 @@ func verify_game_file_directory():
 		SignalManager.load_game_data.emit()
 		return
 	else:
-		print_rich("Game JSON file does not exist.")
+		Game_Data_Instance = GameData.new()
+		printerr("Game JSON file does not exist.")
 		Global.stack_info(get_stack())
 		return null
 
@@ -326,12 +336,26 @@ func save_monster_game_data():
 	}
 	Game_Dictionary.merge(data, true)
 
+func save_player_inventory(data: Array) -> Array:
+	var array: Array = []
+	for item in data:
+		var path: String = item.get_path()
+		array.append(path)
+	print_rich("Saving %s to player's inventory." %[array])
+	stack_info(get_stack())
+	return array
+
 func save_player_game_data():
 	#print_rich("Saving player data")
 	#stack_info(get_stack())
 
 	var RoomPath: String = Game_Data_Instance.Current_Room.get_path()
+	print_rich("Saving %s as the block path for %s" %[RoomPath, Game_Data_Instance.Current_Room])
+	stack_info(get_stack())
+
 	var BlockPath: String = Game_Data_Instance.Current_Block.get_path()
+	print_rich("Saving %s as the block path for %s" %[BlockPath, Game_Data_Instance.Current_Room])
+	stack_info(get_stack())
 
 	var data: Dictionary = {
 		"player": {
@@ -348,7 +372,7 @@ func save_player_game_data():
 
 			"Current_Event" = Game_Data_Instance.Current_Event,
 			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On,
-			"Inventory" = Game_Data_Instance.PlayerInventory
+			"Inventory" = save_player_inventory(Game_Data_Instance.PlayerInventory)
 		}
 	}
 	Game_Dictionary.merge(data, true)
@@ -398,7 +422,7 @@ func save_default_game_data(file: FileAccess):
 
 			"Current_Room" = Game_Data_Instance.Current_Room,
 			"Current_Room_Number" = Game_Data_Instance.Current_Room_Number,
-			"Inventory" = Game_Data_Instance.PlayerInventory
+			"Inventory" = []
 		},
 
 		"world": {
@@ -422,9 +446,9 @@ func on_save_game_data():
 		save_default_game_data(file)
 		return
 
+	save_player_game_data()
 	save_monster_game_data()
 	save_world_game_data()
-	save_player_game_data()
 	save_time_game_data()
 
 	var json_string = JSON.stringify(Game_Dictionary, "\t")
@@ -441,10 +465,22 @@ func search_for_block(node: Node, identifier: String) -> Block:
 		search_for_block(child, identifier)
 	return null
 
+func load_player_inventory(parsed_data: Array) -> Array:
+	var array: Array = []
+	for path in parsed_data:
+		var item_instance = get_node_or_null(path)
+		if item_instance == null:
+			printerr("%s returned null." %[path])
+			Global.stack_info(get_stack())
+			pass
+		print_rich("Loading %s from player's inventory." %[item_instance])
+		stack_info(get_stack())
+		array.append(item_instance)
+	return array
+
 func load_player_data(parsed_data: Dictionary):
 	await SignalManager.player_loaded
 	if PlayerInstance != null:
-
 		PlayerInstance.rotation_degrees.x = parsed_data.player.XRotation
 		PlayerInstance.rotation_degrees.y = parsed_data.player.YRotation
 		PlayerInstance.rotation_degrees.z = parsed_data.player.ZRotation
@@ -452,16 +488,38 @@ func load_player_data(parsed_data: Dictionary):
 		PlayerInstance.position.x  = parsed_data.player.XPosition
 		PlayerInstance.position.y  = parsed_data.player.YPosition
 		PlayerInstance.position.z  = parsed_data.player.ZPosition
-		Game_Data_Instance.PlayerInventory = parsed_data.player.Inventory
+		Game_Data_Instance.PlayerInventory = load_player_inventory(parsed_data.player.Inventory)
 		return
+
 	printerr("Player instance returned null. Could not load game data.")
-	#Global.stack_info(get_stack())
+	Global.stack_info(get_stack())
 	return
 
 func load_instanced_game_data(parsed_data: Dictionary):
 	if Game_Data_Instance != null:
-		Game_Data_Instance.Current_Block = get_node(parsed_data.player.Current_Block)
-		Game_Data_Instance.Current_Room = get_node(parsed_data.player.Room)
+		if Global.Loaded_Game_World != null:
+
+			Game_Data_Instance.Current_Room = get_node_or_null(parsed_data.player.Room)
+			if Game_Data_Instance.Current_Room == null:
+				printerr("Could not find path from %s." %[parsed_data.player.Room])
+				Global.stack_info(get_stack())
+			else:
+				Game_Data_Instance.Current_Room.activate()
+				print_rich("Loading %s as the current room." %[Game_Data_Instance.Current_Room])
+				Global.stack_info(get_stack())
+
+			Game_Data_Instance.Current_Block = get_node_or_null(parsed_data.player.Current_Block)
+			if Game_Data_Instance.Current_Block == null:
+				printerr("Could not find path from %s." %[parsed_data.player.Current_Block])
+				Global.stack_info(get_stack())
+			else:
+				Game_Data_Instance.Current_Block.activate()
+				print_rich("Loading %s as the current block." %[Game_Data_Instance.Current_Block])
+				Global.stack_info(get_stack())
+		else:
+			printerr("Could not load current block or room because the game world is not loaded.")
+			Global.stack_info(get_stack())
+
 		Game_Data_Instance.Current_Event = parsed_data.player.Current_Event
 
 		Game_Data_Instance.Is_Monster_Active = parsed_data.monster.Is_Monster_Active
@@ -476,8 +534,9 @@ func load_instanced_game_data(parsed_data: Dictionary):
 		Game_Data_Instance.Current_Task = parsed_data.world.Current_Task
 		Game_Data_Instance.Television_State = parsed_data.world.Television_State
 		return
+
 	printerr("Game data instance returned null. Could not load game data.")
-	#Global.stack_info(get_stack())
+	Global.stack_info(get_stack())
 	return
 
 func load_game_data(parsed_data: Dictionary):
@@ -502,14 +561,13 @@ func load_data(path: String, type: String):
 		var parsed_data = JSON.parse_string(raw_data)
 		if parsed_data == null:
 			printerr("Cannot parse %s as a json-string: %s" % [path, raw_data])
-			#Global.stack_info(get_stack())
+			Global.stack_info(get_stack())
 			return
 
 		if type == "settings":
 			load_settings_data(parsed_data)
 			return
 		elif type == "game":
-			await SignalManager.game_world_loaded
 			load_game_data(parsed_data)
 			return
 
@@ -519,8 +577,8 @@ func on_delete_game_data():
 	Game_Data_Instance = GameData.new()
 
 	if FileAccess.file_exists(Path.GameJSONFilePath) == true:
-		#print_rich("Deleting file %s" % [Path.GameJSONFilePath])
-		#Global.stack_info(get_stack())
+		print_rich("[b][color=red]Deleting[/color][/b] file %s" % [Path.GameJSONFilePath])
+		Global.stack_info(get_stack())
 		DirAccess.remove_absolute(Path.GameJSONFilePath)
 		return
 	else:

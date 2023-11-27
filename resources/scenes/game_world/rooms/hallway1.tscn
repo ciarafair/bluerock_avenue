@@ -241,8 +241,6 @@ size = Vector3(0.025, 0.125, 5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 script = ExtResource("1_p1ddt")
 RoomNumber = 2
-IsOccupied = null
-PlayerRotation = null
 
 [node name="CameraPosition" type="Marker3D" parent="."]
 transform = Transform3D(-0.334039, 0.0697341, -0.939976, 0, 0.997259, 0.0739837, 0.942559, 0.0247134, -0.333123, -5.98286, 2.3947, -1.45783)

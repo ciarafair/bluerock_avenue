@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 @onready var DialogueTextBox: RichTextLabel = %DialogueLabel
-@onready var NameTextBox: Label = %NameLabel
+@onready var NameTextBox: RichTextLabel = %NameLabel
 @onready var CloseButton: Button = %Close
 @onready var SkipButton: Button = %Skip
 @onready var NextButton: Button = %Next
@@ -13,7 +13,8 @@ enum state {
 }
 
 var StoredText: Dictionary
-var TweenInstance: Tween
+var DialogueTweenInstance: Tween
+var NameTweenInstance: Tween
 var CurrentState: state = state.READY
 
 var CurrentKey: int = 1
@@ -49,56 +50,50 @@ func on_tween_finished():
 	set_state(state.FINISHED)
 
 func set_dialogue(text):
-	if TweenInstance != null:
-		TweenInstance.kill()
+	if DialogueTweenInstance != null:
+		DialogueTweenInstance.kill()
 
-	TweenInstance = get_tree().create_tween()
-	TweenInstance.bind_node(DialogueTextBox)
-	TweenInstance.finished.connect(Callable(on_tween_finished))
+	DialogueTweenInstance = get_tree().create_tween()
+	DialogueTweenInstance.bind_node(DialogueTextBox)
+	DialogueTweenInstance.finished.connect(Callable(on_tween_finished))
 	DialogueTextBox.set_text("")
-	DialogueTextBox.set_text("[font_size=40][outline_size=25] [outline_color=black]")
+	DialogueTextBox.set_text("[font_size=40][outline_size=25][outline_color=black]")
 	DialogueTextBox.append_text(" " + str(text))
 
-	TweenInstance.pause()
-	TweenInstance.tween_property(DialogueTextBox, "visible_ratio", 1.0, len(text) * Global.CharacterReadRate)
-	TweenInstance.play()
+	DialogueTweenInstance.pause()
+	DialogueTweenInstance.tween_property(DialogueTextBox, "visible_ratio", 1.0, len(text) * Global.CharacterReadRate)
+	DialogueTweenInstance.play()
 
 func set_dialogue_name(text: String):
-	NameTextBox.text = str(text)
+	NameTextBox.set_text("")
+	NameTextBox.set_text("[font_size=50][outline_size=25][outline_color=black]")
+	NameTextBox.append_text(" " + str(text))
 
 func empty_dialogue(text: String):
-	if TweenInstance != null:
-		TweenInstance.kill()
+	if DialogueTweenInstance != null:
+		DialogueTweenInstance.kill()
 
-	TweenInstance = get_tree().create_tween()
-	TweenInstance.bind_node(DialogueTextBox)
-	TweenInstance.pause()
-	TweenInstance.tween_property(DialogueTextBox, "visible_ratio", 0, len(text) * Global.CharacterReadRate)
-	TweenInstance.play()
+	DialogueTweenInstance = get_tree().create_tween()
+	DialogueTweenInstance.bind_node(DialogueTextBox)
+	DialogueTweenInstance.pause()
+	DialogueTweenInstance.tween_property(DialogueTextBox, "visible_ratio", 0, len(text) * Global.CharacterReadRate)
+	DialogueTweenInstance.play()
 
 func start_dialogue(text: Dictionary):
 	set_state(state.READING)
-
-	#print_rich("The block %s has dialogue: %s" %[node, parsed_data])
-	#Global.stack_info(get_stack())
 	KeysArray = text.keys()
-	#print_rich("Total keys in dictionary: %s" %[KeysArray.size()])
-	#Global.stack_info(get_stack())
-	#print_rich("Current key is: %s" %[text.keys()[CurrentKey - 1]])
-	#Global.stack_info(get_stack())
-
 	set_dialogue_name(text.values()[CurrentKey - 1].name)
 	set_dialogue(text.values()[CurrentKey - 1].dialogue)
 	return
 
 func on_click_dialogue(_node: Node, text: Dictionary):
-	print_rich("Beginning dialogue.")
-	Global.stack_info(get_stack())
+	#print_rich("Beginning dialogue.")
+	#Global.stack_info(get_stack())
 
 	StoredText = text
 	if CurrentState == state.READY:
-		print_rich("Clicked while state was %s"%[CurrentState])
-		Global.stack_info(get_stack())
+		#print_rich("Clicked while state was %s"%[CurrentState])
+		#Global.stack_info(get_stack())
 		self.set_visible(true)
 		start_dialogue(text)
 		return
@@ -106,13 +101,13 @@ func on_click_dialogue(_node: Node, text: Dictionary):
 
 func next_page():
 	empty_dialogue(StoredText.values()[CurrentKey - 1].dialogue)
-	await TweenInstance.finished
+	await DialogueTweenInstance.finished
 	CurrentKey += 1
 	start_dialogue(StoredText)
 	return
 
 func _on_skip_button_button_up():
-	TweenInstance.stop()
+	DialogueTweenInstance.stop()
 	DialogueTextBox.set_visible_ratio(1.0)
 	set_state(state.FINISHED)
 	return
@@ -120,6 +115,7 @@ func _on_skip_button_button_up():
 func _on_close_button_up():
 	StoredText = {}
 	reset()
+	SignalManager.dialogue_close.emit()
 	return
 
 func _on_next_button_up():

@@ -84,8 +84,13 @@ signal load_game_world
 signal game_world_loaded
 signal free_game_world
 
+signal load_intro_animation
+signal intro_animation_loaded
+signal intro_animation_completed
+
 signal load_dialogue_box
 signal dialogue_box_loaded
+signal dialogue_close
 signal click_dialogue
 
 signal load_pause_menu

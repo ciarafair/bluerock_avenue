@@ -10,6 +10,7 @@ var Local_Monster_Instance
 
 # User Interface
 var User_Interface_Instance = Control.new()
+var Intro_Animation_Instance
 var Dev_Utilities_Instance
 var Movement_Interface_Instance
 var Main_Menu_Instance
@@ -106,6 +107,10 @@ func _process(_delta):
 		pass
 
 func manage_game_world_signals():
+		if SignalManager.load_intro_animation.is_connected(Callable(add_object)):
+			SignalManager.load_intro_animation.disconnect(Callable(add_object))
+		SignalManager.load_intro_animation.connect(Callable(add_object).bind(Path.IntroAnimationPath, Intro_Animation_Instance, User_Interface_Instance))
+
 		if SignalManager.load_pause_menu.is_connected(Callable(add_object)):
 			SignalManager.load_pause_menu.disconnect(Callable(add_object))
 		SignalManager.load_pause_menu.connect(Callable(add_object).bind(Path.PauseMenuPath, Pause_Menu_Instance, User_Interface_Instance))
@@ -144,18 +149,22 @@ func manage_game_world_signals():
 func on_scene_loaded(resource: PackedScene):
 	var InstancedResource = resource.instantiate()
 	if resource == preload(Path.GameWorldPath):
-		Game_World_Instance = InstancedResource
-		manage_game_world_signals()
-		self.add_child(Game_World_Instance)
+
 		if Global.Loaded_Game_World != null:
 			Global.Loaded_Game_World.queue_free()
+		if Game_World_Instance != null:
+			Game_World_Instance.queue_free()
+
+		Game_World_Instance = InstancedResource
 		Global.Loaded_Game_World = Game_World_Instance
+		manage_game_world_signals()
+		self.add_child(Game_World_Instance)
 		SignalManager.load_game_world.emit()
 		return
 
 	if resource == preload(Path.MainMenuPath):
-		User_Interface_Instance.add_child(InstancedResource)
 		Main_Menu_Instance = InstancedResource
+		User_Interface_Instance.add_child(InstancedResource)
 		Global.Loaded_Main_Menu = Main_Menu_Instance
 		return
 	pass

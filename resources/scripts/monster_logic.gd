@@ -3,7 +3,7 @@ extends StaticBody3D
 const WaitTime: float = 1.5
 var WindowTimer: Timer = Timer.new()
 
-const DefaultRoomPool = [1,3,4]
+const DefaultRoomPool = [1,4,5]
 var RoomPool: Array = []
 
 var Room: RoomBlock = null
