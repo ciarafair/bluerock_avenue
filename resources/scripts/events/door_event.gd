@@ -81,10 +81,11 @@ func open_door():
 
 		self.DoorTweenInstance = get_tree().create_tween().chain()
 		self.DoorTweenInstance.bind_node(self)
+		self.DoorTweenInstance.finished.connect(Callable(on_door_opened))
 
 		if self.PivotPoint != null:
 			twist_doorhandle()
-			self.DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current().finished.connect(Callable(on_door_opened))
+			self.DoorTweenInstance.tween_property(self.PivotPoint, "rotation_degrees:y", self.PivotPoint.rotation_degrees.y + door_opening_degrees - self.rotation_degrees.y, door_opening_time).from_current()
 			return
 
 		elif self.PivotPoint == null:
@@ -94,6 +95,7 @@ func open_door():
 
 func on_door_opened():
 	await self.DoorTweenInstance.finished
+	SignalManager.door_toggled.emit()
 	pass
 
 func close_door():
@@ -145,6 +147,7 @@ func check_if_player_is_listening_to_door():
 
 func on_door_closed():
 	await self.DoorTweenInstance.finished
+	SignalManager.door_toggled.emit()
 	Global.Is_Door_Open = false
 	SignalManager.disable_other_side_of_door.emit(Global.Loaded_Game_World, find_other_room())
 
@@ -160,16 +163,16 @@ func on_toggle_door():
 
 func find_other_room():
 	# If the current room number is one of the two options move to the other one.
-	if Global.Game_Data_Instance.Current_Room.RoomNumber == ConnectedRoomOne:
+	if Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomOne:
 		#print_rich("Opposite room is #" + str(ConnectedRoomTwo))
 		#Global.stack_info(get_stack())
-		return ConnectedRoomTwo
-	elif Global.Game_Data_Instance.Current_Room.RoomNumber == ConnectedRoomTwo:
+		return self.ConnectedRoomTwo
+	elif Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomTwo:
 		#print_rich("Opposite room is #" + str(ConnectedRoomOne))
 		#Global.stack_info(get_stack())
-		return ConnectedRoomOne
-	elif Global.Game_Data_Instance.Current_Room.RoomNumber != ConnectedRoomOne and Global.Game_Data_Instance.Current_Room.RoomNumber != ConnectedRoomTwo:
-		printerr("Could not find room number out of either %s or %s." % [ConnectedRoomOne, ConnectedRoomTwo])
+		return self.ConnectedRoomOne
+	elif Global.Game_Data_Instance.Current_Room.RoomNumber != self.ConnectedRoomOne and Global.Game_Data_Instance.Current_Room.RoomNumber != self.ConnectedRoomTwo:
+		printerr("Could not find room number out of either %s or %s." % [self.ConnectedRoomOne, self.ConnectedRoomTwo])
 		Global.stack_info(get_stack())
 
 func start_event():
@@ -234,18 +237,43 @@ func move_to_other_room():
 		if Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomOne:
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
-			print_rich("Moving to room #" + str(Global.Game_Data_Instance.Current_Block.ConnectedRoomTwo))
-			Global.stack_info(get_stack())
+
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomTwo)
 			SignalManager.stop_event.emit()
+
+			if self.Locations != []:
+				for child in self.Locations:
+					if child.BlockCollider != null:
+						child.disable_collider()
+
+			if self.Interactables != []:
+				for child in self.Interactables:
+					if child.InteractableCollider != null:
+						child.disable_collider()
+
+			print_rich("Moving to room # %s" %[self.ConnectedRoomTwo])
+			Global.stack_info(get_stack())
 			return
+
 		elif Global.Game_Data_Instance.Current_Room.RoomNumber == self.ConnectedRoomTwo:
 			Global.Game_Data_Instance.Current_Room.set_visible(false)
 			Global.Game_Data_Instance.Current_Event = ""
-			print_rich("Moving to room #" + str(Global.Game_Data_Instance.Current_Block.ConnectedRoomOne))
-			Global.stack_info(get_stack())
+
 			SignalManager.move_to_room.emit(Global.Loaded_Game_World, self.ConnectedRoomOne)
 			SignalManager.stop_event.emit()
+
+			if self.Locations != []:
+				for child in self.Locations:
+					if child.BlockCollider != null:
+						child.disable_collider()
+
+			if self.Interactables != []:
+				for child in self.Interactables:
+					if child.InteractableCollider != null:
+						child.disable_collider()
+
+			print_rich("Moving to room # %s" %[self.ConnectedRoomOne])
+			Global.stack_info(get_stack())
 			return
 	return
 
@@ -253,7 +281,6 @@ func _process(_delta):
 	set_rotation_ability()
 	manage_activation_signals()
 	manage_signals()
-	manage_current_block()
 
 	if self.DoorTweenInstance != null:
 		door_closing_time = self.DoorTweenInstance.get_total_elapsed_time()

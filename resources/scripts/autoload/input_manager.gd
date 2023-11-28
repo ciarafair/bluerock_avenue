@@ -67,10 +67,6 @@ func manage_window_input():
 			return
 
 func manage_door_input():
-	if Input.is_action_just_pressed("manage_door_status") && IsHoldingShift == false:
-		if Global.Is_In_Animation == false:
-			SignalManager.toggle_door.emit()
-
 	if Input.is_action_pressed("manage_door_listening"):
 		if Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
 			Global.Game_Data_Instance.Current_Block.check_if_player_is_listening_to_door()
@@ -90,22 +86,15 @@ func manage_door_input():
 	if Input.is_action_just_released("mouse_button_1"):
 		#print_rich("Left mouse button pressed.")
 		#Global.stack_info(get_stack())
-		if Global.CurrentMouseState == 1 && Global.Game_Data_Instance.Current_Block.CurrentStatus == 1:
+		if Global.CurrentMouseState == 1:
 			if Global.Hovering_Interactable != null:
 				Global.Hovering_Interactable.activate()
 				return
 
-		if Global.CurrentMouseState == 1 && Global.Game_Data_Instance.Current_Block.CurrentStatus == 0:
-			IsHoldingSpace = false
-			Global.Game_Data_Instance.Current_Block.move_to_other_room()
-
-		if Global.CurrentMouseState == 2:
-			if Global.Hovering_Block != null:
-				if Global.Hovering_Block.BlockDialoguePath != null:
-					print_debug("Emitting dialogue signal")
-					Global.stack_info(get_stack())
-					SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
-					return
+	if Input.is_action_just_released("spacebar"):
+		IsHoldingSpace = false
+		Global.Game_Data_Instance.Current_Block.move_to_other_room()
+		return
 
 	if Input.is_action_just_released("mouse_button_2"):
 		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block) # EventManager.gd

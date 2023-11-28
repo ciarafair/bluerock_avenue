@@ -5,10 +5,10 @@ class_name RoomBlock
 @export var IsOccupied: bool = false
 
 func activate():
+	print_rich("Activating %s" %[self.name])
+	Global.stack_info(get_stack())
 	self.move_to_camera_position()
 	Global.Game_Data_Instance.Current_Block = self
-	#print_rich("Activating %s" %[str(Global.Game_Data_Instance.Current_Block)])
-	#Global.stack_info(get_stack())
 
 	if self.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
@@ -17,28 +17,39 @@ func activate():
 
 	SignalManager.room_loaded.emit(self)
 
+	if self.Locations != []:
+		for child in self.Locations:
+			if child.BlockCollider != null:
+				child.enable_collider()
+
+	if self.Interactables != []:
+		for child in self.Interactables:
+			if child.InteractableCollider != null:
+				if child.visible:
+					child.enable_collider()
+
 	if self.IsOccupied == true:
 		SignalManager.game_over.emit()
-		#print_rich("%s is occupied." %[self.name])
-		#Global.stack_info(get_stack())
-
-func manage_locations():
-	if Global.Game_Data_Instance.Current_Block != self:
-		search_for_locations(self, false)
+		print_rich("%s is occupied." %[self.name])
+		Global.stack_info(get_stack())
 		return
-
-	search_for_locations(self, true)
-	Global.Game_Data_Instance.Current_Room_Number = RoomNumber
+	return
 
 func on_screen_entered():
 	print_rich("%s has entered screen." %[self.name])
-	manage_locations()
+	Global.stack_info(get_stack())
 
 func on_screen_exited():
 	print_rich("%s has exited screen." %[self.name])
-	manage_locations()
+	Global.stack_info(get_stack())
 
 func _process(_delta):
-	manage_current_block()
 	manage_activation_signals()
-	manage_locations()
+
+func _ready():
+	block_ready()
+	self.search_for_locations(self)
+	self.search_for_interactables(self)
+	print_rich("%s has %s locations. \n %s" %[self.name, self.Locations.size(), self.Locations])
+	print_rich("%s has %s interactables. \n %s" %[self.name, self.Interactables.size(), self.Interactables])
+	Global.stack_info(get_stack())

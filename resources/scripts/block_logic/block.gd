@@ -8,9 +8,13 @@ const rotation_speed = 0.5
 const TweenDuration: float = 0.5
 var TweenInstance: Tween
 
-var BlockCameraPosition: CameraPosition = null
-var BlockCollider: CollisionShape3D = null
-var BlockParent: Block = null
+@onready var BlockCameraPosition: CameraPosition = search_for_camera_position()
+@onready var BlockCollider: CollisionShape3D = search_for_collider()
+@onready var BlockParent: Block = search_for_parent(self)
+
+var Locations: Array = []
+var Interactables: Array = []
+
 var IsActive: bool = false
 var CanMove: bool = true
 
@@ -40,6 +44,34 @@ func search_for_collider() -> CollisionShape3D:
 			#Global.stack_info(get_stack())
 			return child
 	return null
+
+func search_for_locations(node: Node):
+	for child in node.get_children(true):
+		if child is LocationBlock:
+			if self.Locations.has(child):
+				pass
+			else:
+				self.Locations.append(child)
+		else:
+			if child.get_parent() == self:
+				search_for_locations(child)
+			else:
+				pass
+
+func search_for_interactables(node: Node):
+	for child in node.get_children(true):
+		if child is Interactable:
+			if self.Interactables.has(child):
+				pass
+			else:
+				self.Interactables.append(child)
+		else:
+			for child2 in child.get_children(true):
+				if child2 is Interactable:
+					if self.Interactables.has(child2):
+						pass
+					else:
+						self.Interactables.append(child2)
 
 func on_tween_finished():
 	#print_rich("Tween completed")
@@ -112,11 +144,14 @@ func move_to_camera_position():
 			if child is CameraPosition:
 				self.BlockCameraPosition = child
 				move_to_camera_position()
+				return
+		return
 
 func disable_collider():
 	if self.BlockCollider != null:
-		self.BlockCollider.set_disabled(true)
-		return
+		if self.BlockCollider.is_disabled() == false:
+			self.BlockCollider.set_disabled(true)
+			return
 	else:
 		printerr("%s does not have a collider to disable." %[str(self.name)])
 		Global.stack_info(get_stack())
@@ -124,31 +159,13 @@ func disable_collider():
 
 func enable_collider():
 	if self.BlockCollider != null:
-		self.BlockCollider.set_disabled(false)
-		return
+		if self.BlockCollider.is_disabled() == true:
+			self.BlockCollider.set_disabled(false)
+			return
 	else:
 		printerr("%s does not have a collider to enable." %[str(self.name)])
 		Global.stack_info(get_stack())
 		return
-
-func search_for_locations(node: Node, enable: bool):
-	if enable == true:
-		for child in node.get_children():
-			if child is LocationBlock:
-				child.enable_collider()
-				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
-				#Global.stack_info(get_stack())
-			else:
-				search_for_locations(child, true)
-
-	if enable == false:
-		for child in node.get_children():
-			if child is LocationBlock:
-				child.disable_collider()
-				#print_rich("Found " + str(self.name) + "'s location block: " + str(child.name))
-				#Global.stack_info(get_stack())
-			else:
-				search_for_locations(child, false)
 
 func connect_activate_signal(node: Block):
 	if node != null:
@@ -179,32 +196,56 @@ func disconnect_deactivate_signal(node: Block):
 		return
 
 func activate():
-	#print_rich("Activating %s." %[str(Global.Game_Data_Instance.Current_Block.name)])
-	#Global.stack_info(get_stack())
-	move_to_camera_position()
+	print_rich("Activating %s." %[str(self.name)])
+	Global.stack_info(get_stack())
+
 	Global.Game_Data_Instance.Current_Block = self
+
+	if self.Locations != []:
+		for child in self.Locations:
+			if child.BlockCollider != null:
+				child.enable_collider()
+
+	if self.Interactables != []:
+		for child in self.Interactables:
+			if child.InteractableCollider != null:
+				if child.visible:
+					child.enable_collider()
 
 	if self.PlayerRotation == true:
 		Global.Is_Able_To_Turn = true
 	else:
 		Global.Is_Able_To_Turn = false
+
 	if self.BlockCollider != null:
 		self.disable_collider()
+
+	self.move_to_camera_position()
 	return
 
 func deactivate():
+	print_rich("Deactivating %s." %[self.name])
+	Global.stack_info(get_stack())
+
 	if Global.Game_Data_Instance.Current_Event != "":
 		SignalManager.stop_event.emit()
 
-	if not self is RoomBlock:
-		if self.BlockParent != null:
-			SignalManager.activate_block.emit(self.BlockParent)
-			return
+	if self.Locations != []:
+		for child in self.Locations:
+			if child.BlockCollider != null:
+				child.disable_collider()
 
-		if self.BlockParent == null:
-			printerr("Could not find %s's parent" %[str(self.name)])
-			Global.stack_info(get_stack())
-			return
+	if self.Interactables != []:
+		for child in self.Interactables:
+			if child.InteractableCollider != null:
+				child.disable_collider()
+
+	if self.BlockParent == null:
+		printerr("Could not find %s's parent" %[str(self.name)])
+		Global.stack_info(get_stack())
+		return
+
+	SignalManager.activate_block.emit(self.BlockParent)
 	return
 
 func on_activate_block(node: Block):
@@ -219,17 +260,11 @@ func set_rotation_ability():
 			Global.Is_Able_To_Turn = self.PlayerRotation
 
 func block_ready():
-	set_rotation_ability()
+	self.set_rotation_ability()
 
-	connect_activate_signal(self)
-	connect_deactivate_signal(self)
-
-	self.BlockParent = search_for_parent(self)
-	self.BlockCameraPosition = search_for_camera_position()
-	self.BlockCollider = search_for_collider()
-
-	if self.BlockCollider != null:
-		self.BlockCollider.disabled = true
+	self.connect_activate_signal(self)
+	self.connect_deactivate_signal(self)
+	self.disable_collider()
 	return
 
 func manage_activation_signals():
@@ -245,27 +280,8 @@ func manage_activation_signals():
 	disconnect_activate_signal(self)
 	disconnect_deactivate_signal(self)
 
-
-func toggle_items(node: Node, boolian: bool):
-	for child in node.get_children():
-		if child is Interactable:
-			if boolian == true:
-				child.enable_collider()
-			else:
-				child.disable_collider()
-		toggle_items(child, boolian)
-	return
-
-func manage_current_block():
-	if Global.Game_Data_Instance.Current_Block == self:
-		toggle_items(self, true)
-
-	if Global.Game_Data_Instance.Current_Block != self:
-		toggle_items(self, false)
-
 func _process(_delta):
 	manage_activation_signals()
-	manage_current_block()
 
 func _ready():
 	block_ready()

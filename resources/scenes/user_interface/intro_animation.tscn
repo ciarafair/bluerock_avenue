@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://resources/scripts/intro_animation.gd" id="1_kw47p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uw8kb"]
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.0509804, 0.0431373, 0.0666667, 1)
 
 [node name="IntroAnimation" type="CanvasLayer"]
 script = ExtResource("1_kw47p")

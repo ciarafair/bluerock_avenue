@@ -497,6 +497,7 @@ func load_player_data(parsed_data: Dictionary):
 		PlayerInstance.position.y  = parsed_data.player.YPosition
 		PlayerInstance.position.z  = parsed_data.player.ZPosition
 		Game_Data_Instance.PlayerInventory = load_player_inventory(parsed_data.player.Inventory)
+		SignalManager.player_data_loaded.emit()
 		return
 
 	printerr("Player instance returned null. Could not load game data.")

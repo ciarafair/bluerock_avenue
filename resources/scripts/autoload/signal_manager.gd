@@ -12,9 +12,11 @@ signal show_options_menu
 signal hide_pause_menu
 
 # Global
+
 signal load_settings_data
 signal save_settings_data
 signal load_game_data
+signal player_data_loaded
 signal game_data_loaded
 signal save_game_data
 signal delete_game_data
@@ -42,6 +44,7 @@ signal disable_other_side_of_door
 signal open_door
 signal close_door
 signal toggle_door
+signal door_toggled
 
 # Window Event
 signal open_window

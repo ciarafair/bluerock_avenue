@@ -7,7 +7,7 @@ enum type {
 	OBTAINABLE = 2
 }
 
-@onready var ItemCollider = find_collider()
+@onready var InteractableCollider = find_collider()
 
 @export var DialoguePath: String
 @export var InteractableType: type
@@ -19,20 +19,20 @@ func find_collider() -> CollisionShape3D:
 	return null
 
 func enable_collider():
-	if self.ItemCollider != null:
+	if self.InteractableCollider != null && self.InteractableCollider.is_disabled() == true:
 		#print_rich("Enabling the item %s" %[self.name])
 		#Global.stack_info(get_stack())
-		self.ItemCollider.set_disabled(false)
+		self.InteractableCollider.set_disabled(false)
 
 func disable_collider():
-	if self.ItemCollider != null:
+	if self.InteractableCollider != null && self.InteractableCollider.is_disabled() == false:
 		#print_rich("Disabling the item %s" %[self.name])
 		#Global.stack_info(get_stack())
-		self.ItemCollider.set_disabled(true)
+		self.InteractableCollider.set_disabled(true)
 
 func manage_dialogue():
-		if DialoguePath != null:
-			var json = load(DialoguePath)
+		if self.DialoguePath != null:
+			var json = load(self.DialoguePath)
 			var stringified_json = Global.stringify_json(json)
 			print_rich("Activating %s with the dialogue %s." %[self.name, stringified_json])
 			Global.stack_info(get_stack())
@@ -42,17 +42,6 @@ func manage_dialogue():
 			print_rich("Dialogue path not entered.")
 			Global.stack_info(get_stack())
 			return
-
-func manage_visibility():
-	for item in Global.Game_Data_Instance.PlayerInventory:
-		if item.name == self.name:
-			self.set_visible(false)
-			self.disable_collider()
-			return
-
-	self.set_visible(true)
-	self.enable_collider()
-	return
 
 func manage_type():
 	match self.InteractableType:
@@ -68,14 +57,20 @@ func manage_type():
 		type.OBTAINABLE:
 			SignalManager.activate_popup.emit("Picked up %s." %[self.name], 0.5)
 			Global.add_to_inventory(self)
+			manage_visibility()
 			return
+
+func manage_visibility():
+	if Global.Game_Data_Instance.PlayerInventory.has(self):
+		self.disable_collider()
+		self.set_visible(false)
 
 func activate():
 	manage_type()
+	return
 
 func _ready():
 	self.disable_collider()
+	await SignalManager.player_data_loaded
+	manage_visibility()
 
-func _process(_delta):
-	if self.InteractableType == type.OBTAINABLE:
-		manage_visibility()

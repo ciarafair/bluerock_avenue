@@ -104,6 +104,7 @@ func manage_signals():
 	SignalManager.toggle_tv.connect(Callable(on_toggle_tv))
 
 func _ready():
+	self.disable_collider()
 	manage_signals()
 	set_process(true)
 	await SignalManager.game_world_loaded
