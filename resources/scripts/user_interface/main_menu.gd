@@ -45,6 +45,7 @@ func _on_new_game_button_up():
 	Global.Settings_Data_Instance.Skip_Introduction = false
 	SignalManager.stop_track.emit()
 	SignalManager.delete_game_data.emit()
+	Global.CurrentGameState = Global.game_state.GAME
 	LoadManager.load_scene(Path.GameWorldPath)
 	await SignalManager.game_world_loaded
 	if Global.Loaded_Game_World:

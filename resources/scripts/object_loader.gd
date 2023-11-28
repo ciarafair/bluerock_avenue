@@ -194,4 +194,5 @@ func _ready():
 	Global.verify_settings_file_directory()
 	SignalManager.load_audio_manager.emit()
 	load_user_interface()
+	Global.CurrentGameState = Global.game_state.MAINMENU
 	LoadManager.load_scene(Path.MainMenuPath)

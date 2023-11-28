@@ -670,3 +670,5 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_qa0e8")
 }
+
+[connection signal="ready" from="ScreenCover" to="." method="_on_screen_cover_ready"]

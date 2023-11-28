@@ -81,6 +81,14 @@ enum task {
 	TASK_THREE = 3
 }
 
+
+var CurrentGameState: game_state = game_state.NULL
+enum game_state {
+	NULL = 0,
+	MAINMENU = 1,
+	GAME = 2
+}
+
 func add_to_inventory(node: Node):
 	Game_Data_Instance.PlayerInventory.append(node)
 	print_rich("Adding %s to players inventory." %[node])

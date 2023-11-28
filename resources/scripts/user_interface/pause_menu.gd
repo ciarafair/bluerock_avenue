@@ -24,6 +24,7 @@ func _on_quit_button_up():
 	#Global.stack_info(get_stack())
 	Global.Is_Pause_Menu_Open = false
 	get_tree().paused = false
+	Global.CurrentGameState = Global.game_state.MAINMENU
 	LoadManager.load_scene(Path.MainMenuPath)
 	return
 
