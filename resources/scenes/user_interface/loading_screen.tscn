@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://qqd4xc0gyi47"]
+[gd_scene load_steps=8 format=3 uid="uid://qqd4xc0gyi47"]
 
 [ext_resource type="Script" path="res://resources/scripts/user_interface/loading_screen.gd" id="1_xnrb6"]
 [ext_resource type="Theme" uid="uid://o43ayitplu0x" path="res://resources/themes/loading_screen.tres" id="2_qrott"]
+[ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="3_5dm83"]
 
 [sub_resource type="Animation" id="Animation_cbqkh"]
 length = 0.001
@@ -194,11 +195,19 @@ ratio = 1.8
 layout_mode = 2
 theme = ExtResource("2_qrott")
 
-[node name="ProgressBar" type="ProgressBar" parent="AspectRatioContainer/Panel"]
+[node name="Label" type="Label" parent="AspectRatioContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "⌛"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 15
+
+[node name="ProgressBar" type="ProgressBar" parent="AspectRatioContainer/MarginContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 27.0
-grow_horizontal = 2
+layout_mode = 2
 theme = ExtResource("2_qrott")
+theme_override_fonts/font = ExtResource("3_5dm83")

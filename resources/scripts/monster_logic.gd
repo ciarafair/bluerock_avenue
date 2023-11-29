@@ -187,6 +187,9 @@ func _process(_delta):
 	if Global.MonsterInstance == null:
 		Global.MonsterInstance = self
 		SignalManager.monster_loaded.emit()
+		if Global.Game_Data_Instance.Monster_Current_Room != "":
+			Room = get_node(Global.Game_Data_Instance.Monster_Current_Room)
+		set_stage(Global.Game_Data_Instance.Monster_Current_Stage)
 
 	return
 
@@ -196,10 +199,3 @@ func _ready():
 
 	manage_window_timer()
 	manage_signals()
-
-	if Global.Game_Data_Instance.Monster_Current_Room != "":
-		Room = get_node(Global.Game_Data_Instance.Monster_Current_Room)
-		#print_rich("Monster is currently in %s" %[Room])
-		#Global.stack_info(get_stack())
-	set_stage(Global.Game_Data_Instance.Monster_Current_Stage)
-#	manage_window_timer()

@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://o43ayitplu0x"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://o43ayitplu0x"]
 
 [ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="1_b3o7c"]
+[ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="2_rcoin"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vudjq"]
 content_margin_left = 0.0
@@ -39,6 +40,7 @@ corner_radius_bottom_left = 6
 corner_detail = 6
 
 [resource]
+default_font = ExtResource("2_rcoin")
 Panel/styles/panel = SubResource("StyleBoxFlat_vudjq")
 ProgressBar/colors/font_color = Color(0.95, 0.95, 0.95, 1)
 ProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)

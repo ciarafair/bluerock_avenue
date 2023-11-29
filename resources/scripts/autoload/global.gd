@@ -365,7 +365,14 @@ func save_player_game_data():
 	print_rich("Saving %s as the block path for %s" %[BlockPath, Game_Data_Instance.Current_Room])
 	stack_info(get_stack())
 
-	var data: Dictionary = {
+	var inventory: Array
+	if Game_Data_Instance.PlayerInventory != []:
+		inventory = save_player_inventory(Game_Data_Instance.PlayerInventory)
+	else:
+		inventory = []
+
+	var data: Dictionary
+	data = {
 		"player": {
 			"XRotation" = PlayerInstance.rotation_degrees.x,
 			"YRotation" = PlayerInstance.rotation_degrees.y,
@@ -380,7 +387,7 @@ func save_player_game_data():
 
 			"Current_Event" = Game_Data_Instance.Current_Event,
 			"Is_Flashlight_On" = Game_Data_Instance.Is_Flashlight_On,
-			"Inventory" = save_player_inventory(Game_Data_Instance.PlayerInventory)
+			"Inventory" = inventory
 		}
 	}
 	Game_Dictionary.merge(data, true)

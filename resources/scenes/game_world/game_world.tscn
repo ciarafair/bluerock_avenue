@@ -6,11 +6,112 @@
 [ext_resource type="PackedScene" uid="uid://djp7lqqfck03c" path="res://resources/scenes/game_world/rooms/bedroom_one.tscn" id="3_n26ou"]
 [ext_resource type="PackedScene" uid="uid://3smbyjolherm" path="res://resources/scenes/game_world/rooms/office.tscn" id="4_2oedj"]
 [ext_resource type="CameraAttributesPractical" uid="uid://bcmemrh4ia4wg" path="res://resources/camera_attributes/Player.tres" id="4_mgfog"]
-[ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/bedroom_two.tscn" id="5_iiyqp"]
+[ext_resource type="PackedScene" uid="uid://bpvx4f0rphvya" path="res://resources/scenes/game_world/rooms/kitchen.tscn" id="5_iiyqp"]
 [ext_resource type="Environment" uid="uid://83bq1txta8r5" path="res://resources/environments/active_game.tres" id="6_u2lc4"]
 [ext_resource type="LightmapGIData" uid="uid://b2tb6ctprj7qy" path="res://resources/light_data/game_world.lmbake" id="7_xxvdt"]
 [ext_resource type="Texture2D" uid="uid://bki2jr3fkpcrn" path="res://resources/textures/grass/colour.jpg" id="9_625td"]
 [ext_resource type="Texture2D" uid="uid://ckxftjw06pxux" path="res://resources/meshes/tree_mat0.png" id="10_6ogec"]
+
+[sub_resource type="Animation" id="Animation_r531e"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenCover:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenCover:modulate:b")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenCover:modulate:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenCover:modulate:r")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_jly45"]
+resource_name = "fade_in"
+length = 1.25
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenCover:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenCover:modulate:b")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ScreenCover:modulate:g")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.2)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenCover:modulate:r")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qa0e8"]
+_data = {
+"RESET": SubResource("Animation_r531e"),
+"fade_in": SubResource("Animation_jly45")
+}
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fdkqv"]
 size = Vector3(120, 0.1, 45)
@@ -210,132 +311,42 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_nia43")
 
-[sub_resource type="Animation" id="Animation_jly45"]
-resource_name = "fade_in"
-length = 1.25
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ScreenCover/ColorRect:modulate:a")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1.2)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ScreenCover/ColorRect:modulate:b")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1.2)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ScreenCover/ColorRect:modulate:g")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1.2)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ScreenCover/ColorRect:modulate:r")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 1.2)
-}
-
-[sub_resource type="Animation" id="Animation_r531e"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ScreenCover/ColorRect:modulate:a")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ScreenCover/ColorRect:modulate:b")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("ScreenCover/ColorRect:modulate:g")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/3/type = "bezier"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("ScreenCover/ColorRect:modulate:r")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_qa0e8"]
-_data = {
-"RESET": SubResource("Animation_r531e"),
-"fade_in": SubResource("Animation_jly45")
-}
-
 [node name="GameWorld" type="Node3D"]
 process_mode = 1
 script = ExtResource("1_lcsd0")
 
+[node name="ScreenCover" type="ColorRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_qa0e8")
+}
+
 [node name="InsideMesh" type="Node3D" parent="."]
 
 [node name="KidOneBedroom" parent="InsideMesh" instance=ExtResource("3_n26ou")]
-IsOccupied = null
 
 [node name="Hallway1" parent="InsideMesh" instance=ExtResource("2_3ded8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.08165e-12, -7.55)
-IsOccupied = null
-PlayerRotation = null
 
 [node name="Hallway2" parent="InsideMesh" instance=ExtResource("3_e6urm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2.08165e-12, -7.55)
-IsOccupied = null
 
 [node name="Office" parent="InsideMesh" instance=ExtResource("4_2oedj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 2.08165e-12, 2.08165e-12)
-IsOccupied = null
 
-[node name="ParentsBedroom" parent="InsideMesh" instance=ExtResource("5_iiyqp")]
+[node name="Kitchen" parent="InsideMesh" instance=ExtResource("5_iiyqp")]
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 25, 2.08165e-12, -6.25)
-IsOccupied = null
 
 [node name="Lighting" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.08165e-12, -7.55)
@@ -657,22 +668,3 @@ light_data = ExtResource("7_xxvdt")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_u2lc4")
 camera_attributes = ExtResource("4_mgfog")
-
-[node name="ScreenCover" type="CanvasLayer" parent="."]
-unique_name_in_owner = true
-layer = 2
-
-[node name="ColorRect" type="ColorRect" parent="ScreenCover"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-unique_name_in_owner = true
-libraries = {
-"": SubResource("AnimationLibrary_qa0e8")
-}

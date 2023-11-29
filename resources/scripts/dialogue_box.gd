@@ -2,13 +2,12 @@ extends CanvasLayer
 
 @onready var DialogueTextBox: RichTextLabel = %DialogueLabel
 @onready var NameTextBox: RichTextLabel = %NameLabel
-@onready var CloseButton: Button = %Close
-@onready var SkipButton: Button = %Skip
-@onready var NextButton: Button = %Next
+@onready var Arrow: RichTextLabel = %Arrow
 
 enum state {
 	READY,
 	READING,
+	CLEARING,
 	FINISHED
 }
 
@@ -20,22 +19,34 @@ var CurrentState: state = state.READY
 var CurrentKey: int = 1
 var KeysArray: Array = []
 
+var ErrorTextEffect: RichTextEffect = null
+
 func set_state(next: state):
 	CurrentState = next
 	match CurrentState:
 		state.READY:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
+			Arrow.set_visible(false)
 			return
 
 		state.READING:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
+			Arrow.set_visible(false)
 			return
+
+		state.CLEARING:
+			#print_rich("Changing dialogue box's state to %s" %[NextState])
+			#Global.stack_info(get_stack())
+			Arrow.set_visible(false)
+			return
+
 
 		state.FINISHED:
 			#print_rich("Changing dialogue box's state to %s" %[NextState])
 			#Global.stack_info(get_stack())
+			Arrow.set_visible(true)
 			return
 
 func reset():
@@ -58,7 +69,7 @@ func set_dialogue(text):
 	DialogueTweenInstance.finished.connect(Callable(on_tween_finished))
 	DialogueTextBox.set_text("")
 	DialogueTextBox.set_text("[font_size=40][outline_size=25][outline_color=black]")
-	DialogueTextBox.append_text(" " + str(text))
+	DialogueTextBox.append_text(str(text))
 
 	DialogueTweenInstance.pause()
 	DialogueTweenInstance.tween_property(DialogueTextBox, "visible_ratio", 1.0, len(text) * Global.CharacterReadRate)
@@ -67,7 +78,7 @@ func set_dialogue(text):
 func set_dialogue_name(text: String):
 	NameTextBox.set_text("")
 	NameTextBox.set_text("[font_size=50][outline_size=25][outline_color=black]")
-	NameTextBox.append_text(" " + str(text))
+	NameTextBox.append_text(str(text))
 
 func empty_dialogue(text: String):
 	if DialogueTweenInstance != null:
@@ -86,7 +97,7 @@ func start_dialogue(text: Dictionary):
 	set_dialogue(text.values()[CurrentKey - 1].dialogue)
 	return
 
-func on_click_dialogue(_node: Node, text: Dictionary):
+func on_click_dialogue(text: Dictionary):
 	#print_rich("Beginning dialogue.")
 	#Global.stack_info(get_stack())
 
@@ -100,56 +111,57 @@ func on_click_dialogue(_node: Node, text: Dictionary):
 	return
 
 func next_page():
+	set_state(state.CLEARING)
 	empty_dialogue(StoredText.values()[CurrentKey - 1].dialogue)
 	await DialogueTweenInstance.finished
 	CurrentKey += 1
 	start_dialogue(StoredText)
 	return
 
-func _on_skip_button_button_up():
-	DialogueTweenInstance.stop()
-	DialogueTextBox.set_visible_ratio(1.0)
-	set_state(state.FINISHED)
-	return
-
-func _on_close_button_up():
-	StoredText = {}
-	reset()
-	SignalManager.dialogue_close.emit()
-	return
-
-func _on_next_button_up():
-	next_page()
-
-func manage_buttons():
+func manage_dialogue():
 	match CurrentState:
 		state.READY:
-			SkipButton.set_visible(false)
-			CloseButton.set_visible(false)
-			NextButton.set_visible(false)
 			return
 
 		state.READING:
-			SkipButton.set_visible(true)
-			NextButton.set_visible(false)
-			CloseButton.set_visible(false)
+			print_rich("Skipping dialogue reading animation")
+			Global.stack_info(get_stack())
+			DialogueTweenInstance.stop()
+			DialogueTextBox.set_visible_ratio(1.0)
+			set_state(state.FINISHED)
+			return
+
+		state.CLEARING:
+			print_rich("Skipping dialogue clearing animation")
+			Global.stack_info(get_stack())
+			DialogueTweenInstance.stop()
+			DialogueTextBox.set_visible_ratio(0.0)
+			set_state(state.READING)
+			CurrentKey += 1
+			start_dialogue(StoredText)
 			return
 
 		state.FINISHED:
-			SkipButton.set_visible(false)
 			if CurrentKey < int(KeysArray.size()):
-				#print_rich("%s > %s" %[CurrentKey, KeysArray.size()])
-				#Global.stack_info(get_stack())
-				NextButton.set_visible(true)
-				CloseButton.set_visible(false)
+				print_rich("Turning to next page")
+				Global.stack_info(get_stack())
+				next_page()
 				return
 
 			if CurrentKey >= int(KeysArray.size()):
-				#print_rich("%s <= %s" %[CurrentKey, KeysArray.size()])
-				#Global.stack_info(get_stack())
-				CloseButton.set_visible(true)
-				NextButton.set_visible(false)
+				print_rich("Closing dialogue box.")
+				Global.stack_info(get_stack())
+				StoredText = {}
+				reset()
+				SignalManager.dialogue_close.emit()
 				return
+	return
+
+func manage_text_effects():
+	if ErrorTextEffect == null:
+		ErrorTextEffect = err.new()
+	if not DialogueTextBox.custom_effects.has(ErrorTextEffect):
+		DialogueTextBox.custom_effects.append(ErrorTextEffect)
 	return
 
 func manage_signals():
@@ -159,6 +171,9 @@ func manage_signals():
 	if not SignalManager.main_menu_loaded.is_connected(Callable(self.queue_free)):
 		SignalManager.main_menu_loaded.connect(Callable(self.queue_free))
 
+	if not SignalManager.manage_dialogue.is_connected(Callable(manage_dialogue)):
+		SignalManager.manage_dialogue.connect(Callable(manage_dialogue))
+
 func _ready():
 	set_process_mode(Node.PROCESS_MODE_PAUSABLE)
 	reset()
@@ -166,7 +181,7 @@ func _ready():
 	return
 
 func _process(_delta):
-	manage_buttons()
+	manage_text_effects()
 
 	if Global.DialogueBoxInstance == null:
 		Global.DialogueBoxInstance = self

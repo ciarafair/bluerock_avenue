@@ -15,7 +15,7 @@ func mouse_position(mask, camera, area_bool, body_bool):
 	if Global.SpaceState == null:
 		return
 
-	var ray_length = 50
+	var ray_length: float = 50
 	var ray_from = camera.project_ray_origin(Global.MousePosition2D)
 	var ray_to = ray_from + camera.project_ray_normal(Global.MousePosition2D) * ray_length
 	var ray_query = PhysicsRayQueryParameters3D.create(ray_from, ray_to)
@@ -40,11 +40,16 @@ func block_raycast():
 			return
 
 		if BlockResult.size() > 0:
-			Global.Is_Clickable = true
-			Global.Hovering_Block = BlockResult.values()[3]
+			if BlockResult.values()[3] is Block:
+				Global.Is_Clickable = true
+				Global.Hovering_Block = BlockResult.values()[3]
+				return
+			else:
+				Global.Hovering_Block = null
 
 		if BlockResult.size() <= 0:
 			Global.Hovering_Block = null
+			return
 
 
 func item_raycast():
@@ -57,12 +62,17 @@ func item_raycast():
 		if InteractableResult == null:
 			Global.Hovering_Interactable = null
 			return
+
 		if InteractableResult.size() > 0:
-			Global.Is_Clickable = true
-			Global.Hovering_Interactable = InteractableResult.values()[3]
-			#print_rich("Hovering over item %s" %[Global.Hovering_Interactable])
-			#Global.stack_info(get_stack())
-			return
+			if InteractableResult.values()[3] is Interactable:
+				Global.Is_Clickable = true
+				Global.Hovering_Interactable = InteractableResult.values()[3]
+				#print_rich("Hovering over item %s" %[Global.Hovering_Interactable])
+				#Global.stack_info(get_stack())
+				return
+			else:
+				Global.Hovering_Interactable = null
+
 		if InteractableResult.size() <= 0:
 			Global.Hovering_Interactable = null
 			return
@@ -82,6 +92,7 @@ func flashlight_raycast():
 		#print_rich(RESULT.values())
 		#Global.stack_info(get_stack())
 		Global.FLASHLIGHT_RAY_ARRAY = FlashlightResult.values()
+		return
 
 func manage_flashlight_raycast():
 	if Global.Game_Data_Instance.Is_Flashlight_On == true:
@@ -192,7 +203,6 @@ func load_children():
 		SignalManager.load_intro_animation.emit()
 		await SignalManager.intro_animation_loaded
 		await SignalManager.intro_animation_completed
-
 	Global.load_data(Path.GameJSONFilePath, "game")
 	are_objects_loaded = true
 

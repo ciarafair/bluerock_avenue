@@ -27,6 +27,9 @@ const TaskErrorDialoguePath: String = "res://resources/dialogue/task_error.json"
 
 const TelevisionScreenMaterialPath: String = "res://resources/materials/television_screen.material"
 
+# Text Effects
+const ErrorTextEffectPath: String = "res://resources/rich_text_effects/err.gd"
+
 # JSON Files
 const SettingsJSONFilePath: String = "user://settings.json"
 const GameJSONFilePath: String = "user://game.json"

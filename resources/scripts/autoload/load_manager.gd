@@ -18,10 +18,7 @@ func load_scene(path: String):
 		self.load_done.disconnect(Callable(Load_Screen_Instance.start_exit_animation))
 
 	self.progress_changed.connect(Callable(Load_Screen_Instance.update_progress_bar))
-	if Global.CurrentGameState == Global.game_state.GAME:
-		self.load_done.connect(Callable(Load_Screen_Instance.start_exit_animation).bind(true))
-	else:
-		self.load_done.connect(Callable(Load_Screen_Instance.start_exit_animation).bind(false))
+	self.load_done.connect(Callable(Load_Screen_Instance.start_exit_animation))
 
 	await Signal(Load_Screen_Instance, "loading_screen_has_full_coverage")
 	start_load()

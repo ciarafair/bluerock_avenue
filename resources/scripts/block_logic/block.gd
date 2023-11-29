@@ -196,8 +196,8 @@ func disconnect_deactivate_signal(node: Block):
 		return
 
 func activate():
-	print_rich("Activating %s." %[str(self.name)])
-	Global.stack_info(get_stack())
+	#print_rich("Activating %s." %[str(self.name)])
+	#Global.stack_info(get_stack())
 
 	Global.Game_Data_Instance.Current_Block = self
 

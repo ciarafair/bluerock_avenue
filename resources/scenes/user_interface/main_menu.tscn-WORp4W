@@ -1,0 +1,197 @@
+[gd_scene load_steps=7 format=3 uid="uid://g7gc87d1nati"]
+
+[ext_resource type="Script" path="res://resources/scripts/user_interface/main_menu.gd" id="1_5gjp7"]
+[ext_resource type="Theme" uid="uid://0ebt36il1caq" path="res://resources/themes/main_menu.theme" id="2_faofq"]
+[ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="4_0yp4u"]
+[ext_resource type="LabelSettings" uid="uid://b14nmheo6frid" path="res://resources/label_settings/title.tres" id="4_7t242"]
+[ext_resource type="Texture2D" uid="uid://pjiy5yvrmvw5" path="res://resources/textures/github.png" id="4_asntc"]
+[ext_resource type="Texture2D" uid="uid://d14tug4xww8u6" path="res://resources/textures/discord.png" id="9_nebx5"]
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_5gjp7")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_faofq")
+ratio = 1.8
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+
+[node name="VersionMargin" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 1010
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Version" type="Label" parent="AspectRatioContainer/VersionMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 25
+theme_override_fonts/font = ExtResource("4_0yp4u")
+theme_override_font_sizes/font_size = 40
+text = "Version  0.0.0"
+
+[node name="RootMargin" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/RootMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+
+[node name="TitleMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="AspectRatioContainer/RootMargin/VBoxContainer/TitleMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+text = "THE USE ON BUEC AVENUE"
+label_settings = ExtResource("4_7t242")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 1000
+
+[node name="Links" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Discord" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+icon = ExtResource("9_nebx5")
+flat = true
+icon_alignment = 1
+
+[node name="Github" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+icon = ExtResource("4_asntc")
+flat = true
+icon_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+
+[node name="StartGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 550
+theme_override_constants/margin_right = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+
+[node name="ContinueMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Continue" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/ContinueMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_type_variation = &"MainMenu"
+text = "Continue"
+
+[node name="NewGameMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="NewGame" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/NewGameMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+theme_type_variation = &"MainMenu"
+text = "New Game"
+
+[node name="OptionsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
+
+[node name="Options" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/OptionsMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+text = "Options"
+
+[node name="CreditsMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
+
+[node name="Credits" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/CreditsMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+text = "Credits"
+
+[node name="QuitMargin" type="MarginContainer" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_faofq")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 25
+
+[node name="Quit" type="Button" parent="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/QuitMargin"]
+layout_mode = 2
+theme = ExtResource("2_faofq")
+text = "Quit To Desktop"
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links/Discord" to="." method="_on_discord_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/Links/Github" to="." method="_on_github_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/ContinueMargin/Continue" to="." method="_on_continue_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/StartGameMargin/HBoxContainer/NewGameMargin/NewGame" to="." method="_on_new_game_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/OptionsMargin/Options" to="." method="_on_options_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/CreditsMargin/Credits" to="." method="_on_credits_button_up"]
+[connection signal="button_up" from="AspectRatioContainer/RootMargin/VBoxContainer/MarginContainer/HBoxContainer/Buttons/QuitMargin/Quit" to="." method="_on_quit_button_up"]

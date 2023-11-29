@@ -7,12 +7,14 @@ signal scene_loaded
 signal toggle_tv
 signal animation_finished
 
+# Dialogue box
+signal manage_dialogue
+
 # Pause menu
 signal show_options_menu
 signal hide_pause_menu
 
 # Global
-
 signal load_settings_data
 signal save_settings_data
 signal load_game_data

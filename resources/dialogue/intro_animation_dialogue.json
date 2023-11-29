@@ -1,10 +1,10 @@
 {
 	"1":{
-		"name": "[shake]�������[/shake]",
-		"dialogue": "The room smells of rot, the humid air pushing through your lungs feels heavy on your chest."
+		"name": "[err]Unknown[/err]",
+		"dialogue": "The room smells of rot, humid air pushes through your lungs and feels heavy on your chest."
 	},
 	"2":{
-		"name": "[shake]�������[/shake]",
+		"name": "[err]Unknown[/err]",
 		"dialogue": "Your eyes take a moment to adjust to the darkness..."
 	}
 }

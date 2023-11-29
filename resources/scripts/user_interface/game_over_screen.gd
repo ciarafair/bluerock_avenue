@@ -46,6 +46,7 @@ func _on_new_game_button_up():
 	SignalManager.new_game.emit()
 
 func _on_main_menu_button_up():
+	Global.CurrentGameState = Global.game_state.MAINMENU
 	LoadManager.load_scene(Path.MainMenuPath)
 	self.queue_free()
 	return

@@ -47,17 +47,13 @@ func _on_new_game_button_up():
 	SignalManager.delete_game_data.emit()
 	Global.CurrentGameState = Global.game_state.GAME
 	LoadManager.load_scene(Path.GameWorldPath)
-	await SignalManager.game_world_loaded
-	if Global.Loaded_Game_World:
-		Global.verify_game_file_directory()
-		self.queue_free()
-		return
 	self.queue_free()
 	return
 
 func _on_continue_button_up():
 	SignalManager.stop_track.emit()
 	Global.load_data(Path.GameJSONFilePath, "game")
+	Global.CurrentGameState = Global.game_state.GAME
 	LoadManager.load_scene(Path.GameWorldPath)
 	if Global.Loaded_Game_World:
 		Global.verify_game_file_directory()

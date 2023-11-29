@@ -25,19 +25,20 @@ func manage_normal_input():
 					else:
 						if Global.DialogueBoxInstance == null:
 							SignalManager.load_dialogue_box.emit()
-						SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.task_check(Global.Hovering_Block))
+						SignalManager.click_dialogue.emit(Global.task_check(Global.Hovering_Block))
 						return
 
 				elif Global.CurrentMouseState == 2:
 					if Global.Hovering_Block.BlockDialoguePath != null:
 						if Global.DialogueBoxInstance == null:
 							SignalManager.load_dialogue_box.emit()
-						SignalManager.click_dialogue.emit(Global.Hovering_Block, Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
+						SignalManager.click_dialogue.emit(Global.stringify_json(Global.Hovering_Block.BlockDialoguePath))
 						return
 
 	if Input.is_action_just_released("mouse_button_2"):
-		SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block)
-		return
+		if Global.Game_Data_Instance.Current_Block.BlockParent != null:
+			SignalManager.deactivate_block.emit(Global.Game_Data_Instance.Current_Block)
+			return
 
 	if Global.CurrentMouseState == 3:
 		if Global.Current_Movement_Panel != null:
@@ -155,3 +156,5 @@ func _unhandled_input(event: InputEvent):
 		if Input.is_action_just_released("pause_menu_toggle"):
 			Global.Is_Pause_Menu_Open = !Global.Is_Pause_Menu_Open
 
+		if Input.is_action_just_released("ui_accept"):
+			SignalManager.manage_dialogue.emit()

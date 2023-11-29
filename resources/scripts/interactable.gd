@@ -36,7 +36,7 @@ func manage_dialogue():
 			var stringified_json = Global.stringify_json(json)
 			print_rich("Activating %s with the dialogue %s." %[self.name, stringified_json])
 			Global.stack_info(get_stack())
-			SignalManager.click_dialogue.emit(self, stringified_json)
+			SignalManager.click_dialogue.emit(stringified_json)
 			return
 		else:
 			print_rich("Dialogue path not entered.")

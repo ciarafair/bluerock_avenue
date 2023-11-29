@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bfuk24sx0e77s"]
+
+[ext_resource type="FontFile" uid="uid://lb6pc4scynwx" path="res://resources/fonts/unscii/unscii_16.otf" id="1_x7bk5"]
+
+[resource]
+line_spacing = 2.08165e-12
+font = ExtResource("1_x7bk5")
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)

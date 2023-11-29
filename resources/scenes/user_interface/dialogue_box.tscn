@@ -1,74 +1,48 @@
-[gd_scene load_steps=10 format=3 uid="uid://caaobudb0a2yl"]
+[gd_scene load_steps=15 format=3 uid="uid://caaobudb0a2yl"]
 
 [ext_resource type="Script" path="res://resources/scripts/dialogue_box.gd" id="1_b0eu1"]
 [ext_resource type="Theme" uid="uid://n3mp2oj5tq0h" path="res://resources/themes/dialogue_box.theme" id="2_634ts"]
+[ext_resource type="FontFile" uid="uid://lb6pc4scynwx" path="res://resources/fonts/unscii/unscii_16.otf" id="3_nngof"]
 [ext_resource type="FontFile" uid="uid://bpt1jaw215dag" path="res://resources/fonts/digitany_regular.otf" id="4_jha6c"]
-[ext_resource type="FontFile" uid="uid://bn56vqhwywgjo" path="res://resources/fonts/merriweather/merriweather_regular.ttf" id="5_7mwjg"]
-[ext_resource type="FontFile" uid="uid://crx6gatti8tfp" path="res://resources/fonts/merriweather/merriweather_bold.ttf" id="6_wqwiw"]
-[ext_resource type="FontFile" uid="uid://bh3e4wxmmuuxi" path="res://resources/fonts/merriweather/merriweather_italic.ttf" id="7_syqjs"]
-[ext_resource type="FontFile" uid="uid://cr04xotjhkv08" path="res://resources/fonts/merriweather/merriweather_bold_italic.ttf" id="8_7apxj"]
-[ext_resource type="FontFile" uid="uid://dlida2bdoqwls" path="res://resources/fonts/merriweather/merriweather_black.ttf" id="9_rl5rc"]
+[ext_resource type="FontFile" uid="uid://bvnivw67gk71i" path="res://resources/fonts/playfair_display/playfair_bold.ttf" id="5_gauox"]
+[ext_resource type="FontFile" uid="uid://6ounns5h5bvo" path="res://resources/fonts/playfair_display/playfair_italic.ttf" id="5_k8tbq"]
+[ext_resource type="FontFile" uid="uid://dijplsru1w8xw" path="res://resources/fonts/playfair_display/playfair_regular.ttf" id="6_vbv1h"]
+[ext_resource type="FontFile" uid="uid://dnqhdn5457o5y" path="res://resources/fonts/playfair_display/playfair_bolditalic.ttf" id="7_le8qf"]
+[ext_resource type="FontFile" uid="uid://dx76ua0b4kj3c" path="res://resources/fonts/ark_pixel_12.otf" id="8_4p240"]
+[ext_resource type="Script" path="res://resources/rich_text_effects/err.gd" id="9_7f03p"]
+[ext_resource type="LabelSettings" uid="uid://bfuk24sx0e77s" path="res://resources/label_settings/dialogue_border.tres" id="11_46ggy"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viob4"]
-bg_color = Color(0.101961, 0.101961, 0.101961, 0.686275)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
+[sub_resource type="RichTextEffect" id="RichTextEffect_0a27b"]
+script = ExtResource("9_7f03p")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_llukl"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_xmxih"]
+script = ExtResource("9_7f03p")
 
 [node name="DialogueBox" type="CanvasLayer"]
 layer = 3
 script = ExtResource("1_b0eu1")
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+[node name="MarginContainer2" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme = ExtResource("2_634ts")
-ratio = 1.8
 
-[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2"]
+layout_mode = 2
+
+[node name="TopLayerMargin" type="MarginContainer" parent="MarginContainer2/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
-theme = ExtResource("2_634ts")
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 485
 theme_override_constants/margin_top = 750
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_634ts")
-theme_override_styles/panel = SubResource("StyleBoxFlat_viob4")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("2_634ts")
-theme_override_constants/separation = 0
-
-[node name="TopLayerMargin" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_top = 12
-
-[node name="NameLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/MarginContainer"]
+[node name="NameLabel" type="RichTextLabel" parent="MarginContainer2/VBoxContainer/TopLayerMargin"]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 2
@@ -79,80 +53,109 @@ theme_override_fonts/italics_font = ExtResource("4_jha6c")
 theme_override_fonts/bold_italics_font = ExtResource("4_jha6c")
 theme_override_fonts/mono_font = ExtResource("4_jha6c")
 bbcode_enabled = true
-text = "[font_size=40][outline_size=25] [outline_color=black] Test"
+text = "[font_size=40][outline_size=15] [outline_color=black][err]Name[/err]"
 fit_content = true
+custom_effects = [SubResource("RichTextEffect_0a27b")]
 visible_characters_behavior = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.25
-theme = ExtResource("2_634ts")
-theme_override_constants/separation = 15
-alignment = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 469
+theme_override_constants/margin_right = 469
+theme_override_constants/margin_bottom = 75
 
-[node name="Skip" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer2/VBoxContainer/MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_634ts")
-text = " Skip "
+texture = SubResource("ViewportTexture_llukl")
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 982, 288)
 
-[node name="Next" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_634ts")
-text = " Next "
-
-[node name="Close" type="Button" parent="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("2_634ts")
-text = " Close "
-
-[node name="HBoxContainer" type="HBoxContainer" parent="AspectRatioContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/VBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="Star" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer2/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="DialogueLabel" type="RichTextLabel" parent="MarginContainer2/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2"]
 unique_name_in_owner = true
+clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.03
-theme_override_fonts/normal_font = ExtResource("5_7mwjg")
-theme_override_fonts/bold_font = ExtResource("6_wqwiw")
-theme_override_fonts/italics_font = ExtResource("7_syqjs")
-theme_override_fonts/bold_italics_font = ExtResource("8_7apxj")
-theme_override_fonts/mono_font = ExtResource("9_rl5rc")
+theme_override_fonts/normal_font = ExtResource("6_vbv1h")
+theme_override_fonts/bold_font = ExtResource("5_gauox")
+theme_override_fonts/italics_font = ExtResource("5_k8tbq")
+theme_override_fonts/bold_italics_font = ExtResource("7_le8qf")
+theme_override_fonts/mono_font = ExtResource("8_4p240")
 bbcode_enabled = true
-text = "[font_size=40][outline_size=25] [outline_color=black] ×"
+text = "[font_size=40][outline_size=10] [outline_color=black]\"[i]The quick brown fox jumps over the lazy dog[/i]\" is an English-language pangram – a sentence that contains [b]every[/b] letter of the alphabet. "
 fit_content = true
+scroll_active = false
 visible_characters_behavior = 1
 
-[node name="DialogueLabel" type="RichTextLabel" parent="AspectRatioContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.04
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 75
+
+[node name="Arrow" type="RichTextLabel" parent="MarginContainer2/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_7mwjg")
-theme_override_fonts/bold_font = ExtResource("6_wqwiw")
-theme_override_fonts/italics_font = ExtResource("7_syqjs")
-theme_override_fonts/bold_italics_font = ExtResource("8_7apxj")
-theme_override_fonts/mono_font = ExtResource("9_rl5rc")
+size_flags_stretch_ratio = 0.05
+theme_override_fonts/normal_font = ExtResource("3_nngof")
 bbcode_enabled = true
-text = "[font_size=40][outline_size=25] [outline_color=black] Test"
+text = "[font_size=65
+][outline_size=15] [outline_color=black][wave amp=100]↵[/wave]"
 fit_content = true
-visible_characters = 0
+custom_effects = [SubResource("RichTextEffect_xmxih")]
 visible_characters_behavior = 1
-visible_ratio = 0.0
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(982, 288)
+
+[node name="Panel" type="Panel" parent="SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_634ts")
+metadata/_edit_use_anchors_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Border" type="Label" parent="SubViewport/CenterContainer"]
+layout_mode = 2
+text = "╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝"
+label_settings = ExtResource("11_46ggy")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
-[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer/Skip" to="." method="_on_skip_button_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer/Next" to="." method="_on_next_button_up"]
-[connection signal="button_up" from="AspectRatioContainer/MarginContainer/VBoxContainer/TopLayerMargin/HBoxContainer/HBoxContainer/Close" to="." method="_on_close_button_up"]

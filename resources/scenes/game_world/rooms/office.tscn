@@ -661,12 +661,32 @@ libraries = {
 "": SubResource("AnimationLibrary_g5neq")
 }
 
+[node name="MonsterPositions" type="Node3D" parent="."]
+
+[node name="OfficeWindow1" type="Marker3D" parent="MonsterPositions"]
+transform = Transform3D(-0.999393, -0.0132009, 0.0322417, -0.012456, 0.999653, 0.0231963, -0.0325367, 0.0227806, -0.999211, -2.40725, -2.08165e-12, 21.3198)
+script = ExtResource("5_orn4p")
+PositionNumber = 1
+Type = "Window"
+
+[node name="OfficeWindow2" type="Marker3D" parent="MonsterPositions"]
+transform = Transform3D(-0.957915, -0.0185828, 0.28645, -0.012456, 0.999653, 0.0231963, -0.286781, 0.0186521, -0.957814, -2.23171, -2.08165e-12, 12.3306)
+script = ExtResource("5_orn4p")
+PositionNumber = 2
+Type = "Window"
+
+[node name="OfficeWindow3" type="Marker3D" parent="MonsterPositions"]
+transform = Transform3D(-0.920878, -0.0205081, 0.389311, -0.012456, 0.999653, 0.0231963, -0.389651, 0.0165117, -0.920814, -0.472383, -2.08165e-12, 5.50069)
+script = ExtResource("5_orn4p")
+PositionNumber = 3
+Type = "Window"
+
 [node name="OfficeMesh" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
 
 [node name="Ceiling" type="StaticBody3D" parent="OfficeMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 5, 2.08165e-12)
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/Ceiling"]
 shape = SubResource("BoxShape3D_4rxvf")
@@ -677,7 +697,7 @@ cast_shadow = 2
 mesh = SubResource("PlaneMesh_m062c")
 
 [node name="Floor" type="StaticBody3D" parent="OfficeMesh"]
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/Floor"]
 shape = SubResource("BoxShape3D_4rxvf")
@@ -689,7 +709,7 @@ mesh = SubResource("PlaneMesh_i7mxd")
 
 [node name="PositiveZ" type="StaticBody3D" parent="OfficeMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.5, -5)
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/PositiveZ"]
 shape = SubResource("BoxShape3D_a1ovh")
@@ -717,7 +737,7 @@ skeleton = NodePath("../..")
 
 [node name="NegativeZ" type="StaticBody3D" parent="OfficeMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.5, 5)
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/NegativeZ"]
 shape = SubResource("BoxShape3D_cgug4")
@@ -742,7 +762,7 @@ skeleton = NodePath("../..")
 
 [node name="PositiveX" type="StaticBody3D" parent="OfficeMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 2.08165e-12)
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/PositiveX"]
 shape = SubResource("BoxShape3D_ek314")
@@ -759,7 +779,7 @@ skeleton = NodePath("../..")
 
 [node name="NegativeX" type="StaticBody3D" parent="OfficeMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.5, 2.08165e-12)
-collision_layer = 5
+collision_layer = 23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeMesh/NegativeX"]
 shape = SubResource("BoxShape3D_mq1k2")
@@ -773,26 +793,6 @@ mesh = SubResource("QuadMesh_f1l36")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.425, 2.08165e-12)
 mesh = SubResource("BoxMesh_phxtk")
 skeleton = NodePath("../..")
-
-[node name="MonsterPositions" type="Node3D" parent="."]
-
-[node name="OfficeWindow1" type="Marker3D" parent="MonsterPositions"]
-transform = Transform3D(-0.999393, -0.0132009, 0.0322417, -0.012456, 0.999653, 0.0231963, -0.0325367, 0.0227806, -0.999211, -2.40725, -2.08165e-12, 21.3198)
-script = ExtResource("5_orn4p")
-PositionNumber = 1
-Type = "Window"
-
-[node name="OfficeWindow2" type="Marker3D" parent="MonsterPositions"]
-transform = Transform3D(-0.957915, -0.0185828, 0.28645, -0.012456, 0.999653, 0.0231963, -0.286781, 0.0186521, -0.957814, -2.23171, -2.08165e-12, 12.3306)
-script = ExtResource("5_orn4p")
-PositionNumber = 2
-Type = "Window"
-
-[node name="OfficeWindow3" type="Marker3D" parent="MonsterPositions"]
-transform = Transform3D(-0.920878, -0.0205081, 0.389311, -0.012456, 0.999653, 0.0231963, -0.389651, 0.0165117, -0.920814, -0.472383, -2.08165e-12, 5.50069)
-script = ExtResource("5_orn4p")
-PositionNumber = 3
-Type = "Window"
 
 [connection signal="animation_finished" from="Locations/Window/AnimationPlayer" to="Locations/Window" method="_on_animation_player_animation_finished"]
 [connection signal="animation_started" from="Locations/Window/AnimationPlayer" to="Locations/Window" method="_on_animation_player_animation_started"]
