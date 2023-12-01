@@ -15,7 +15,7 @@ config/name_localized={
 "en_AU": "The House on Bluerock Avenue"
 }
 run/main_scene="res://resources/scenes/object_loader.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
@@ -44,6 +44,17 @@ project/assembly_name="Bluerock Avenue"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/ColorPreview/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "gray",
+"res://releases/": "gray",
+"res://resources/dialogue/": "red",
+"res://resources/fonts/": "orange",
+"res://resources/scenes/": "purple",
+"res://resources/scripts/": "teal"
+}
 
 [input]
 

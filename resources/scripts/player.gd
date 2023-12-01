@@ -2,7 +2,7 @@ extends Node3D
 class_name Player
 
 @onready var Camera = %Camera3D
-@onready var Flashlight = %SpotLight3D
+@onready var FlashlightInstance = %SpotLight3D
 @onready var ListenPosition = %ListenPosition
 
 var TweenInstance: Tween = null

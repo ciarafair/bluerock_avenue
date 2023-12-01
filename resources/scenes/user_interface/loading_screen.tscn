@@ -177,10 +177,10 @@ script = ExtResource("1_xnrb6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
-autoplay = "start_load"
 libraries = {
 "": SubResource("AnimationLibrary_vfuwa")
 }
+autoplay = "start_load"
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 anchors_preset = 15

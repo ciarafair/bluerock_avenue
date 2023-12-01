@@ -40,9 +40,10 @@ func block_raycast():
 			return
 
 		if BlockResult.size() > 0:
-			if BlockResult.values()[3] is Block:
+			if BlockResult.values()[4] is Block:
 				Global.Is_Clickable = true
-				Global.Hovering_Block = BlockResult.values()[3]
+				Global.Hovering_Block = BlockResult.values()[4]
+
 				return
 			else:
 				Global.Hovering_Block = null
@@ -64,9 +65,9 @@ func item_raycast():
 			return
 
 		if InteractableResult.size() > 0:
-			if InteractableResult.values()[3] is Interactable:
+			if InteractableResult.values()[4] is Interactable:
 				Global.Is_Clickable = true
-				Global.Hovering_Interactable = InteractableResult.values()[3]
+				Global.Hovering_Interactable = InteractableResult.values()[4]
 				#print_rich("Hovering over item %s" %[Global.Hovering_Interactable])
 				#Global.stack_info(get_stack())
 				return
@@ -96,13 +97,13 @@ func flashlight_raycast():
 
 func manage_flashlight_raycast():
 	if Global.Game_Data_Instance.Is_Flashlight_On == true:
-		Global.PlayerInstance.Flashlight.visible = true
+		Global.PlayerInstance.FlashlightInstance.visible = true
 		flashlight_raycast()
 		if Global.FLASHLIGHT_RAY_ARRAY != []:
-			Global.PlayerInstance.Flashlight.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
+			Global.PlayerInstance.FlashlightInstance.look_at(Global.FLASHLIGHT_RAY_ARRAY[0])
 		return
 	else:
-		Global.PlayerInstance.Flashlight.visible = false
+		Global.PlayerInstance.FlashlightInstance.visible = false
 		return
 
 func on_enable_door_view(node, number):

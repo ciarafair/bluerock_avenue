@@ -54,7 +54,7 @@ var Current_Movement_Panel: Panel = null
 var ScreenCentre: Vector2i
 var SpaceState: PhysicsDirectSpaceState3D
 var RAYCAST_COLLISION_OBJECT
-var Hovering_Block: Block
+var Hovering_Block: Block = null
 var Hovering_Interactable: Interactable
 var FLASHLIGHT_RAY_ARRAY: Array = []
 
@@ -64,7 +64,7 @@ func on_tween_finished():
 	Global.Is_In_Animation = false
 	SignalManager.animation_finished.emit()
 
-var CurrentMouseState: mouse
+var CurrentMouseState: mouse = mouse.MOVEMENT
 var MousePosition2D: Vector2
 
 enum mouse {

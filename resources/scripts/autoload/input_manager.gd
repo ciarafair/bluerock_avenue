@@ -15,8 +15,8 @@ func manage_normal_input():
 			if Input.is_action_just_released("mouse_button_1"):
 
 				if Global.CurrentMouseState == 1:
-					#print_rich("Activating %s"%[Global.Hovering_Block])
-					#Global.stack_info(get_stack())
+					print_rich("Activating %s"%[Global.Hovering_Block])
+					Global.stack_info(get_stack())
 					if Global.task_check(Global.Hovering_Block) == {}:
 						#print_rich("Activating %s" %[Global.Hovering_Block])
 						#Global.stack_info(get_stack())

@@ -13,7 +13,7 @@ var CurrentStatus: state = state.CLOSED
 var DoorTweenInstance: Tween
 
 var PivotPoint: Node3D
-var DoorHandle: Node3D
+var DoorHandleInstance: Node3D
 var Is_Enabled: bool = false
 
 var PivotPointOriginalYRotation: float
@@ -53,21 +53,21 @@ func set_door_state(next: state):
 			return
 
 func twist_doorhandle():
-	if self.DoorHandle != null:
-		self.DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", handle_turning_degrees - self.DoorHandle.rotation_degrees.z, handle_turning_time).from_current()
+	if self.DoorHandleInstance != null:
+		self.DoorTweenInstance.tween_property(self.DoorHandleInstance, "rotation_degrees:z", handle_turning_degrees - self.DoorHandleInstance.rotation_degrees.z, handle_turning_time).from_current()
 		pass
 
-	elif self.DoorHandle == null:
+	elif self.DoorHandleInstance == null:
 		printerr("Door handle returned null. Could not animate.")
 		Global.stack_info(get_stack())
 		pass
 
 func reset_doorhandle():
-	if self.DoorHandle != null:
-		self.DoorTweenInstance.tween_property(self.DoorHandle, "rotation_degrees:z", 0, handle_turning_time).from_current()
+	if self.DoorHandleInstance != null:
+		self.DoorTweenInstance.tween_property(self.DoorHandleInstance, "rotation_degrees:z", 0, handle_turning_time).from_current()
 		return
 
-	elif self.DoorHandle == null:
+	elif self.DoorHandleInstance == null:
 		printerr("Door handle returned null. Could not animate.")
 		Global.stack_info(get_stack())
 		return
@@ -177,7 +177,7 @@ func find_other_room():
 
 func start_event():
 	self.PivotPoint = find_pivot_point(self)
-	self.DoorHandle = find_door_handle(self.PivotPoint)
+	self.DoorHandleInstance = find_door_handle(self.PivotPoint)
 
 	self.PivotPointOriginalYRotation = self.PivotPoint.rotation_degrees.y
 
